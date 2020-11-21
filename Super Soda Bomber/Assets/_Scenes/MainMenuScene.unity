@@ -1658,7 +1658,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02859456394764a4784547b569bbd86b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  OptionsBox: {fileID: 0}
   mastersl: {fileID: 0}
   musicsl: {fileID: 0}
   sfxsl: {fileID: 0}
@@ -2163,7 +2162,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: Level1_Beach
+          m_StringArgument: TestGameplay
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &1557372192
