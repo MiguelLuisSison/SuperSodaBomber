@@ -1,13 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
 public class PlayerMovement : MonoBehaviour {
 
 	public PlayerControl controller;
 
 	public float runSpeed = 40f;
-
+	public Joystick joystick;
 	float horizontalMove = 0f;
 	bool jump = false;
 	bool crouch = false;
@@ -15,7 +14,17 @@ public class PlayerMovement : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-		horizontalMove = Input.GetAxisRaw("Horizontal") * runSpeed;
+		// horizontalMove = Input.GetAxisRaw("Horizontal") * runSpeed;
+
+		if (joystick.Horizontal >= .2f){
+			horizontalMove = runSpeed;
+		}
+		else if (joystick.Horizontal <= -.2f){
+			horizontalMove = -runSpeed;
+		}
+		else{
+			horizontalMove = 0;
+		}
 
 		if (Input.GetButtonDown("Jump"))
 		{
@@ -34,6 +43,7 @@ public class PlayerMovement : MonoBehaviour {
 
 	void FixedUpdate ()
 	{
+
 		// Move our character
 		controller.Move(horizontalMove * Time.fixedDeltaTime, crouch, jump);
 		jump = false;
