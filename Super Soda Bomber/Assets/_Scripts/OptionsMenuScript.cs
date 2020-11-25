@@ -7,7 +7,7 @@ public class OptionsMenuScript : MonoBehaviour
 {
 
     // Variable Configs
-    public Slider mastersl, musicsl, sfxsl, voicesl;
+    public Slider mastersl, musicsl, sfxsl;
 
     void Start()
     {
@@ -16,7 +16,6 @@ public class OptionsMenuScript : MonoBehaviour
         mastersl.value = PlayerPrefs.GetFloat("MasterVol", 0);
         musicsl.value = PlayerPrefs.GetFloat("MusicVol", 0);
         sfxsl.value = PlayerPrefs.GetFloat("SFXVol", 0);
-        voicesl.value = PlayerPrefs.GetFloat("Voice", 0);
     }
 
     // setting the vars when slider changed
@@ -30,9 +29,6 @@ public class OptionsMenuScript : MonoBehaviour
         }        
         else if(sl == sfxsl){
             PlayerPrefs.SetFloat("SFXVol", sl.value);
-        }
-        else if (sl == voicesl){
-            PlayerPrefs.SetFloat("Voice", sl.value);
         }
     }
 }
