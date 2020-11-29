@@ -4,22 +4,24 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour {
 
 	public PlayerControl controller;
-
 	public float runSpeed = 40f;
 	public Joystick joystick;
 	float horizontalMove = 0f;
 	bool jump = false;
-	bool crouch = false;
+
+	//OnPress of Jump Button
+	public void PressJump(){
+		jump = true;
+	}
 	
 	// Update is called once per frame
 	void Update () {
 
-		// horizontalMove = Input.GetAxisRaw("Horizontal") * runSpeed;
 
-		if (joystick.Horizontal >= .2f){
+		if (joystick.Horizontal >= .5f){
 			horizontalMove = runSpeed;
 		}
-		else if (joystick.Horizontal <= -.2f){
+		else if (joystick.Horizontal <= -.5f){
 			horizontalMove = -runSpeed;
 		}
 		else{
@@ -30,22 +32,12 @@ public class PlayerMovement : MonoBehaviour {
 		{
 			jump = true;
 		}
-
-		if (Input.GetButtonDown("Crouch"))
-		{
-			crouch = true;
-		} else if (Input.GetButtonUp("Crouch"))
-		{
-			crouch = false;
-		}
-
 	}
 
 	void FixedUpdate ()
 	{
-
 		// Move our character
-		controller.Move(horizontalMove * Time.fixedDeltaTime, crouch, jump);
+		controller.Move(horizontalMove * Time.fixedDeltaTime, jump);
 		jump = false;
 	}
 }
