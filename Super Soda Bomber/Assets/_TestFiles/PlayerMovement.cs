@@ -13,6 +13,13 @@ public class PlayerMovement : MonoBehaviour {
 	public void PressJump(){
 		jump = true;
 	}
+
+	// triggers when player touches the checkpoint
+    private void OnTriggerEnter2D(Collider2D col){
+		if (col.gameObject.layer == 10){
+			Debug.Log("Checkpoint!");
+		}
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -32,6 +39,7 @@ public class PlayerMovement : MonoBehaviour {
 		{
 			jump = true;
 		}
+
 	}
 
 	void FixedUpdate ()

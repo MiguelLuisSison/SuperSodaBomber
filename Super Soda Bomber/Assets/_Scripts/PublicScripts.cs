@@ -18,4 +18,8 @@ public class PublicScripts : MonoBehaviour
         bool status = prompt.activeInHierarchy;
         prompt.SetActive(!status);
     }
+
+    public Dictionary<string, int> scores = new Dictionary<string, int>(){
+        {"jump", 10}
+    };
 }

@@ -15,7 +15,7 @@ public class OptionsMenuScript : MonoBehaviour
 
     [SerializeField] private Sprite offImg;
     [SerializeField] private Sprite onImg;
-    private int voiceEnable;
+    int voiceEnable;
     void Start()
     {
         //automatically sets the value of the slider

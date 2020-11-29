@@ -3,12 +3,17 @@ using UnityEngine.Events;
 
 public class PlayerControl : MonoBehaviour
 {
+
+	//Gameplay Script
+	public GameObject gameplayDebug;
+
+	[Header("Variables")]
+	[Space]
+
 	[SerializeField] private float m_JumpForce = 400f;							// Amount of force added when the player jumps.
 	[Range(0, .3f)] [SerializeField] private float m_MovementSmoothing = .05f;	// How much to smooth out the movement
-	[SerializeField] private bool m_AirControl = false;							// Whether or not a player can steer while jumping;
 	[SerializeField] private LayerMask m_WhatIsGround;							// A mask determining what is ground to the character
 	[SerializeField] private Transform m_GroundCheck;							// A position marking where to check if the player is grounded.
-	[SerializeField] private Collider2D m_CrouchDisableCollider;				// A collider that will be disabled when crouching
 
 	const float k_GroundedRadius = .2f; // Radius of the overlap circle to determine if grounded
     const float gracePeriod = .16f; // Time when player can jump regardless of groundcheck
@@ -27,7 +32,6 @@ public class PlayerControl : MonoBehaviour
 
 	[System.Serializable]
 	public class BoolEvent : UnityEvent<bool> {}
-
 
 	private void Awake()
 	{
@@ -68,9 +72,13 @@ public class PlayerControl : MonoBehaviour
 		}
 	}
 
-
 	public void Move(float move, bool jump)
 	{
+		// Gets GameplayScript component
+		GameplayScript gamescript = gameplayDebug.GetComponent<GameplayScript>();
+		PublicScripts p = gameplayDebug.GetComponent<PublicScripts>();
+
+
 		// Move the character by finding the target velocity
 		Vector3 targetVelocity = new Vector2(move * 10f, m_Rigidbody2D.velocity.y);
 		// And then smoothing it out and applying it to the character
@@ -95,6 +103,10 @@ public class PlayerControl : MonoBehaviour
 			m_Rigidbody2D.AddForce(new Vector2(0f, m_hangJump? m_JumpForce*1.25f : m_JumpForce));
 			m_Grounded = false;
             m_hangJump = false;
+
+			// Add score
+			gamescript.AddScore(p.scores["jump"]);
+
 		}
 	}
 

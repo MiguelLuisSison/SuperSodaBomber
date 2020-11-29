@@ -1658,9 +1658,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02859456394764a4784547b569bbd86b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mastersl: {fileID: 0}
-  musicsl: {fileID: 0}
-  sfxsl: {fileID: 0}
+  masterSl: {fileID: 0}
+  musicSl: {fileID: 0}
+  sfxSl: {fileID: 0}
+  voiceBtn: {fileID: 0}
+  offImg: {fileID: 0}
+  onImg: {fileID: 0}
 --- !u!114 &1468524573
 MonoBehaviour:
   m_ObjectHideFlags: 0
