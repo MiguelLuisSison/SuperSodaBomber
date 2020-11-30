@@ -24,12 +24,14 @@ public class GameplayScript : PublicScripts
     */
     //Config Variables
     
-    public GameObject scoreTxtObject, player, tileObject;
+    public GameObject scoreTxtObject, player, tileObject, pausePrompt;
 
     //Variables to Save
     private int score = 0;
     private Vector3 coords;
     private string checkpointTag;
+
+    private bool isPaused = false;
 
     void Start()
     {
@@ -119,6 +121,11 @@ public class GameplayScript : PublicScripts
 
     }
 
+    public void _TogglePause(){
+        _TogglePrompt(pausePrompt);
+        isPaused = !isPaused;
+    }
+
     //DevTools
     public void Restart(){
         if (File.Exists(savePath)){
@@ -136,6 +143,16 @@ public class GameplayScript : PublicScripts
         else if(Input.GetKey("c")){
             ClearData();
             Debug.Log("Data has been erased!");
+        }
+        else if(Input.GetKeyDown(KeyCode.Escape)){
+            _TogglePause();
+        }
+
+        if(isPaused){
+            Time.timeScale = 0f;
+        }
+        else{
+            Time.timeScale = 1f;
         }
         
     }
