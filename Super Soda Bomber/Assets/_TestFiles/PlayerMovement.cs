@@ -3,23 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 public class PlayerMovement : MonoBehaviour {
 
+
+	//importing scripts
 	public PlayerControl controller;
-	public float runSpeed = 40f;
-	public Joystick joystick;
+
+	//Variables
 	float horizontalMove = 0f;
+	public Joystick joystick;
+	public float runSpeed = 40f;
 	bool jump = false;
 
 	//OnPress of Jump Button
 	public void PressJump(){
 		jump = true;
 	}
-
-	// triggers when player touches the checkpoint
-    private void OnTriggerEnter2D(Collider2D col){
-		if (col.gameObject.layer == 10){
-			Debug.Log("Checkpoint!");
-		}
-    }
 	
 	// Update is called once per frame
 	void Update () {

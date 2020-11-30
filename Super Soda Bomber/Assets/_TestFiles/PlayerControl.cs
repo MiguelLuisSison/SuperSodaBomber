@@ -24,14 +24,20 @@ public class PlayerControl : MonoBehaviour
 	private Rigidbody2D m_Rigidbody2D;
 	private bool m_FacingRight = true;  // For determining which way the player is currently facing.
 	private Vector3 m_Velocity = Vector3.zero;
+	private CheckpointScript checkScript;
 
 	[Header("Events")]
 	[Space]
 
+	//this will be used on sounds, traps, etc.
 	public UnityEvent OnLandEvent;
 
 	[System.Serializable]
 	public class BoolEvent : UnityEvent<bool> {}
+
+	//private classes
+	GameplayScript gameplayScript;
+	PublicScripts publicScripts;
 
 	private void Awake()
 	{
@@ -39,6 +45,11 @@ public class PlayerControl : MonoBehaviour
 
 		if (OnLandEvent == null)
 			OnLandEvent = new UnityEvent();
+
+		// Gets GameplayScript component
+		gameplayScript = gameplayDebug.GetComponent<GameplayScript>();
+		publicScripts = gameplayDebug.GetComponent<PublicScripts>();
+
 	}
 
 	private void FixedUpdate()
@@ -74,10 +85,6 @@ public class PlayerControl : MonoBehaviour
 
 	public void Move(float move, bool jump)
 	{
-		// Gets GameplayScript component
-		GameplayScript gamescript = gameplayDebug.GetComponent<GameplayScript>();
-		PublicScripts p = gameplayDebug.GetComponent<PublicScripts>();
-
 
 		// Move the character by finding the target velocity
 		Vector3 targetVelocity = new Vector2(move * 10f, m_Rigidbody2D.velocity.y);
@@ -105,7 +112,7 @@ public class PlayerControl : MonoBehaviour
             m_hangJump = false;
 
 			// Add score
-			gamescript.AddScore(p.scores["jump"]);
+			gameplayScript.AddScore(publicScripts.scores["jump"]);
 
 		}
 	}
@@ -120,4 +127,21 @@ public class PlayerControl : MonoBehaviour
 		theScale.x *= -1;
 		transform.localScale = theScale;
 	}
+
+	// triggers when player touches the checkpoint
+    private void OnTriggerEnter2D(Collider2D col){
+		if (col.gameObject.layer == 10){
+			//gets SpriteRenderer and changes the image
+			checkScript = col.GetComponent<CheckpointScript>();
+
+			//activate these scripts if the checkpoint was not saved yet
+			if(!checkScript.isTouched){
+				checkScript.ChangeState();
+				gameplayScript.SetCheckpoint(col.transform.position, col.name);
+				gameplayScript.AddScore(publicScripts.scores["checkpoint"]);
+				Debug.Log("Checkpoint Saved!");
+			}
+		}
+    }
+
 }

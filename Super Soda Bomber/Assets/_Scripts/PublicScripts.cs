@@ -7,6 +7,11 @@ using UnityEngine.SceneManagement;
 //Add component at the EventSystem and then use it to the OnClick() button
 public class PublicScripts : MonoBehaviour
 {
+    //list of scores
+    public Dictionary<string, int> scores = new Dictionary<string, int>(){
+        {"jump", 10},
+        {"checkpoint", 125}
+    };
 
     //Moves the Scene
     public void _Move(string scene){
@@ -19,7 +24,4 @@ public class PublicScripts : MonoBehaviour
         prompt.SetActive(!status);
     }
 
-    public Dictionary<string, int> scores = new Dictionary<string, int>(){
-        {"jump", 10}
-    };
 }
