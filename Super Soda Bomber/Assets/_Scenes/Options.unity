@@ -271,7 +271,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.78431374, g: 0.75686276, b: 0.75686276, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -540,7 +540,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 643e1199fe6a2124db2b4647d9f31994, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 27ac52ab6f48fbc44a9b38edd7fa75c8, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -1448,8 +1448,8 @@ MonoBehaviour:
   musicSl: {fileID: 1550829309}
   sfxSl: {fileID: 403359367}
   voiceBtn: {fileID: 266458843}
-  offImg: {fileID: 21300000, guid: 643e1199fe6a2124db2b4647d9f31994, type: 3}
-  onImg: {fileID: 21300000, guid: 466defdde2403f44db5f54ffc7cb1045, type: 3}
+  offImg: {fileID: 21300000, guid: 27ac52ab6f48fbc44a9b38edd7fa75c8, type: 3}
+  onImg: {fileID: 21300000, guid: 002b0382dc5e5e74baee14bc0e4a695e, type: 3}
 --- !u!1 &1208124443
 GameObject:
   m_ObjectHideFlags: 0
@@ -1500,7 +1500,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.78431374, g: 0.75686276, b: 0.75686276, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -2179,7 +2179,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.78431374, g: 0.75686276, b: 0.75686276, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:

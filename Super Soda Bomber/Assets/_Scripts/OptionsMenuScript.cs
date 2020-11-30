@@ -16,13 +16,12 @@ public class OptionsMenuScript : MonoBehaviour
     [SerializeField] private Sprite offImg;
     [SerializeField] private Sprite onImg;
     int voiceEnable;
-    void Start()
-    {
+
+    void Start(){
         //automatically sets the value of the slider
         masterSl.value = PlayerPrefs.GetFloat("MasterVol", 0);
         musicSl.value = PlayerPrefs.GetFloat("MusicVol", 0);
         sfxSl.value = PlayerPrefs.GetFloat("SFXVol", 0);
-
         //automatically sets the value & image of the voice toggle
         voiceEnable = PlayerPrefs.GetInt("Voice", 0);
         if(voiceEnable == 1){voiceBtn.image.sprite = onImg;}

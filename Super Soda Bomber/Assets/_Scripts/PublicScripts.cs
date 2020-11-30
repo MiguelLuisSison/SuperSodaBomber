@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -13,6 +14,16 @@ public class PublicScripts : MonoBehaviour
         {"checkpoint", 125}
     };
 
+    //description constants
+    public Dictionary<string,string> descriptions = new Dictionary<string, string>(){
+        {"confirmQuit", "Are sure you want to exit the level?"},
+        {"confirmCheckpoint", "Are you sure you want to load the last checkpoint?"},
+        {"confirmNew", "Are you sure you want to override your saved game data?"}
+    };
+
+    [HideInInspector]
+    public string savePath;
+
     //Moves the Scene
     public void _Move(string scene){
         SceneManager.LoadScene(sceneName: scene);
@@ -24,4 +35,13 @@ public class PublicScripts : MonoBehaviour
         prompt.SetActive(!status);
     }
 
+    //delete data
+    public void ClearData(){
+        File.Delete(savePath);
+    }
+
+    //path dir
+    void Awake(){
+        savePath = Application.persistentDataPath + "saved_data.soda";
+    }
 }

@@ -6,18 +6,10 @@ using UnityEngine.SceneManagement;
 
 public class GameOverScript : MonoBehaviour
 {
-    private int score_value = 0;
-    public GameObject GameOverPrompt;
-    public GameObject QuitBox;
-    // Start is called before the first frame update
-    public void RestartLevel()
-    {
-        SceneManager.LoadScene(sceneName: "Level1_Beach");
-    }
+    public Text scoreText;
 
-    public void QuitReturnToMenu()
-    {
-        SceneManager.LoadScene(sceneName: "MainMenuScene");
+    void Start(){
+        scoreText.text = "Score: " + PlayerPrefs.GetInt("CurrentScore", 0).ToString();
     }
 
 }

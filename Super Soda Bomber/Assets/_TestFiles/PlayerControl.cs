@@ -137,8 +137,8 @@ public class PlayerControl : MonoBehaviour
 			//activate these scripts if the checkpoint was not saved yet
 			if(!checkScript.isTouched){
 				checkScript.ChangeState();
-				gameplayScript.SetCheckpoint(col.transform.position, col.name);
 				gameplayScript.AddScore(publicScripts.scores["checkpoint"]);
+				gameplayScript.SetCheckpoint(col.transform.position, col.name);
 				Debug.Log("Checkpoint Saved!");
 			}
 		}

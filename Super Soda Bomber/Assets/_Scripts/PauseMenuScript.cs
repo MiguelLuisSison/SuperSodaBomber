@@ -4,32 +4,21 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class PauseMenuScript : MonoBehaviour
+public class PauseMenuScript : PublicScripts
 {
-    public GameObject PauseMenuBox;
-    public GameObject QuitBox;
-    // Start is called before the first frame update
-    public void Resume()
-    {
-        PauseMenuBox.SetActive(false);
+    GameObject confirmPrompt;
+
+    public void ReloadCheckpoint(){
+        _TogglePrompt(confirmPrompt);
     }
 
-    public void ReloadCheckpoint()
-    {
-        
-    }
-    public void QuitConfirmation()
-    {
-        QuitBox.SetActive(true);
+    public void Resume(){
+        _TogglePrompt(gameObject);
     }
 
-    public void QuitToMenu_Yes()
-    {
-        SceneManager.LoadScene(sceneName: "MainMenuScene");
+    public void QuitLevel(){
+        _TogglePrompt(confirmPrompt);
     }
 
-    public void QuitToMenu_No()
-    {
-        QuitBox.SetActive(false);
-    }
 }
+

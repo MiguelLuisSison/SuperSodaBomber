@@ -4,8 +4,9 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
-public class GameplayScript : MonoBehaviour
+public class GameplayScript : PublicScripts
 {
     // Script for TestGameplay
     // Start is called before the first frame update
@@ -30,12 +31,8 @@ public class GameplayScript : MonoBehaviour
     private Vector3 coords;
     private string checkpointTag;
 
-    //Save path
-    private string savePath;
-
     void Start()
     {
-        savePath = Application.persistentDataPath + "saved_data.soda";
         Load();
     }
 
@@ -52,7 +49,7 @@ public class GameplayScript : MonoBehaviour
 
     //save game
     public void Save(){
-        coords += new Vector3(0, 1, 0);
+        coords += new Vector3(0, .5f, 0);
 
         //I/O
         BinaryFormatter bf = new BinaryFormatter();
@@ -67,6 +64,7 @@ public class GameplayScript : MonoBehaviour
         file.Close();
     }
 
+    //load game
     public void Load(){
         if (File.Exists(savePath)){
             //I/O
@@ -78,6 +76,8 @@ public class GameplayScript : MonoBehaviour
             file.Close();
 
             score = playerData.score;
+            PlayerPrefs.SetInt("CurrentScore", score);
+
             float[] c = playerData.coords;
             coords = new Vector3(c[0], c[1], c[2]);
             player.transform.position = coords;
@@ -111,8 +111,35 @@ public class GameplayScript : MonoBehaviour
         }
     }
 
+    //when player dies
+    public void GameOver(){
+        //save the current score at PlayerPrefs
+        PlayerPrefs.SetInt("CurrentScore", score);
+        _Move("GameOverScene");
 
-    // Update is called once per frame
+    }
+
+    //DevTools
+    public void Restart(){
+        if (File.Exists(savePath)){
+            Load();
+        }
+        else{
+            _Move(SceneManager.GetActiveScene().name);
+        }
+    }
+
+    void Update(){
+        if(Input.GetKey("r")){
+            Restart();
+        }
+        else if(Input.GetKey("c")){
+            ClearData();
+            Debug.Log("Data has been erased!");
+        }
+        
+    }
+
     void LateUpdate()
     {
         Text scoreTxt = scoreTxtObject.GetComponent<Text>();

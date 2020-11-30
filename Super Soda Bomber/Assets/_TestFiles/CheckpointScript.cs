@@ -9,12 +9,10 @@ public class CheckpointScript : MonoBehaviour
     SpriteRenderer sRenderer;
     Sprite checkActiveImg;
 
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        sRenderer = gameObject.GetComponent<SpriteRenderer>();
+    void Awake(){
         checkActiveImg = Resources.Load<Sprite>("Gameplay/check_active");
+        sRenderer = gameObject.GetComponent<SpriteRenderer>();
+
     }
 
     // Changes the sprite of this sprite
