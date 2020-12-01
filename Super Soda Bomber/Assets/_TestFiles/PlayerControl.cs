@@ -106,6 +106,7 @@ public class PlayerControl : MonoBehaviour
 		// If the player should jump...
 		if (m_Grounded && jump)
 		{
+			Debug.Log(m_hangJump? "Hangjumped" : "Jumped");
 			// Add a vertical force to the player.
 			m_Rigidbody2D.AddForce(new Vector2(0f, m_hangJump? m_JumpForce*1.25f : m_JumpForce));
 			m_Grounded = false;
