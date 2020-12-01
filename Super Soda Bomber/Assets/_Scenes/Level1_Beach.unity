@@ -526,7 +526,7 @@ MonoBehaviour:
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 1280, y: 720}
   m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0
+  m_MatchWidthOrHeight: 0.5
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
@@ -3121,8 +3121,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 703b6d421526ef043ac941f1e04b1114, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PauseMenuBox: {fileID: 1382649450}
-  QuitBox: {fileID: 1376531194}
+  savePath: 
 --- !u!4 &2015595863
 Transform:
   m_ObjectHideFlags: 0
@@ -3149,8 +3148,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd7364cf77e44e1499f772635d228c54, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GameOverPrompt: {fileID: 1302419123}
-  QuitBox: {fileID: 1376531194}
+  scoreText: {fileID: 0}
 --- !u!114 &2015595865
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3180,8 +3178,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fea274102074e2c40ab9e7c3fe64dbba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  L1CompletePrompt: {fileID: 1035780183}
-  QuitBox: {fileID: 1376531194}
+  scoreText: {fileID: 0}
 --- !u!1 &2047563044
 GameObject:
   m_ObjectHideFlags: 0
