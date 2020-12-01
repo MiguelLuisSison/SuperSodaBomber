@@ -6,16 +6,14 @@ using UnityEngine.SceneManagement;
 
 public class StageCompleteScript : MonoBehaviour
 {
-    public GameObject L1CompletePrompt;
-    public GameObject QuitBox;
-    public void ContinueGame()
-    {
+    public Text scoreText;
 
+    void Start(){
+        scoreText.text = "Score: " + PlayerPrefs.GetInt("CurrentScore", 0).ToString();
     }
 
-    public void QuitReturnToMenu()
-    {
-        QuitBox.SetActive(true);
+    void PerkChoose(){
+        
     }
 
 }

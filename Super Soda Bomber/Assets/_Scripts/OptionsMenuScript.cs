@@ -19,11 +19,11 @@ public class OptionsMenuScript : MonoBehaviour
 
     void Start(){
         //automatically sets the value of the slider
-        masterSl.value = PlayerPrefs.GetFloat("MasterVol", 0);
-        musicSl.value = PlayerPrefs.GetFloat("MusicVol", 0);
-        sfxSl.value = PlayerPrefs.GetFloat("SFXVol", 0);
+        masterSl.value = PlayerPrefs.GetFloat("MasterVol", 1);
+        musicSl.value = PlayerPrefs.GetFloat("MusicVol", 1);
+        sfxSl.value = PlayerPrefs.GetFloat("SFXVol", 1);
         //automatically sets the value & image of the voice toggle
-        voiceEnable = PlayerPrefs.GetInt("Voice", 0);
+        voiceEnable = PlayerPrefs.GetInt("Voice", 1);
         if(voiceEnable == 1){voiceBtn.image.sprite = onImg;}
     }
 

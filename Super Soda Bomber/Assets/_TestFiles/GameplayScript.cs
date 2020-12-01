@@ -121,6 +121,14 @@ public class GameplayScript : PublicScripts
 
     }
 
+    //when stage is has been completed
+    public void StageComplete(){
+        //save the current score at PlayerPrefs
+        PlayerPrefs.SetInt("CurrentScore", score);
+        _Move("StageCompleteScene");
+
+    }
+
     public void _TogglePause(){
         _TogglePrompt(pausePrompt);
         isPaused = !isPaused;
@@ -155,6 +163,12 @@ public class GameplayScript : PublicScripts
             Time.timeScale = 1f;
         }
         
+    }
+
+    void FixedUpdate(){
+        if(player.transform.position.y < 0){
+            GameOver();
+        }
     }
 
     void LateUpdate()
