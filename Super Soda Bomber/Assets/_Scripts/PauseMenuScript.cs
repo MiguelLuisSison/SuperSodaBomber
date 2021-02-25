@@ -4,6 +4,10 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
+/*
+PauseMenuScript
+    Responsible for the controls on the pause prompt
+*/
 public class PauseMenuScript : PublicScripts
 {
     GameObject confirmPrompt;

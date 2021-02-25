@@ -1,10 +1,17 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+
+/*
+GameplayScript
+    Responsible for the behavior of the 
+    whole gameplay proper such as saving,
+    loading, adding current score and stage
+    changes
+*/
 
 public class GameplayScript : PublicScripts
 {
@@ -54,7 +61,6 @@ public class GameplayScript : PublicScripts
         coords += new Vector3(0, .5f, 0);
 
         //I/O
-        BinaryFormatter bf = new BinaryFormatter();
         FileStream file = File.Create(savePath);
         PlayerData playerData = new PlayerData();
         playerData.score = score;
@@ -70,7 +76,6 @@ public class GameplayScript : PublicScripts
     public void Load(){
         if (File.Exists(savePath)){
             //I/O
-            BinaryFormatter bf = new BinaryFormatter();
             FileStream file = File.Open(savePath, FileMode.Open);
 
             //load part
@@ -86,6 +91,7 @@ public class GameplayScript : PublicScripts
 
             /*
             Sample Hierarchy of GameObject Tile
+            to change the checkpoint image
                 Tile
                     -> Obstacles
                     -> Checkpoint1
@@ -121,7 +127,7 @@ public class GameplayScript : PublicScripts
 
     }
 
-    //when stage is has been completed
+    //when stage has been completed
     public void StageComplete(){
         //save the current score at PlayerPrefs
         PlayerPrefs.SetInt("CurrentScore", score);

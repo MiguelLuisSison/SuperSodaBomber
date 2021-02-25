@@ -1,11 +1,18 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-//Contains all scripts that mostly used in the game
-//Add component at the EventSystem and then use it to the OnClick() button
+/*
+PublicScripts
+    Contains all scripts that are mostly used in the game
+
+    Make sure to add this script at the EventSystem 
+    and then use this to the OnClick() buttons if needed.
+*/
+
 public class PublicScripts : MonoBehaviour
 {
     //list of scores
@@ -23,6 +30,9 @@ public class PublicScripts : MonoBehaviour
 
     [HideInInspector]
     public string savePath;
+    
+    //used for save/load processes
+    public BinaryFormatter bf = new BinaryFormatter();
 
     //Moves the Scene
     public void _Move(string scene){

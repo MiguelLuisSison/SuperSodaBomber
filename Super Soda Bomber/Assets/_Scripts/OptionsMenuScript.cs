@@ -3,6 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/*
+OptionsMenuScript
+    responsible for the controlling the values
+    at the options.
+*/
 public class OptionsMenuScript : MonoBehaviour
 {
 
@@ -13,6 +18,7 @@ public class OptionsMenuScript : MonoBehaviour
     [Header("Voice Toggle Images")]
     [Space(20f)]
 
+    //images for the voice toggle button
     [SerializeField] private Sprite offImg;
     [SerializeField] private Sprite onImg;
     int voiceEnable;
@@ -27,7 +33,7 @@ public class OptionsMenuScript : MonoBehaviour
         if(voiceEnable == 1){voiceBtn.image.sprite = onImg;}
     }
 
-    // setting the vars when slider changed
+    //setting the vars when slider changed
     public void _SetVol(Slider sl){
         
         if(sl == masterSl){
@@ -42,7 +48,7 @@ public class OptionsMenuScript : MonoBehaviour
     }
 
     public void _ToggleVoice(){
-        //Since there's no setbool, we will make a make-shift one
+        //Since there's no setbool at playerprefs, we will make a make-shift one using int
         voiceEnable = voiceEnable == 1? 0: 1;
         PlayerPrefs.SetInt("Voice", voiceEnable);
         

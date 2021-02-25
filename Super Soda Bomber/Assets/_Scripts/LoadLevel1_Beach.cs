@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+//empty class, might implement at the development stage
+
 public class LoadLevel1_Beach : MonoBehaviour
 {
 

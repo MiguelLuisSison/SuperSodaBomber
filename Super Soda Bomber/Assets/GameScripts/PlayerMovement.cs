@@ -1,6 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
+/*
+PlayerMovement
+	ovesees the controllers of the player 
+	and interprets it to the PlayerControl Script
+*/
 public class PlayerMovement : MonoBehaviour {
 
 
@@ -18,10 +24,9 @@ public class PlayerMovement : MonoBehaviour {
 		jump = true;
 	}
 	
-	// Update is called once per frame
 	void Update () {
 
-
+		//movement
 		if (joystick.Horizontal >= .5f){
 			horizontalMove = runSpeed;
 		}
@@ -32,6 +37,7 @@ public class PlayerMovement : MonoBehaviour {
 			horizontalMove = 0;
 		}
 
+		//jump
 		if (Input.GetButtonDown("Jump"))
 		{
 			jump = true;
@@ -41,7 +47,7 @@ public class PlayerMovement : MonoBehaviour {
 
 	void FixedUpdate ()
 	{
-		// Move our character
+		// interprets the controls to the script
 		controller.Move(horizontalMove * Time.fixedDeltaTime, jump);
 		jump = false;
 	}

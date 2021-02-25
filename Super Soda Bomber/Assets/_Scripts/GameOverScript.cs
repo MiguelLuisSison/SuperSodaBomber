@@ -4,6 +4,12 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
+/*
+GameOverScript
+    simply posts the current score
+    when game over.
+*/
+
 public class GameOverScript : MonoBehaviour
 {
     public Text scoreText;

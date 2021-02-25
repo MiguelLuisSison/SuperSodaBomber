@@ -2,6 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/*
+CheckpointScript
+    Responsible for the behaviors of the checkpoint
+*/
+
 public class CheckpointScript : MonoBehaviour
 {
 
@@ -15,7 +20,7 @@ public class CheckpointScript : MonoBehaviour
 
     }
 
-    // Changes the sprite of this sprite
+    // Changes the sprite of the image if it's touched
     public void ChangeState(){
         sRenderer.sprite = checkActiveImg;
         isTouched = true;

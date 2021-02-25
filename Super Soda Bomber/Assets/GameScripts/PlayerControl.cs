@@ -1,6 +1,11 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
 
+/*
+PlayerControl
+	Used to get the physics and the overall movement of the player
+	such as walking, jumping and perks
+*/
 public class PlayerControl : MonoBehaviour
 {
 
@@ -11,7 +16,7 @@ public class PlayerControl : MonoBehaviour
 	[Space]
 
 	[SerializeField] private float m_JumpForce = 400f;							// Amount of force added when the player jumps.
-	[Range(0, .3f)] [SerializeField] private float m_MovementSmoothing = .05f;	// How much to smooth out the movement
+	[Range(0, .3f)] [SerializeField] private float m_MovementSmoothing = .75f;	// How much to smooth out the movement
 	[SerializeField] private LayerMask m_WhatIsGround;							// A mask determining what is ground to the character
 	[SerializeField] private Transform m_GroundCheck;							// A position marking where to check if the player is grounded.
 
