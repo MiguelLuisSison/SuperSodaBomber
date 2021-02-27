@@ -180,7 +180,7 @@ public class GameplayScript : PublicScripts
     void LateUpdate()
     {
         Text scoreTxt = scoreTxtObject.GetComponent<Text>();
-        scoreTxt.text = "Score: " + score;
+        scoreTxt.text = "" + score;
     }
 }
 

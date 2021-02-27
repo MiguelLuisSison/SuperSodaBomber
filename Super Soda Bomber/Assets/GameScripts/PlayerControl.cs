@@ -145,6 +145,7 @@ public class PlayerControl : MonoBehaviour
 				checkScript.ChangeState();
 				gameplayScript.AddScore(publicScripts.scores["checkpoint"]);
 				gameplayScript.SetCheckpoint(col.transform.position, col.name);
+				StartCoroutine(checkScript.Notify());
 				Debug.Log("Checkpoint Saved!");
 			}
 		}
