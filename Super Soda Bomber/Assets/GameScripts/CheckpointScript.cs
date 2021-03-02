@@ -35,7 +35,7 @@ public class CheckpointScript : MonoBehaviour
     public IEnumerator Notify(){
         var notifyObj = Instantiate(notifyPrefab, UILayer.transform) as GameObject;
         var notification = notifyObj.GetComponent<Text>();
-        notification.text = "Checkpoint Reached!";
+        notification.text = "Checkpoint Saved!";
         yield return new WaitForSeconds(notifyDuration);
         Destroy(notifyObj);
         

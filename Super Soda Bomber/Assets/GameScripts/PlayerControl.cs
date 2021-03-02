@@ -20,8 +20,8 @@ public class PlayerControl : MonoBehaviour
 	[SerializeField] private LayerMask m_WhatIsGround;							// A mask determining what is ground to the character
 	[SerializeField] private Transform m_GroundCheck;							// A position marking where to check if the player is grounded.
 
-	const float k_GroundedRadius = .2f; // Radius of the overlap circle to determine if grounded
-    const float gracePeriod = .16f; // Time when player can jump regardless of groundcheck
+	const float k_GroundedRadius = .15f; // Radius of the overlap circle to determine if grounded
+    const float gracePeriod = .25f; // Time when player can jump regardless of groundcheck
 
     private bool m_hangJump = false;
     private float hangTime = 0f;
@@ -108,14 +108,16 @@ public class PlayerControl : MonoBehaviour
 			// ... flip the player.
 			Flip();
 		}
+
 		// If the player should jump...
-		if (m_Grounded && jump)
+		if ((m_Grounded||m_hangJump) && jump)
 		{
 			Debug.Log(m_hangJump? "Hangjumped" : "Jumped");
 			// Add a vertical force to the player.
 			m_Rigidbody2D.AddForce(new Vector2(0f, m_hangJump? m_JumpForce*1.25f : m_JumpForce));
 			m_Grounded = false;
             m_hangJump = false;
+			hangTime = Time.time;
 
 			// Add score
 			gameplayScript.AddScore(publicScripts.scores["jump"]);
