@@ -5,4 +5,4 @@ Super Soda Bomber is based from a GameJam 2D Shoot-em-up game conceptualized by 
 
 It's a 2 semester-long project and a major requirement for our two subjects: 6APPDEV (Application Development and Emerging Technologies) and 6INTROGAME (Introduction to Game Design and Development) on Academic Year 2020 - 2021.
 
-Check out the [Wiki](Wiki) for developer logs!
+Check out the [Wiki](https://github.com/FrancisClements/SuperSodaBomber/wiki) for developer logs!
