@@ -18,7 +18,8 @@ public class PublicScripts : MonoBehaviour
     //list of scores
     public Dictionary<string, int> scores = new Dictionary<string, int>(){
         {"jump", 10},
-        {"checkpoint", 125}
+        {"checkpoint", 125},
+        {"fire", 10}
     };
 
     //description constants
@@ -27,6 +28,12 @@ public class PublicScripts : MonoBehaviour
         {"confirmCheckpoint", "Are you sure you want to load the last checkpoint?"},
         {"confirmNew", "Are you sure you want to override your saved game data?"}
     };
+
+    //firing rates of the weapons (shows cooldown in secs)
+    public Dictionary <string, float> fireRates = new Dictionary <string, float>(){
+        {"sodaBomb", .5f}
+    };
+
 
     [HideInInspector]
     public string savePath;

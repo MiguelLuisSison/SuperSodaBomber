@@ -4,7 +4,7 @@ using UnityEngine.Events;
 /*
 PlayerControl
 	Used to get the physics and the overall movement of the player
-	such as walking, jumping and perks
+	such as walking and jumping
 */
 public class PlayerControl : MonoBehaviour
 {
@@ -129,11 +129,7 @@ public class PlayerControl : MonoBehaviour
 	{
 		// Switch the way the player is labelled as facing.
 		m_FacingRight = !m_FacingRight;
-
-		// Multiply the player's x local scale by -1.
-		Vector3 theScale = transform.localScale;
-		theScale.x *= -1;
-		transform.localScale = theScale;
+		transform.Rotate(0f,180f,0);
 	}
 
 	// triggers when player touches the checkpoint

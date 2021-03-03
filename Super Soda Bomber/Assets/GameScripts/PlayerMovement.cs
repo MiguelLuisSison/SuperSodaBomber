@@ -5,42 +5,54 @@ using UnityEngine;
 /*
 PlayerMovement
 	ovesees the controllers of the player 
-	and interprets it to the PlayerControl Script
+	and interprets it to the PlayerControl & PlayerAttack Script
 */
 public class PlayerMovement : MonoBehaviour {
 
 
 	//importing scripts
 	public PlayerControl controller;
+	public PlayerAttack attacker;
 
 	//Variables
 	float horizontalMove = 0f;
 	public Joystick joystick;
 	public float runSpeed = 40f;
 	bool jump = false;
+	bool attack = false;
 
-	//OnPress of Jump Button
+	//Jump Button
 	public void PressJump(){
 		jump = true;
+	}
+
+	//Attack Button
+	public void PressAttack(){
+		attack = true;
 	}
 	
 	void Update () {
 
 		//movement
-		if (joystick.Horizontal >= .5f){
+		if (joystick.Horizontal >= .5f || Input.GetAxisRaw("Horizontal") > 0){
 			horizontalMove = runSpeed;
 		}
-		else if (joystick.Horizontal <= -.5f){
+		else if (joystick.Horizontal <= -.5f || Input.GetAxisRaw("Horizontal") < 0){
 			horizontalMove = -runSpeed;
 		}
 		else{
 			horizontalMove = 0;
 		}
 
-		//jump
+		//keypress jump
 		if (Input.GetButtonDown("Jump"))
 		{
 			jump = true;
+		}
+
+		//keypress shoot
+		if (Input.GetButtonDown("Fire2")){
+			attack = true;
 		}
 
 	}
@@ -49,6 +61,8 @@ public class PlayerMovement : MonoBehaviour {
 	{
 		// interprets the controls to the script
 		controller.Move(horizontalMove * Time.fixedDeltaTime, jump);
+		attacker.Attack(attack);
 		jump = false;
+		attack = false;
 	}
 }
