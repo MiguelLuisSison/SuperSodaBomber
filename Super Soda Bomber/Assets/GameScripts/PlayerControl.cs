@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.Events;
 
 /*
@@ -21,15 +22,19 @@ public class PlayerControl : MonoBehaviour
 	[SerializeField] private Transform m_GroundCheck;							// A position marking where to check if the player is grounded.
 
 	const float k_GroundedRadius = .15f; // Radius of the overlap circle to determine if grounded
-    const float gracePeriod = .25f; // Time when player can jump regardless of groundcheck
+    const float gracePeriod = .5f; // Time when player can jump regardless of groundcheck
 
-    private bool m_hangJump = false;
     private float hangTime = 0f;
-	private bool m_Grounded;            // Whether or not the player is grounded.
 	private Rigidbody2D m_Rigidbody2D;
-	private bool m_FacingRight = true;  // For determining which way the player is currently facing.
 	private Vector3 m_Velocity = Vector3.zero;
 	private CheckpointScript checkScript;
+
+	private bool m_Grounded;            // Whether or not the player is grounded.
+    private bool m_hangJump = false;
+	private bool m_FacingRight = true;  // For determining which way the player is currently facing.
+
+	//animator. this handles all of the animations for the player
+	private Animator animator;
 
 	[Header("Events")]
 	[Space]
@@ -44,6 +49,23 @@ public class PlayerControl : MonoBehaviour
 	GameplayScript gameplayScript;
 	PublicScripts publicScripts;
 
+	//animation states
+	private Dictionary<string, string> ANIM = new Dictionary<string, string>(){
+		{"IDLE", "fizzy_idle"},
+		{"RUN", "fizzy_run"},
+		/*
+		{"JUMP", "fizzy_jump"},
+		{"D_JUMP", "fizzy_double_jump"},
+		{"FALL", "fizzy_fall"},
+		{"LAND", "fizzy_land"},
+		{"THROW", "fizzy_throw"},
+		{"THROW_S", "fizzy_throw_shield"},
+		{"FIRE", "fizzy_fire_gun"},
+		{"DASH", "fizzy_dash"},
+		*/
+
+	};
+
 	private void Awake()
 	{
 		m_Rigidbody2D = GetComponent<Rigidbody2D>();
@@ -55,6 +77,8 @@ public class PlayerControl : MonoBehaviour
 		gameplayScript = gameplayDebug.GetComponent<GameplayScript>();
 		publicScripts = gameplayDebug.GetComponent<PublicScripts>();
 
+		//Gets the Animator component of the player
+		animator = gameObject.GetComponent<Animator>();
 	}
 
 	private void FixedUpdate()
@@ -109,6 +133,14 @@ public class PlayerControl : MonoBehaviour
 			Flip();
 		}
 
+		// Animation Movement
+		if (move != 0){
+			ChangeAnimState(ANIM["RUN"]);
+		}
+		else{
+			ChangeAnimState(ANIM["IDLE"]);
+		}
+
 		// If the player should jump...
 		if ((m_Grounded||m_hangJump) && jump)
 		{
@@ -130,6 +162,17 @@ public class PlayerControl : MonoBehaviour
 		// Switch the way the player is labelled as facing.
 		m_FacingRight = !m_FacingRight;
 		transform.Rotate(0f,180f,0);
+	}
+
+	//responsible for changing the animation state of the player
+	private void ChangeAnimState(string name){
+		AnimatorStateInfo currentAnim = animator.GetCurrentAnimatorStateInfo(0);
+
+		//prevents the animator to play same state all the time
+		if (currentAnim.IsName(name)) return;
+		
+		animator.Play(name);
+
 	}
 
 	// triggers when player touches the checkpoint

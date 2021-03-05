@@ -25,10 +25,15 @@ Projectile
 
 public class Projectile : MonoBehaviour
 {
+    //selects what kind of projectile is it to change the properties
+    private enum Type{
+        Bomb, Pistol, Cluster, Shotgun
+    }
+    [SerializeField]
+    private Type type;
 
     //projectile attributes
     private float throwX = 5f;
-    private float throwY = 200f;
     private float spin = 200f;
     public Rigidbody2D rigid;
 
@@ -41,10 +46,50 @@ public class Projectile : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //throwing attribute
+        //gets the projectile property according to its type
+        switch(type){
+            case (Type.Bomb):
+                SetBomb();
+                break;
+
+            case (Type.Pistol):
+                SetPistol();
+                break;
+
+            case (Type.Cluster):
+                SetCluster();
+                break;
+
+            case (Type.Shotgun):
+                SetShotgun();
+                break;
+        }
+
+        //central throwing attributes
         rigid.velocity = transform.right * throwX;
-        rigid.AddForce(new Vector2(0f, throwY));
         rigid.AddTorque(spin);
+        
+
+    }
+
+    //projectile properties
+
+    void SetBomb(){
+        float throwY = 200f;
+        rigid.gravityScale = 1;
+        rigid.AddForce(new Vector2(0f, throwY));
+    }
+
+    void SetPistol(){
+        rigid.gravityScale = 0;
+    }
+
+    //empty classes (for now)
+    void SetCluster(){
+        
+    }
+
+    void SetShotgun(){
 
     }
 
