@@ -35,6 +35,7 @@ public class Projectile : MonoBehaviour
     //projectile attributes
     private float throwX = 5f;
     private float spin = 200f;
+    private bool willExplode = true;
     public Rigidbody2D rigid;
 
     //determines on what destroys the projectile
@@ -82,6 +83,7 @@ public class Projectile : MonoBehaviour
 
     void SetPistol(){
         rigid.gravityScale = 0;
+        willExplode = false;
     }
 
     //empty classes (for now)
@@ -97,10 +99,22 @@ public class Projectile : MonoBehaviour
         //detects whether if the projectile collides with the map or the enemy
         if ((layersToCollide.value & 1 << col.gameObject.layer) != 0){
             //if it collides, activate the particle effect and then destroy the Soda Bomb.
-            Instantiate(explosion, gameObject.transform.position, Quaternion.identity);
+            if(willExplode) Explode();
+
+            //if the bomb has direct contact with the enemy, damage the enemy.
+            if(col.gameObject.tag == "Enemy"){
+                var enemyScript = col.gameObject.GetComponent<Enemy>();
+                enemyScript.Damage(25);
+            }
+            Debug.Log(col.gameObject.tag);
             Destroy(gameObject);
         }
 
+    }
+
+    void Explode(){
+        //creates an explosion fx
+        Instantiate(explosion, gameObject.transform.position, Quaternion.identity);
     }
 
 }
