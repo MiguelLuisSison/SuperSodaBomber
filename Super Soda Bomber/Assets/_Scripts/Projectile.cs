@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 /*
 Projectile
@@ -16,9 +14,9 @@ Projectile
         property.
 
         Components that are needed to be flexible with:
-            Chosen Bomb/Weapon
+            Chosen Bomb/Weapon (GOOD)
             Perk
-            Explosion
+            Explosion (GOOD)
 
             Different behaviours caused by a perk (i.e. cluster bomb)
 */
@@ -49,16 +47,16 @@ public class Projectile : MonoBehaviour
     {
         //sets the projectile according to enum
         if(type == Type.Pistol){
-            s_Projectile = new Pistol(throwX, spin, rigid);
+            s_Projectile = gameObject.AddComponent<Pistol>();
         }
         else {
-            s_Projectile = new SodaBomb(throwX, spin, rigid);
+            s_Projectile = gameObject.AddComponent<SodaBomb>();
         }
     }
 
     void Start(){
         //central throwing attributes
-        s_Projectile.Set(rigid);
+        s_Projectile.Set(throwX, spin, rigid);
         rigid.velocity = transform.right * throwX;
         rigid.AddTorque(spin);
     }
@@ -85,16 +83,12 @@ public class Projectile : MonoBehaviour
 //interfaces are like templates for classes
 //because projectiles have same classes but they have different behavior
 public interface ISetProjectileProperties{
-    //required variables per class
-    float throwX { get; set; }
-    float spin { get; set; }
-    Rigidbody2D rigid { get; set; }
-
     //required function per class
-    void Set(Rigidbody2D rigid);
+    void Set(float throwX, float spin, Rigidbody2D rigid);
     void Explode(GameObject explosion, GameObject gameObject);
 }
 
+// PROJECTILE TYPES
 /*
     Soda Bomb
         A projectile that fires on a curve. It explodes
@@ -105,26 +99,11 @@ public interface ISetProjectileProperties{
 
 public class SodaBomb: MonoBehaviour, ISetProjectileProperties{
 
-    //required variables
-    public float throwX { get; set; }
-    public float spin { get; set; }
-    public Rigidbody2D rigid { get; set; }
-
     //optional variables
     public float throwY = 200f;
 
-    
-    //constructor function for the class
-    //this is equivalent to Python's __init__
-    public SodaBomb(float throwX, float spin, Rigidbody2D rigid){
-        this.throwX = throwX;
-        this.spin = spin;
-        this.rigid = rigid;
-
-    }
-
     //sets the SodaBomb's properties
-    public void Set(Rigidbody2D rigid){
+    public void Set(float throwX, float spin, Rigidbody2D rigid){
         rigid.gravityScale = 1;
         rigid.AddForce(new Vector2(0f, this.throwY));
     }
@@ -134,21 +113,16 @@ public class SodaBomb: MonoBehaviour, ISetProjectileProperties{
     }
 }
 
+/*
+    Pistol (Fizztol)
+        A projectile that fires on a straight line.
+        It attacks enemy on contact.
+*/
 
-public class Pistol: ISetProjectileProperties{
-    //required variables
-    public float throwX { get; set; }
-    public float spin { get; set; }
-    public Rigidbody2D rigid { get; set; }
-
-    public Pistol(float throwX, float spin, Rigidbody2D rigid){
-        this.throwX = throwX;
-        this.spin = spin;
-        this.rigid = rigid;
-    }
+public class Pistol: MonoBehaviour, ISetProjectileProperties{
 
     //sets the SodaBomb's properties
-    public void Set(Rigidbody2D rigid){
+    public void Set(float throwX, float spin, Rigidbody2D rigid){
         rigid.gravityScale = 0;
     }
 

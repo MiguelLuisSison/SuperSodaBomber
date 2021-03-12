@@ -23,6 +23,7 @@ public class PlayerControl : MonoBehaviour
 
 	const float k_GroundedRadius = .15f; // Radius of the overlap circle to determine if grounded
     const float gracePeriod = .5f; // Time when player can jump regardless of groundcheck
+	private float health = 100f; // Health of the player
 
     private float hangTime = 0f;
 	private Rigidbody2D m_Rigidbody2D;
