@@ -15,11 +15,18 @@ PublicScripts
 
 public class PublicScripts : MonoBehaviour
 {
-    //list of scores
+    //list of non-projectile scores
     public Dictionary<string, int> scores = new Dictionary<string, int>(){
         {"jump", 10},
         {"checkpoint", 125},
         {"fire", 10}
+    };
+
+    //list of projectile scores
+    public Dictionary<string, int> projScores = new Dictionary<string, int>(){
+        {"sodaBomb_s", 15},
+        {"sodaBomb_m", 30},
+        {"sodaBomb_l", 75}
     };
 
     //description constants
@@ -31,7 +38,16 @@ public class PublicScripts : MonoBehaviour
 
     //firing rates of the weapons (shows cooldown in secs)
     public Dictionary <string, float> fireRates = new Dictionary <string, float>(){
-        {"sodaBomb", .5f}
+        {"sodaBomb", .6f},
+        {"pistol", .45f}
+
+    };
+
+    //damage matrix for projectiles
+    public Dictionary <string, float> projDamage = new Dictionary<string, float>(){
+        {"sodaBomb_max", 50f},
+        {"sodaBomb_min", 20f}
+
     };
 
 

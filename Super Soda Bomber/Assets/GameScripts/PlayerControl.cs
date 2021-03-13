@@ -7,11 +7,8 @@ PlayerControl
 	Used to get the physics and the overall movement of the player
 	such as walking and jumping
 */
-public class PlayerControl : MonoBehaviour
+public class PlayerControl : PublicScripts
 {
-
-	//Gameplay Script
-	public GameObject gameplayDebug;
 
 	[Header("Variables")]
 	[Space]
@@ -46,10 +43,6 @@ public class PlayerControl : MonoBehaviour
 	[System.Serializable]
 	public class BoolEvent : UnityEvent<bool> {}
 
-	//private classes
-	GameplayScript gameplayScript;
-	PublicScripts publicScripts;
-
 	//animation states
 	private Dictionary<string, string> ANIM = new Dictionary<string, string>(){
 		{"IDLE", "fizzy_idle"},
@@ -73,10 +66,6 @@ public class PlayerControl : MonoBehaviour
 
 		if (OnLandEvent == null)
 			OnLandEvent = new UnityEvent();
-
-		// Gets GameplayScript component
-		gameplayScript = gameplayDebug.GetComponent<GameplayScript>();
-		publicScripts = gameplayDebug.GetComponent<PublicScripts>();
 
 		//Gets the Animator component of the player
 		animator = gameObject.GetComponent<Animator>();
@@ -153,7 +142,7 @@ public class PlayerControl : MonoBehaviour
 			hangTime = Time.time;
 
 			// Add score
-			gameplayScript.AddScore(publicScripts.scores["jump"]);
+			GameplayScript.current.AddScore(scores["jump"]);
 
 		}
 	}
@@ -170,7 +159,7 @@ public class PlayerControl : MonoBehaviour
 		AnimatorStateInfo currentAnim = animator.GetCurrentAnimatorStateInfo(0);
 
 		//prevents the animator to play same state all the time
-		if (currentAnim.IsName(name)) {return;}
+		if (currentAnim.IsName(name)) return;
 		animator.Play(name);
 
 	}
@@ -184,8 +173,8 @@ public class PlayerControl : MonoBehaviour
 			//activate these scripts if the checkpoint was not saved yet
 			if(!checkScript.isTouched){
 				checkScript.ChangeState();
-				gameplayScript.AddScore(publicScripts.scores["checkpoint"]);
-				gameplayScript.SetCheckpoint(col.transform.position, col.name);
+				GameplayScript.current.AddScore(scores["checkpoint"]);
+				GameplayScript.current.SetCheckpoint(col.transform.position, col.name);
 				StartCoroutine(checkScript.Notify());
 				Debug.Log("Checkpoint Saved!");
 			}

@@ -23,17 +23,10 @@ PlayerAttack
             Different behaviours caused by a perk (i.e. cluster bomb)
 */
 
-public class PlayerAttack : MonoBehaviour
+public class PlayerAttack : PublicScripts
 {
-    //Gameplay Debug
-    public GameObject gameplayDebug;
-
     //Attacking source of the player. This is where the projectile comes from
     public Transform attackSource;
-
-    //private classes
-    GameplayScript gameplayScript;
-    PublicScripts publicScripts;
 
     //weapon prefab (fix this to make it more flexible)
     public GameObject projectilePrefab;
@@ -45,11 +38,9 @@ public class PlayerAttack : MonoBehaviour
     void Awake()
     {
         // Gets GameplayScript components
-		gameplayScript = gameplayDebug.GetComponent<GameplayScript>();
-		publicScripts = gameplayDebug.GetComponent<PublicScripts>();
 
         //make this flexible to use
-        fireRate = publicScripts.fireRates["sodaBomb"];
+        fireRate = fireRates["sodaBomb"];
         attackTime = fireRate;
     }
 
@@ -57,13 +48,10 @@ public class PlayerAttack : MonoBehaviour
 		if (attack && attackTime <= Time.time){
             //creates the projectile
             Instantiate(projectilePrefab, attackSource.position, attackSource.rotation);
-            gameplayScript.AddScore(publicScripts.scores["fire"]);
+
+            //adds the score and updates the attack time
+            GameplayScript.current.AddScore(scores["fire"]);
             attackTime = fireRate + Time.time;
 		}
 	}
-
-    // void FixedUpdate()
-    // {
-    //     attackTime = Time.time;
-    // }
 }

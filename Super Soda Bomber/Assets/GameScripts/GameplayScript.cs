@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System;
 using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,18 +7,22 @@ using UnityEngine.SceneManagement;
 /*
 GameplayScript
     Responsible for the behavior of the 
-    whole gameplay proper such as saving,
-    loading, adding current score and stage
-    changes
+    whole gameplay proper such as:
+        Saving
+        Loading, 
+        Adding Current Score
+        Scene Changes (Game Over, Stage Complete)
+
+    and events
+
 */
 
 public class GameplayScript : PublicScripts
 {
     // Script for TestGameplay
-    // Start is called before the first frame update
 
     /*
-    Process:
+    Processes:
     When user touches the checkpoint:
         - activated save function
         - change the state of the checkpoint
@@ -29,8 +32,8 @@ public class GameplayScript : PublicScripts
         - load the scene and saved files
         - add player states
     */
-    //Config Variables
     
+    //Config Variables
     public GameObject scoreTxtObject, player, tileObject, pausePrompt;
 
     //Variables to Save
@@ -40,14 +43,19 @@ public class GameplayScript : PublicScripts
 
     private bool isPaused = false;
 
-    void Start()
-    {
+    //Removes the script dependency using a self-static variable.
+    public static GameplayScript current;
+
+    void Start(){
         Load();
+        current = this;
     }
 
     //adds score
     public void AddScore(int amount){
-        score += amount;
+        // if (e_AddScore != null){
+            score += amount;
+        // }
     }
 
     public void SetCheckpoint(Vector3 checkpointCoords, string name){

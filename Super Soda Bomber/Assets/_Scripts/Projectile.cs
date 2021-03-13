@@ -27,6 +27,8 @@ public class Projectile : MonoBehaviour
     private enum Type{
         Bomb, Pistol, Cluster, Shotgun
     }
+
+    //the selected property
     [SerializeField]
     private Type type;
 
@@ -66,13 +68,6 @@ public class Projectile : MonoBehaviour
         if ((layersToCollide.value & 1 << col.gameObject.layer) != 0){
             //if it collides, activate the particle effect and then destroy the Soda Bomb.
             if(willExplode) s_Projectile.Explode(explosion, gameObject);
-
-            //if the bomb has direct contact with the enemy, damage the enemy.
-            if(col.gameObject.tag == "Enemy"){
-                var enemyScript = col.gameObject.GetComponent<Enemy>();
-                enemyScript.Damage(25);
-            }
-            Debug.Log(col.gameObject.tag);
             Destroy(gameObject);
         }
 
@@ -97,10 +92,11 @@ public interface ISetProjectileProperties{
         This is Fizzy's stock weapon.
 */
 
-public class SodaBomb: MonoBehaviour, ISetProjectileProperties{
+public class SodaBomb: PublicScripts, ISetProjectileProperties{
 
     //optional variables
     public float throwY = 200f;
+    public float blastRadius = 1.5f;
 
     //sets the SodaBomb's properties
     public void Set(float throwX, float spin, Rigidbody2D rigid){
@@ -109,14 +105,59 @@ public class SodaBomb: MonoBehaviour, ISetProjectileProperties{
     }
 
     public void Explode(GameObject explosion, GameObject gameObject){
+        //sets a circlecast for blast damage
+        var g_Collider = gameObject.GetComponent<BoxCollider2D>();
+		Collider2D[] colliders = Physics2D.OverlapCircleAll(gameObject.transform.position, blastRadius);
+
+        if(colliders.Length != 0){
+            for(int i = 0; i< colliders.Length; ++i){
+                if(colliders[i].gameObject.tag == "Enemy"){
+                    Debug.Log("enemy!!");
+                    Debug.Log(colliders[i].Distance(g_Collider).distance);
+                    //gets the distance between the enemy and the bomb
+                    float distance = colliders[i].Distance(g_Collider).distance;
+                    var enemyScript = colliders[i].gameObject.GetComponent<Enemy>();
+                    //damage the enemy
+                    enemyScript.Damage(getDamage(Mathf.Abs(distance)));
+                    
+
+                }
+            }
+        }
+
         Instantiate(explosion, gameObject.transform.position, Quaternion.identity);
     }
+
+    //fetches the damage according to intensity
+    public float getDamage(float radius){
+        //inverts the value (lower, the better)
+        radius = blastRadius - radius;
+
+        //gets the intensity (0% - 100%)
+        float intensity = Mathf.RoundToInt((radius/blastRadius)*100);
+        Debug.Log($"intensity: {intensity}");
+        
+        if (intensity < 20) {
+            GameplayScript.current.AddScore(projScores["sodaBomb_s"]);
+            return projDamage["sodaBomb_min"];
+        }
+        else if (intensity < 75) {
+            GameplayScript.current.AddScore(projScores["sodaBomb_m"]);
+            return Mathf.RoundToInt(projDamage["sodaBomb_max"]/2);
+        }
+
+        //if distance is <= 75% intensity (direct hit)
+        GameplayScript.current.AddScore(projScores["sodaBomb_l"]);
+        return projDamage["sodaBomb_max"];
+
+    }
 }
+
 
 /*
     Pistol (Fizztol)
         A projectile that fires on a straight line.
-        It attacks enemy on contact.
+        It attacks enemy on contact and doesn't explode.
 */
 
 public class Pistol: MonoBehaviour, ISetProjectileProperties{

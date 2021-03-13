@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 199592556095638514}
   m_Layer: 0
   m_Name: Soda Bomb
-  m_TagString: Untagged
+  m_TagString: Projectile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -143,6 +143,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 652d676bc4a62b94a8d4f3ec1e5787c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  type: 0
   rigid: {fileID: 6203182048443516712}
   layersToCollide:
     serializedVersion: 2
