@@ -33,9 +33,11 @@ public class Projectile : MonoBehaviour
     private Type type;
 
     //projectile attributes
-    private float throwX = 5f;
+    private float throwX = 3f;
+    private float throwMovingMultiplier = 2.5f;
     private float spin = 200f;
     private bool willExplode = true;
+    private bool playerMoving;
     public Rigidbody2D rigid;
     private ISetProjectileProperties s_Projectile;
 
@@ -50,6 +52,7 @@ public class Projectile : MonoBehaviour
         //sets the projectile according to enum
         if(type == Type.Pistol){
             s_Projectile = gameObject.AddComponent<Pistol>();
+            willExplode = false;
         }
         else {
             s_Projectile = gameObject.AddComponent<SodaBomb>();
@@ -59,7 +62,11 @@ public class Projectile : MonoBehaviour
     void Start(){
         //central throwing attributes
         s_Projectile.Set(throwX, spin, rigid);
-        rigid.velocity = transform.right * throwX;
+
+        //set velocity
+        //if player is moving, multiply the throwMoving factor
+        Debug.Log(playerMoving);
+        rigid.velocity = transform.right * throwX * (playerMoving ? throwMovingMultiplier : 1);
         rigid.AddTorque(spin);
     }
 
@@ -71,6 +78,10 @@ public class Projectile : MonoBehaviour
             Destroy(gameObject);
         }
 
+    }
+
+    public void SetPlayerMoving(bool moving){
+        playerMoving = moving;
     }
 
 }
@@ -95,7 +106,7 @@ public interface ISetProjectileProperties{
 public class SodaBomb: PublicScripts, ISetProjectileProperties{
 
     //optional variables
-    public float throwY = 200f;
+    public float throwY = 250f;
     public float blastRadius = 1.5f;
 
     //sets the SodaBomb's properties
@@ -112,8 +123,6 @@ public class SodaBomb: PublicScripts, ISetProjectileProperties{
         if(colliders.Length != 0){
             for(int i = 0; i< colliders.Length; ++i){
                 if(colliders[i].gameObject.tag == "Enemy"){
-                    Debug.Log("enemy!!");
-                    Debug.Log(colliders[i].Distance(g_Collider).distance);
                     //gets the distance between the enemy and the bomb
                     float distance = colliders[i].Distance(g_Collider).distance;
                     var enemyScript = colliders[i].gameObject.GetComponent<Enemy>();
@@ -135,7 +144,6 @@ public class SodaBomb: PublicScripts, ISetProjectileProperties{
 
         //gets the intensity (0% - 100%)
         float intensity = Mathf.RoundToInt((radius/blastRadius)*100);
-        Debug.Log($"intensity: {intensity}");
         
         if (intensity < 20) {
             GameplayScript.current.AddScore(projScores["sodaBomb_s"]);

@@ -44,10 +44,12 @@ public class PlayerAttack : PublicScripts
         attackTime = fireRate;
     }
 
-    public void Attack(bool attack){
+    public void Attack(bool isMoving, bool attack){
 		if (attack && attackTime <= Time.time){
             //creates the projectile
-            Instantiate(projectilePrefab, attackSource.position, attackSource.rotation);
+            var projectile = Instantiate(projectilePrefab, attackSource.position, attackSource.rotation);
+            var projectileScript = projectile.GetComponent<Projectile>();
+            projectileScript.SetPlayerMoving(isMoving);
 
             //adds the score and updates the attack time
             GameplayScript.current.AddScore(scores["fire"]);

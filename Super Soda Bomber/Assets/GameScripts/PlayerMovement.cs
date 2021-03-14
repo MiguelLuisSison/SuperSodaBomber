@@ -61,7 +61,7 @@ public class PlayerMovement : MonoBehaviour {
 	{
 		// interprets the controls to the script
 		controller.Move(horizontalMove * Time.fixedDeltaTime, jump);
-		attacker.Attack(attack);
+		attacker.Attack(horizontalMove != 0, attack);
 		jump = false;
 		attack = false;
 	}

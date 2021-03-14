@@ -20,7 +20,7 @@ public class PlayerControl : PublicScripts
 
 	const float k_GroundedRadius = .15f; // Radius of the overlap circle to determine if grounded
     const float gracePeriod = .5f; // Time when player can jump regardless of groundcheck
-	private float health = 100f; // Health of the player
+	private int health = 3; // Health of the player
 
     private float hangTime = 0f;
 	private Rigidbody2D m_Rigidbody2D;
@@ -31,8 +31,7 @@ public class PlayerControl : PublicScripts
     private bool m_hangJump = false;
 	private bool m_FacingRight = true;  // For determining which way the player is currently facing.
 
-	//animator. this handles all of the animations for the player
-	private Animator animator;
+	private PlayerAnimation animator = PlayerAnimation.current;
 
 	[Header("Events")]
 	[Space]
@@ -43,36 +42,18 @@ public class PlayerControl : PublicScripts
 	[System.Serializable]
 	public class BoolEvent : UnityEvent<bool> {}
 
-	//animation states
-	private Dictionary<string, string> ANIM = new Dictionary<string, string>(){
-		{"IDLE", "fizzy_idle"},
-		{"RUN", "fizzy_run"},
-		/*
-		{"JUMP", "fizzy_jump"},
-		{"D_JUMP", "fizzy_double_jump"},
-		{"FALL", "fizzy_fall"},
-		{"LAND", "fizzy_land"},
-		{"THROW", "fizzy_throw"},
-		{"THROW_S", "fizzy_throw_shield"},
-		{"FIRE", "fizzy_fire_gun"},
-		{"DASH", "fizzy_dash"},
-		*/
-
-	};
-
 	private void Awake()
 	{
 		m_Rigidbody2D = GetComponent<Rigidbody2D>();
 
 		if (OnLandEvent == null)
 			OnLandEvent = new UnityEvent();
-
-		//Gets the Animator component of the player
-		animator = gameObject.GetComponent<Animator>();
 	}
 
 	private void FixedUpdate()
 	{
+		//Player Animation script
+		animator = PlayerAnimation.current;
 		bool wasGrounded = m_Grounded;
 		m_Grounded = false;
 
@@ -123,13 +104,6 @@ public class PlayerControl : PublicScripts
 			Flip();
 		}
 
-		// Animation Movement
-		if (move != 0){
-			ChangeAnimState(ANIM["RUN"]);
-		}
-		else{
-			ChangeAnimState(ANIM["IDLE"]);
-		}
 
 		// If the player should jump...
 		if ((m_Grounded||m_hangJump) && jump)
@@ -145,6 +119,27 @@ public class PlayerControl : PublicScripts
 			GameplayScript.current.AddScore(scores["jump"]);
 
 		}
+
+		ManageAnim(move);
+	}
+
+	private void ManageAnim(float move){
+		if (m_Rigidbody2D.velocity.y > 0 && !m_Grounded){
+			animator.ChangeAnimState("JUMP");
+			Debug.Log("jumping");
+		}
+		else if(m_Rigidbody2D.velocity.y < 0 && !m_Grounded){
+			animator.ChangeAnimState("FALL");
+			Debug.Log("falling");
+
+		}
+		else if (move != 0 && m_Grounded){
+			animator.ChangeAnimState("RUN");
+		}
+		else if (m_Grounded){
+			animator.ChangeAnimState("IDLE");
+		}
+
 	}
 
 	private void Flip()
@@ -154,15 +149,6 @@ public class PlayerControl : PublicScripts
 		transform.Rotate(0f,180f,0);
 	}
 
-	//responsible for changing the animation state of the player
-	private void ChangeAnimState(string name){
-		AnimatorStateInfo currentAnim = animator.GetCurrentAnimatorStateInfo(0);
-
-		//prevents the animator to play same state all the time
-		if (currentAnim.IsName(name)) return;
-		animator.Play(name);
-
-	}
 
 	// triggers when player touches the checkpoint
     private void OnTriggerEnter2D(Collider2D col){
