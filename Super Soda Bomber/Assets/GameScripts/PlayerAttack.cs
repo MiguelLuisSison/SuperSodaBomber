@@ -18,9 +18,9 @@ PlayerAttack
         Components that are needed to be flexible with:
             Chosen Bomb/Weapon
             Perk
-            Explosion
+            Explosion (OK)
 
-            Different behaviours caused by a perk (i.e. cluster bomb)
+            Different behaviours caused by a perk (i.e. cluster bomb) (OK)
 */
 
 public class PlayerAttack : PublicScripts
@@ -31,29 +31,61 @@ public class PlayerAttack : PublicScripts
     //weapon prefab (fix this to make it more flexible)
     public GameObject projectilePrefab;
 
+    //firing properties
     private float fireRate;
     private float attackTime;
+
+    private GameObject projectile;
+    private ProjectileManager projectileScript;
+    private bool isCreated;             //only applies to detonation projectiles. otherwise, it will stay false
+    private explosionType explodeType;  //explosion type of the projectile. Located at PublicScripts.cs
+
+    //asynchronous work
+    private Coroutine coro;
 
     // Start is called before the first frame update
     void Awake()
     {
-        // Gets GameplayScript components
-
-        //make this flexible to use
-        fireRate = fireRates["sodaBomb"];
-        attackTime = fireRate;
+        isCreated = false;
+        attackTime = 0;
     }
 
     public void Attack(bool isMoving, bool attack){
-		if (attack && attackTime <= Time.time){
+        //creates a projectile clone
+		if (attack && (attackTime <= Time.time && !isCreated)){
             //creates the projectile
-            var projectile = Instantiate(projectilePrefab, attackSource.position, attackSource.rotation);
-            var projectileScript = projectile.GetComponent<Projectile>();
+            projectile = Instantiate(projectilePrefab, attackSource.position, attackSource.rotation);
+            projectileScript = projectile.GetComponent<ProjectileManager>();
+
+            //updates and fetches projectile's data
             projectileScript.SetPlayerMoving(isMoving);
+            fireRate = fireRates[projectileScript.GetPName()];
+            explodeType = projectileScript.GetExplosionType();
 
             //adds the score and updates the attack time
             GameplayScript.current.AddScore(scores["fire"]);
             attackTime = fireRate + Time.time;
+
+            //start waiting if it's a detonation projectile
+            if (explodeType == explosionType.Detonate){
+                isCreated = true;
+                //activate the waiting
+                coro = StartCoroutine(WaitUntilDetonate());
+            }
 		}
+
+        //detonates the projectile using the button
+        else if (attack && projectileScript != null){
+            StopCoroutine(coro);
+            projectileScript.DetonateProjectile();
+            isCreated = false;
+        }
 	}
+
+    //waits for few seconds and then automatically detonate projectile
+    IEnumerator WaitUntilDetonate(){
+        yield return new WaitForSeconds(t_clusterDetonate);
+        projectileScript.DetonateProjectile();
+        isCreated = false;
+    }
 }

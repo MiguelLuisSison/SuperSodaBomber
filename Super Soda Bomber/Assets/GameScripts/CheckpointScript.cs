@@ -8,7 +8,7 @@ CheckpointScript
     Responsible for the behaviors of the checkpoint
 */
 
-public class CheckpointScript : MonoBehaviour
+public class CheckpointScript : PublicScripts
 {
 
     public bool isTouched; //used to verify if the checkpoint has been already triggered
@@ -35,7 +35,7 @@ public class CheckpointScript : MonoBehaviour
     public IEnumerator Notify(){
         var notifyObj = Instantiate(notifyPrefab, UILayer.transform) as GameObject;
         var notification = notifyObj.GetComponent<Text>();
-        notification.text = "Checkpoint Saved!";
+        notification.text = descriptions["checkSave"];
         yield return new WaitForSeconds(notifyDuration);
         Destroy(notifyObj);
         

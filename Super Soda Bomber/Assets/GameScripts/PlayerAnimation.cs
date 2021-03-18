@@ -43,4 +43,11 @@ public class PlayerAnimation : MonoBehaviour
 		animator.Play(ANIM[name]);
 
 	}
+
+	public void FreezeFrame(){
+		animator.speed = 0;
+	}
+	public void UnfreezeFrame(){
+		animator.speed = 1;
+	}
 }

@@ -33,6 +33,9 @@ public class PlayerControl : PublicScripts
 
 	private PlayerAnimation animator = PlayerAnimation.current;
 
+	//this will be used for solely on jump anticipation
+	public DetectButtonPress buttonDetector;
+
 	[Header("Events")]
 	[Space]
 
@@ -108,7 +111,6 @@ public class PlayerControl : PublicScripts
 		// If the player should jump...
 		if ((m_Grounded||m_hangJump) && jump)
 		{
-			Debug.Log(m_hangJump? "Hangjumped" : "Jumped");
 			// Add a vertical force to the player.
 			m_Rigidbody2D.AddForce(new Vector2(0f, m_hangJump? m_JumpForce*1.25f : m_JumpForce));
 			m_Grounded = false;
@@ -124,14 +126,19 @@ public class PlayerControl : PublicScripts
 	}
 
 	private void ManageAnim(float move){
+		if (buttonDetector.getPressedStatus()){
+			animator.ChangeAnimState("JUMP");
+			animator.FreezeFrame();
+			return;
+		}
+		else 
+			animator.UnfreezeFrame();
+
 		if (m_Rigidbody2D.velocity.y > 0 && !m_Grounded){
 			animator.ChangeAnimState("JUMP");
-			Debug.Log("jumping");
 		}
 		else if(m_Rigidbody2D.velocity.y < 0 && !m_Grounded){
 			animator.ChangeAnimState("FALL");
-			Debug.Log("falling");
-
 		}
 		else if (move != 0 && m_Grounded){
 			animator.ChangeAnimState("RUN");
@@ -139,7 +146,6 @@ public class PlayerControl : PublicScripts
 		else if (m_Grounded){
 			animator.ChangeAnimState("IDLE");
 		}
-
 	}
 
 	private void Flip()

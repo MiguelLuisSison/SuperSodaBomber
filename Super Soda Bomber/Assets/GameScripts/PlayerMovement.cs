@@ -30,7 +30,9 @@ public class PlayerMovement : MonoBehaviour {
 	public void PressAttack(){
 		attack = true;
 	}
-	
+
+
+
 	void Update () {
 
 		//movement

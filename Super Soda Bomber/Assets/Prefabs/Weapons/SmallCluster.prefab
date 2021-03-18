@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 198502249970297684}
   - component: {fileID: 199592556095638514}
   m_Layer: 12
-  m_Name: Fizztol
+  m_Name: SmallCluster
   m_TagString: Projectile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -96,7 +96,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 5
   m_LinearDrag: 0
   m_AngularDrag: 0.1
   m_GravityScale: 1
@@ -115,7 +115,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0.0010442734, y: -0.0073150396}
@@ -143,12 +143,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 652d676bc4a62b94a8d4f3ec1e5787c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 1
+  savePath: 
+  type: 3
   rigid: {fileID: 6203182048443516712}
   layersToCollide:
     serializedVersion: 2
     m_Bits: 2560
-  explosion: {fileID: 0}
+  explosion: {fileID: 6199953446600296795, guid: bc5afa4f53c74dd4ea463d49229475cc,
+    type: 3}
 --- !u!198 &198502249970297684
 ParticleSystem:
   m_ObjectHideFlags: 0
