@@ -44,13 +44,15 @@ public class Projectile: PublicScripts{
     protected bool isExplosive = true;      //provide blast damage
     public explosionType selectedType;      //selected explosiontype
     public bool onDetonation = false;       //explode by the player rather on contact
+    public float detonateTime = 0f;         //time until the projectile explodes by itself
+
 
     //moving player mechanic 
     //adds a multiplier to throwX when the player is moving
     protected float throwingMultiplier = 2.5f;
     protected bool applyMovingMechanic = true;
 
-    public void Init(Rigidbody2D rigid, bool isMoving){
+    public virtual void Init(Rigidbody2D rigid, bool isMoving){
         rigid.gravityScale = gravity;
         rigid.AddForce(new Vector2(0f, throwY));
         rigid.AddTorque(spin);
@@ -179,6 +181,8 @@ public class BigCluster: Projectile{
         spin = 10f;
         p_name = "bigCluster";
         onDetonation = true;
+        detonateTime = 2f;
+
     }
 
     public override void Explode(Collider2D col, GameObject explosion){
@@ -204,6 +208,7 @@ public class BigCluster: Projectile{
 */
 
 public class SmallCluster: Projectile{
+
     
     void Awake(){
         p_name = "smallCluster";
@@ -212,5 +217,45 @@ public class SmallCluster: Projectile{
         throwY = UnityEngine.Random.Range(-100,100);
         blastRadius = 1.5f;
         applyMovingMechanic = false;
+        detonateTime = 3f;
+    }
+}
+
+/* 
+    Shotgun (Sfizz)
+        Fires short-ranged scattered pellets.
+        Only used to spawn its pellets and then destroy itself
+*/
+
+public class Shotgun: Projectile{
+
+    private int pellets = 8;
+
+    void Awake(){
+        selectedType = explosionType.Instant;
+    }
+
+    public override void Explode(Collider2D col, GameObject explosion){
+        for(int i = 0; i < pellets; ++i){
+            Instantiate(explosion, gameObject.transform.position, Quaternion.identity);
+        }
+    }
+}
+
+/*
+    Shotgun Pellet (Sfizz)
+        Small projectiles that inflict large damage the closer it hits the enemy
+        It has a short reach.
+*/
+
+public class Pellet: Projectile{
+    private float distance = 0f;
+
+    void Awake(){
+        selectedType = explosionType.Delay;
+        throwY = UnityEngine.Random.Range(-50f, 50f);
+        gravity = 0;
+        isExplosive = false;
+        detonateTime = .5f;
     }
 }

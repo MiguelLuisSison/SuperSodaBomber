@@ -71,13 +71,9 @@ public class PublicScripts : MonoBehaviour
     public enum explosionType{
         Contact = 0,        //collision triggers explosion (default)
         Detonate,           //player or time triggers explosion
-        Delay               //time triggers explosion
+        Delay,              //time triggers explosion
+        Instant             //instantly explodes
     }
-
-    //grace period until cluster bomb automatically detonates itself
-    protected float t_clusterDetonate = 2f;
-    protected float t_clusterExplode = 3f;
-
 
     [HideInInspector]
     public string savePath;

@@ -69,8 +69,6 @@ public class PlayerAttack : PublicScripts
             //start waiting if it's a detonation projectile
             if (explodeType == explosionType.Detonate){
                 isCreated = true;
-                //activate the waiting
-                coro = StartCoroutine(WaitUntilDetonate());
             }
 		}
 
@@ -82,10 +80,4 @@ public class PlayerAttack : PublicScripts
         }
 	}
 
-    //waits for few seconds and then automatically detonate projectile
-    IEnumerator WaitUntilDetonate(){
-        yield return new WaitForSeconds(t_clusterDetonate);
-        projectileScript.DetonateProjectile();
-        isCreated = false;
-    }
 }
