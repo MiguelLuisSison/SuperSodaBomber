@@ -11,13 +11,13 @@ Projectile
 public class ProjectileManager : PublicScripts
 {
     //selects what kind of projectile is it to change the properties
-    private enum Type{
+    [HideInInspector]
+    public enum Type{
         Bomb, Pistol, Cluster, smallCluster, Shotgun, pellet
     }
 
     //the selected property
-    [SerializeField]
-    private Type type;
+    public Type type;
 
     //projectile attributes
     private bool playerMoving;          //is the player fires while moving
@@ -58,14 +58,9 @@ public class ProjectileManager : PublicScripts
                 s_Projectile = gameObject.AddComponent<SodaBomb>();
                 break;
         }
-    }
-
-    void Start(){
-        //central throwing attributes
-        s_Projectile.Init(rigid, playerMoving);
+        //activates delayed detonation for some projectiles
         explosionType explodeType = GetExplosionType();
 
-        //activates delayed detonation for some projectiles
         if (explodeType == explosionType.Delay ||
             explodeType == explosionType.Detonate)
                 coro = StartCoroutine(WaitUntilDetonate());
@@ -73,6 +68,11 @@ public class ProjectileManager : PublicScripts
         //instantly explode this one because why not
         else if (explodeType == explosionType.Instant)
             ExplodeProjectile();
+    }
+
+    void Start(){
+        //central throwing attributes
+        s_Projectile.Init(rigid, playerMoving);
     }
 
     void OnTriggerEnter2D(Collider2D col){
@@ -122,4 +122,7 @@ public class ProjectileManager : PublicScripts
         return s_Projectile.detonateTime;
     }
 
+    public Type GetProjType(){
+        return type;
+    }
 }
