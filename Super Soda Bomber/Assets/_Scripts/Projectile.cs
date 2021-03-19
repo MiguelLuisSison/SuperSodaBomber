@@ -41,7 +41,7 @@ public class Projectile: PublicScripts{
     
     //explosion attributes
     protected float blastRadius = 2.5f;
-    protected bool isExplosive = true;      //provide blast damage
+    protected bool isExplosive = true;      //provide blast damage + explosion fx
     public explosionType selectedType;      //selected explosiontype
     public bool onDetonation = false;       //explode by the player rather on contact
     public float detonateTime = 0f;         //time until the projectile explodes by itself
@@ -265,7 +265,6 @@ public class Pellet: Projectile{
         throwY = UnityEngine.Random.Range(-35f, 50f);
         throwX += 1.5f + UnityEngine.Random.Range(-.75f, 1.2f);
         gravity = 0;
-        isExplosive = false;
         applyMovingMechanic = false;
         oldDistance = gameObject.transform.position;
     }
@@ -273,7 +272,7 @@ public class Pellet: Projectile{
 
     public override void Explode(Collider2D col = null, GameObject explosion = null)
     {
-        if (col != null && col.gameObject.tag == "Enemy" && !isExplosive){
+        if (col != null && col.gameObject.tag == "Enemy"){
             newDistance = gameObject.transform.position;
             var enemyScript = col.gameObject.GetComponent<Enemy>();
 
@@ -288,10 +287,15 @@ public class Pellet: Projectile{
                 enemyScript.Damage(25);           
             }
         }
+
+        //explosion fx
+        if (explosion != null){
+            Instantiate(explosion, gameObject.transform.position, gameObject.transform.rotation);
+        }
     }
 
     void Update(){
-        //updates the distance. if it exceeds the max distance, it will despawn
+        //updates the distance. if it exceeds the max distance, despawn
         distance = GetDistance(gameObject.transform.position);
         if (distance >= maxDistance)
             Destroy(gameObject);
