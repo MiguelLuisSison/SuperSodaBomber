@@ -21,7 +21,7 @@ using System;
 */
 
 //main class. all projectiles will inhertit this class
-public class Projectile: PublicScripts{
+public abstract class Projectile: PublicScripts{
 
     /*it turns out that using "protected" keyword can be used
     by the class itself and by the class that inherits it.

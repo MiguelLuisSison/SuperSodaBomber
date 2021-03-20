@@ -126,13 +126,10 @@ public class PlayerControl : PublicScripts
 	}
 
 	private void ManageAnim(float move){
-		if (buttonDetector.getPressedStatus()){
-			animator.ChangeAnimState("JUMP");
-			animator.FreezeFrame();
+		if (buttonDetector.getPressedStatus() && m_Grounded){
+			animator.ChangeAnimState("READY_JUMP");
 			return;
 		}
-		else 
-			animator.UnfreezeFrame();
 
 		if (m_Rigidbody2D.velocity.y > 0 && !m_Grounded){
 			animator.ChangeAnimState("JUMP");

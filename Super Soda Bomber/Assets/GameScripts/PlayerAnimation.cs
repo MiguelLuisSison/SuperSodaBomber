@@ -8,6 +8,7 @@ public class PlayerAnimation : MonoBehaviour
 	private Dictionary<string, string> ANIM = new Dictionary<string, string>(){
 		{"IDLE", "fizzy_idle"},
 		{"RUN", "fizzy_run"},
+		{"READY_JUMP", "fizzy_readyJump"},
 		{"JUMP", "fizzy_jump"},
 		{"FALL", "fizzy_fall"},
 		/*
@@ -42,12 +43,5 @@ public class PlayerAnimation : MonoBehaviour
 		if (currentAnim.IsName(ANIM[name])) return;
 		animator.Play(ANIM[name]);
 
-	}
-
-	public void FreezeFrame(){
-		animator.speed = 0;
-	}
-	public void UnfreezeFrame(){
-		animator.speed = 1;
 	}
 }
