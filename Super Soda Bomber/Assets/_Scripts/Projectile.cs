@@ -41,7 +41,7 @@ public class Projectile: PublicScripts{
     
     //explosion attributes
     protected float blastRadius = 2.5f;
-    protected bool isExplosive = true;      //provide blast damage
+    protected bool isExplosive = true;      //provide blast damage + explosion fx
     public explosionType selectedType;      //selected explosiontype
     public bool onDetonation = false;       //explode by the player rather on contact
     public float detonateTime = 0f;         //time until the projectile explodes by itself
@@ -230,14 +230,18 @@ public class SmallCluster: Projectile{
 public class Shotgun: Projectile{
 
     private int pellets = 8;
+    private Vector3 attackSource;
 
     void Awake(){
+        p_name = "shotgun";
         selectedType = explosionType.Instant;
+        //lowers the y-value for attack source of the pellets
+        // attackSource = gameObject.transform.position + new Vector3(.2f, -.45f, 0f);
     }
 
     public override void Explode(Collider2D col, GameObject explosion){
         for(int i = 0; i < pellets; ++i){
-            Instantiate(explosion, gameObject.transform.position, Quaternion.identity);
+            Instantiate(explosion, gameObject.transform.position, gameObject.transform.rotation);
         }
     }
 }
@@ -250,12 +254,58 @@ public class Shotgun: Projectile{
 
 public class Pellet: Projectile{
     private float distance = 0f;
+    private float maxDistance = 5f;
+    private Vector3 oldDistance;
+    private Vector3 newDistance;
+
 
     void Awake(){
-        selectedType = explosionType.Delay;
-        throwY = UnityEngine.Random.Range(-50f, 50f);
+        p_name = "shotgun";
+        //adds randomized x and y properties
+        throwY = UnityEngine.Random.Range(-35f, 50f);
+        throwX += 1.5f + UnityEngine.Random.Range(-.75f, 1.2f);
         gravity = 0;
-        isExplosive = false;
-        detonateTime = .5f;
+        applyMovingMechanic = false;
+        oldDistance = gameObject.transform.position;
     }
+
+
+    public override void Explode(Collider2D col = null, GameObject explosion = null)
+    {
+        if (col != null && col.gameObject.tag == "Enemy"){
+            newDistance = gameObject.transform.position;
+            var enemyScript = col.gameObject.GetComponent<Enemy>();
+
+            //gets the distance, damage it and adds the score
+            try{
+                GameplayScript.current.AddScore(projScores[p_name]);
+                enemyScript.Damage(projDamage[p_name]);            
+            }
+
+            catch (KeyNotFoundException){
+                Debug.LogError($"Key '{p_name}' cannot be found at the PublicScripts.cs.");
+                enemyScript.Damage(25);           
+            }
+        }
+
+        //explosion fx
+        if (explosion != null){
+            Instantiate(explosion, gameObject.transform.position, gameObject.transform.rotation);
+        }
+    }
+
+    void Update(){
+        //updates the distance. if it exceeds the max distance, despawn
+        distance = GetDistance(gameObject.transform.position);
+        if (distance >= maxDistance)
+            Destroy(gameObject);
+        newDistance = gameObject.transform.position;
+
+    }
+
+    float GetDistance(Vector3 newDistance){
+        Vector3 gap = oldDistance - newDistance;
+        return gap.sqrMagnitude;
+    }
+    
 }

@@ -27,6 +27,7 @@ public class PlayerAttack : PublicScripts
 {
     //Attacking source of the player. This is where the projectile comes from
     public Transform attackSource;
+    public Transform attackHandSource;
 
     //weapon prefab (fix this to make it more flexible)
     public GameObject projectilePrefab;
@@ -51,10 +52,18 @@ public class PlayerAttack : PublicScripts
     }
 
     public void Attack(bool isMoving, bool attack){
+
         //creates a projectile clone
 		if (attack && (attackTime <= Time.time && !isCreated)){
+            //set the shotgun location to attackhandsource
+                if (DetermineType(projectilePrefab) == ProjectileManager.Type.Shotgun)
+                    projectile = Instantiate(projectilePrefab, attackHandSource.position, 
+                    attackHandSource.rotation);
+                else
+                    projectile = Instantiate(projectilePrefab, attackSource.position, 
+                    attackSource.rotation);
+
             //creates the projectile
-            projectile = Instantiate(projectilePrefab, attackSource.position, attackSource.rotation);
             projectileScript = projectile.GetComponent<ProjectileManager>();
 
             //updates and fetches projectile's data
@@ -68,16 +77,26 @@ public class PlayerAttack : PublicScripts
 
             //start waiting if it's a detonation projectile
             if (explodeType == explosionType.Detonate){
+                coro = projectileScript.coro;
                 isCreated = true;
             }
 		}
 
-        //detonates the projectile using the button
-        else if (attack && projectileScript != null){
+        //detonate the projectile using the button
+        else if (attack && projectileScript != null && isCreated){
             StopCoroutine(coro);
             projectileScript.DetonateProjectile();
             isCreated = false;
         }
+
+        //if the projectile exploded on its own
+        else if (projectileScript == null && isCreated){
+            isCreated = false;
+        }
 	}
 
+    ProjectileManager.Type DetermineType(GameObject prefab){
+        ProjectileManager prefabScript = prefab.GetComponent<ProjectileManager>();
+        return prefabScript.type;
+    }
 }

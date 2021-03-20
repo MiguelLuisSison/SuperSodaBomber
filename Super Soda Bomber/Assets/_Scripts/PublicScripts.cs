@@ -36,6 +36,7 @@ public class PublicScripts : MonoBehaviour
         {"smallCluster_s", 15},
         {"smallCluster_m", 30},
         {"smallCluster_l", 75},
+        {"shotgun", 5}
     };
 
     //description constants
@@ -49,8 +50,9 @@ public class PublicScripts : MonoBehaviour
     //firing rates of the weapons (shows cooldown in secs)
     protected Dictionary <string, float> fireRates = new Dictionary <string, float>(){
         {"sodaBomb", .6f},
-        {"pistol", .45f},
-        {"bigCluster", 1.2f}
+        {"pistol", .4f},
+        {"bigCluster", 1.2f},
+        {"shotgun", .8f}
 
     };
 
@@ -63,7 +65,8 @@ public class PublicScripts : MonoBehaviour
         {"sodaBomb_max", 50f},
         {"sodaBomb_min", 20f},
         {"smallCluster_max", 30f},
-        {"smallCluster_min", 10f}
+        {"smallCluster_min", 10f},
+        {"shotgun", 15f}
 
     };
 
