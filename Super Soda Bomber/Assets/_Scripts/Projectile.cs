@@ -202,7 +202,7 @@ public class BigCluster: Projectile{
 }
 
 /*
-    Small Cluster Bomb (Cannade Phase 2)
+    Small Cluster Bomb (Cannade Phase 2) (internal)
         Small bomb that spawns in a small group from the Cannade Phase 1.
         It provides a small blast radius, damage and explodes in set time.
 */
@@ -247,7 +247,7 @@ public class Shotgun: Projectile{
 }
 
 /*
-    Shotgun Pellet (Sfizz)
+    Shotgun Pellet (Sfizz) (internal)
         Small projectiles that inflict large damage the closer it hits the enemy
         It has a short reach.
 */
