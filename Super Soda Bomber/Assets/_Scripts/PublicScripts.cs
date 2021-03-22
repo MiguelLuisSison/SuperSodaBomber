@@ -50,8 +50,8 @@ public class PublicScripts : MonoBehaviour
     //firing rates of the weapons (shows cooldown in secs)
     protected Dictionary <string, float> fireRates = new Dictionary <string, float>(){
         {"sodaBomb", .6f},
-        {"pistol", .4f},
-        {"bigCluster", 1.2f},
+        {"fizztol", .4f},
+        {"cannade", 1.2f},
         {"shotgun", .8f}
 
     };

@@ -447,8 +447,7 @@ MonoBehaviour:
   savePath: 
   attackSource: {fileID: 266886288}
   attackHandSource: {fileID: 1926458545}
-  projectilePrefab: {fileID: 6203182048443516713, guid: 09872e166ce9a9a4bbf25995a5c991a0,
-    type: 3}
+  projectileName: 
 --- !u!70 &89766937
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

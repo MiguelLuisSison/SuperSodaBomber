@@ -36,7 +36,8 @@ public class ProjectileManager : PublicScripts
     void Awake()
     {
         //sets the projectile according to enum
-        switch (type){
+        
+        /*switch (type){
             case Type.Pistol:
                 s_Projectile = gameObject.AddComponent<Fizztol>();
                 break;
@@ -57,7 +58,8 @@ public class ProjectileManager : PublicScripts
             default:
                 s_Projectile = gameObject.AddComponent<SodaBomb>();
                 break;
-        }
+        }*/
+        s_Projectile = ProjectileProcessor.ConfigureComponent(gameObject);
         //activates delayed detonation for some projectiles
         explosionType explodeType = GetExplosionType();
 
@@ -87,19 +89,19 @@ public class ProjectileManager : PublicScripts
     public IEnumerator WaitUntilDetonate(){
         //sets up waiting time
         float waitingTime = GetDetonateTime();
-        if (type == Type.smallCluster)
-            waitingTime += UnityEngine.Random.Range(0f, .25f);
 
         //waits for a short amount of time before exploding/despawning it.
         yield return new WaitForSeconds(waitingTime);
         DetonateProjectile();
     }
 
-    //explodes the projectile without the use of colliders
+    /// <summary>
+    /// Explodes the projectile without the use of colliders
+    /// </summary>
     public void DetonateProjectile(){
         ExplodeProjectile();
     }
-
+    
     public void ExplodeProjectile(Collider2D col = null){
         s_Projectile.Explode(col, explosion);
         Destroy(gameObject);
@@ -114,7 +116,7 @@ public class ProjectileManager : PublicScripts
         return s_Projectile.selectedType;
     }
 
-    public string GetPName(){
+    public string GetName(){
         return s_Projectile.p_name;
     }
 

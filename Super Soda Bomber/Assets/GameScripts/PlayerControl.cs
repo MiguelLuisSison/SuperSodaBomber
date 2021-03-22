@@ -66,7 +66,6 @@ public class PlayerControl : PublicScripts
 
         //add hangtime to jump
         if (colliders.Length == 0 && Time.time < hangTime && !m_hangJump){
-
             m_hangJump = true;
             m_Grounded = true;
             if (!wasGrounded)
@@ -121,7 +120,6 @@ public class PlayerControl : PublicScripts
 			GameplayScript.current.AddScore(scores["jump"]);
 
 		}
-
 		ManageAnim(move);
 	}
 
