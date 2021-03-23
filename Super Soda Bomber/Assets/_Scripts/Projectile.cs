@@ -139,18 +139,20 @@ public abstract class Projectile: PublicScripts{
 
 //PROJECTILE TYPES
 
-/// <summary>
-/// A projectile that fires on a curve. It explodes on contact.
-/// This is Fizzy's stock weapon.
-/// </summary>
+/*
+    Soda Bomb
+        A projectile that fires on a curve. It explodes on contact.
+        This is Fizzy's stock weapon.
+*/
 
 //Default values of Projectile is SodaBomb
 public class SodaBomb: Projectile{}
 
-/// <summary>
-///  A projectile that fires on a straight line.
-///  It attacks enemy on contact and doesn't explode.
-/// </summary>
+/*
+    Fizztol
+        A projectile that fires on a straight line.
+        It attacks enemy on contact and doesn't explode.
+*/
 
 public class Fizztol: Projectile{
 
@@ -167,11 +169,12 @@ public class Fizztol: Projectile{
     }
 }
 
-/// <summary>
-/// A projectile that fires on a curve. When detonate 
-/// or waited on several seconds, it will let out
-/// small group of cluster bomb
-/// </summary>
+/*
+    Cannad
+        A projectile that fires on a curve. When detonate 
+        or waited within several seconds, it will let out
+        a small group of cluster bombs
+*/
 
 public class Cannade: Projectile{
 
@@ -201,10 +204,11 @@ public class Cannade: Projectile{
     }
 }
 
-/// <summary>
-/// Small bomb that spawns in a small group from the Cannade Phase 1.
-/// It provides a small blast radius, damage and explodes in set time
-/// </summary>
+/*
+    Small Cluster (Cannade Phase 2)
+        Small bomb that spawns in a small group from the Cannade Phase 1.
+        It provides a small blast radius, damage and explodes in set time
+*/
 
 public class SmallCluster: Projectile{
 

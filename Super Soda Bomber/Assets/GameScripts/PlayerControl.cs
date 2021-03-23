@@ -7,6 +7,7 @@ PlayerControl
 	Used to get the physics and the overall movement of the player
 	such as walking and jumping
 */
+
 public class PlayerControl : PublicScripts
 {
 
@@ -28,9 +29,10 @@ public class PlayerControl : PublicScripts
 	private CheckpointScript checkScript;
 
 	private bool m_Grounded;            // Whether or not the player is grounded.
-    private bool m_hangJump = false;
+    private bool m_hangJump = false;	// If player is eligible to perform a hangjump (Coyote Time)
 	private bool m_FacingRight = true;  // For determining which way the player is currently facing.
 
+	//animator
 	private PlayerAnimation animator = PlayerAnimation.current;
 
 	//this will be used for solely on jump anticipation
@@ -42,6 +44,13 @@ public class PlayerControl : PublicScripts
 	//this will be used on sounds, traps, etc.
 	public UnityEvent OnLandEvent;
 
+	//this will be used on abilities
+	public UnityEvent AbilityEvent;
+	private enum PlayerAbilities{
+	None, LongJump, DoubleJump, Dash
+	}
+	private PlayerAbilities chosenAbility;
+
 	[System.Serializable]
 	public class BoolEvent : UnityEvent<bool> {}
 
@@ -51,6 +60,9 @@ public class PlayerControl : PublicScripts
 
 		if (OnLandEvent == null)
 			OnLandEvent = new UnityEvent();
+
+		if (AbilityEvent == null)
+			AbilityEvent = new UnityEvent();
 	}
 
 	private void FixedUpdate()
@@ -87,25 +99,17 @@ public class PlayerControl : PublicScripts
 
 	public void Move(float move, bool jump)
 	{
-
 		// Move the character by finding the target velocity
 		Vector3 targetVelocity = new Vector2(move * 10f, m_Rigidbody2D.velocity.y);
 		// And then smoothing it out and applying it to the character
 		m_Rigidbody2D.velocity = Vector3.SmoothDamp(m_Rigidbody2D.velocity, targetVelocity, ref m_Velocity, m_MovementSmoothing);
 
 		// If the input is moving the player right and the player is facing left...
-		if (move > 0 && !m_FacingRight)
+		if ((move > 0 && !m_FacingRight) && (move < 0 && m_FacingRight))
 		{
 			// ... flip the player.
 			Flip();
 		}
-		// Otherwise if the input is moving the player left and the player is facing right...
-		else if (move < 0 && m_FacingRight)
-		{
-			// ... flip the player.
-			Flip();
-		}
-
 
 		// If the player should jump...
 		if ((m_Grounded||m_hangJump) && jump)
@@ -118,7 +122,6 @@ public class PlayerControl : PublicScripts
 
 			// Add score
 			GameplayScript.current.AddScore(scores["jump"]);
-
 		}
 		ManageAnim(move);
 	}
@@ -149,7 +152,6 @@ public class PlayerControl : PublicScripts
 		m_FacingRight = !m_FacingRight;
 		transform.Rotate(0f,180f,0);
 	}
-
 
 	// triggers when player touches the checkpoint
     private void OnTriggerEnter2D(Collider2D col){

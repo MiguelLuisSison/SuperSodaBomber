@@ -51,11 +51,13 @@ public class GameplayScript : PublicScripts
         current = this;
     }
 
-    //adds score
+    /// <summary>
+    /// Adds and updates the score
+    /// </summary>
+    /// <param name="amount">score to add</param>
     public void AddScore(int amount){
-        // if (e_AddScore != null){
+        if(amount > 0)
             score += amount;
-        // }
     }
 
     public void SetCheckpoint(Vector3 checkpointCoords, string name){

@@ -2,6 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/*
+	Player Animation
+		Manages the animation of Fizzy and
+		changes its state.
+*/
 public class PlayerAnimation : MonoBehaviour
 {
     //animation states
@@ -35,6 +40,10 @@ public class PlayerAnimation : MonoBehaviour
         current = this;   
     }
 
+	/// <summary>
+	/// Changes Player's animation
+	/// </summary>
+	/// <param name="name">animation name (uppercase)</param>
 	public void ChangeAnimState(string name){
         name = name.ToUpper();
 		AnimatorStateInfo currentAnim = animator.GetCurrentAnimatorStateInfo(0);
