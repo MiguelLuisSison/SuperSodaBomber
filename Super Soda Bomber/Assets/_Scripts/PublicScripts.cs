@@ -114,3 +114,9 @@ public class PublicScripts : MonoBehaviour
         savePath = Application.persistentDataPath + "saved_data.soda";
     }
 }
+
+//this will be used on abilities
+public enum PlayerAbilities
+{
+    None, LongJump, DoubleJump, Dash
+}

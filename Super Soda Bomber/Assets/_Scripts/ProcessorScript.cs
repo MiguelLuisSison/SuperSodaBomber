@@ -10,7 +10,9 @@ using UnityEngine;
 /// </summary>
 
 public static class ProjectileProcessor{
-    //dictionary containing all of the projectile classes
+    /// <summary>
+    /// Dictionary containing all of the projectile classes
+    /// </summary>
     private static Dictionary<string, Type> projectileDict = new Dictionary<string, Type>();
 
     //directory of projectile prefabs
@@ -26,13 +28,11 @@ public static class ProjectileProcessor{
 
         //gets all of the Projectile classes on the current framework
         var assembly = Assembly.GetAssembly(typeof(Projectile));
-
-        //gets the PublicScripts object for the prefab path
-        // ps = new PublicScripts();
-
+        
         //filters it with the following conditions:
         //  if a class inherits Projectile
         //  if it's not an abstract class
+        
         var allProjectileTypes = assembly.GetTypes()
             .Where(t => typeof(Projectile).IsAssignableFrom(t) && t.IsAbstract == false);
 
@@ -45,11 +45,11 @@ public static class ProjectileProcessor{
 
     //returns the projectile prefab
     public static GameObject GetPrefab(string projType){
-        // if (projType == "")
-        //     projType = null;
+        if (projType == "")
+            projType = null;
 
-        // if (projectileName == "")
-        //     projectileName = null;
+        if (projectileName == "")
+            projectileName = null;
 
         // if the projectile name and projType is empty, call soda bomb as default
         if (projType == null){
@@ -70,11 +70,9 @@ public static class ProjectileProcessor{
 
     //returns a projectile prefab with its corresponding script
     public static Projectile ConfigureComponent(GameObject prefab){
-        Debug.Log("called");
         Type prefabComponent;
         string name = prefab.name.Replace("(Clone)", "");
 
-        Debug.Log(prefab==null);
         try{
             //fetches the component and adds it
             prefabComponent = projectileDict[name];
@@ -98,4 +96,25 @@ public static class ProjectileProcessor{
             projectileName = projType;
     }
 
+}
+
+public static class AbilityProcessor
+{
+    public static Ability Fetch(PlayerAbilities key)
+    {
+        //small switch statement to choose the correct ability
+        switch (key)
+        {
+            case PlayerAbilities.LongJump:
+                return new LongJump();
+            case PlayerAbilities.DoubleJump:
+                return new DoubleJump();
+            case PlayerAbilities.Dash:
+                return new Dash();
+            default:
+                return new Ability();
+        }
+
+        //
+    }
 }

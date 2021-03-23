@@ -4,9 +4,11 @@ using UnityEngine;
 
 /*
 	Player Animation
-		Manages the animation of Fizzy and
-		changes its state.
 */
+/// <summary>
+/// Manages the animation fo Fizzy and
+/// changes its state.
+/// </summary>
 public class PlayerAnimation : MonoBehaviour
 {
     //animation states
@@ -20,7 +22,6 @@ public class PlayerAnimation : MonoBehaviour
 		{"D_JUMP", "fizzy_double_jump"},
 		{"LAND", "fizzy_land"},
 		{"THROW", "fizzy_throw"},
-		{"THROW_S", "fizzy_throw_shield"},
 		{"FIRE", "fizzy_fire_gun"},
 		{"DASH", "fizzy_dash"},
 		*/

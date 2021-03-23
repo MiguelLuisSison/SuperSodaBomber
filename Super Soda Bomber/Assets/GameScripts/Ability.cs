@@ -13,12 +13,17 @@ using UnityEngine.Events;
                 Long Jump
 */
 
-public abstract class ActiveAbility : MonoBehaviour
+public class Ability: MonoBehaviour { }
+
+/// <summary>
+/// Abilities that require player's action in order to activate it.
+/// </summary>
+public abstract class ActiveAbility : Ability
 {
     /// <summary>
     /// Initializes the ability
     /// </summary>
-    public void Init(UnityEvent<Rigidbody2D> e)
+    public virtual void Init(UnityEvent<Rigidbody2D> e)
     {
         e.AddListener(CallAbility);
     }
@@ -30,24 +35,43 @@ public abstract class ActiveAbility : MonoBehaviour
     public virtual void CallAbility(Rigidbody2D rigid) { }
 }
 
-public abstract class PassiveAbility : MonoBehaviour
+
+/// <summary>
+/// Abilities that enhances one of the player's abilities permanently.
+/// </summary>
+public abstract class PassiveAbility: Ability
 {
     /// <summary>Multiplier of the ability/variable</summary>
     protected float multiplier = 2f;
-    /// <summary>If it affects the player temporarily</summary>
-    protected bool isTemporary = false;
+
+    /// <summary>Updates the value which is implemented by the passive ability.
+    /// </summary>
+    /// <param name="oldValue">Variable being implemented/updated</param>
+    /// <returns>Updated value</returns>
+    public virtual float ApplyPassiveAbility(float oldValue)
+    {
+        return oldValue * multiplier;
+    }
+}
+
+
+/// <summary>
+/// Abilities that enhances one of the player's abilities temporarily.
+/// </summary>
+public abstract class Powerup: PassiveAbility
+{
     /// <summary>Time until the ability/effect rans out</summary>
     protected float abilityDuration;
     protected float oldValue;
-    /// 
+
     /// <summary>Updates the value which is implemented by the passive ability.
     /// </summary>
     /// <param name="oldValue">variable being implemented</param>
     /// <returns>Updated value</returns>
-    public virtual float ApplyPassiveAbility(float oldValue)
+    public override float ApplyPassiveAbility(float oldValue)
     {
         this.oldValue = oldValue;
-        return oldValue * multiplier;
+        return base.ApplyPassiveAbility(oldValue);
     }
 
     /// <summary>Reverts the current value, removing the ability effect.</summary>
@@ -56,11 +80,14 @@ public abstract class PassiveAbility : MonoBehaviour
         return oldValue;
     }
 
+    /// <summary>Waits for duration and then unapply the ability.</summary>
     public virtual IEnumerator WaitAbilityEffect()
     {
         yield return new WaitForSeconds(abilityDuration);
+        UnapplyPassiveAbility();
     }
 }
+
 
 //ABILITY TYPES (ACTIVE)
 
@@ -84,7 +111,6 @@ public class DoubleJump : ActiveAbility
     Dash
         Lets the player move quickly by pressing
         attack button twice
-
 */
 
 public class Dash : ActiveAbility
@@ -97,7 +123,7 @@ public class Dash : ActiveAbility
 }
 
 
-//ABILITY TYPES (PASSIVE) AND POWERUPS
+//ABILITY TYPES (PASSIVE)
 
 /*
     Long Jump

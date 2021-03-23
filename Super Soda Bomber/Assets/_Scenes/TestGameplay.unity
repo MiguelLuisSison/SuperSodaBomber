@@ -406,14 +406,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   savePath: 
-  m_JumpForce: 475
-  m_MovementSmoothing: 0.15
+  m_JumpForce: 450
+  m_MovementSmoothing: 0.133
   m_WhatIsGround:
     serializedVersion: 2
     m_Bits: 2560
   m_GroundCheck: {fileID: 1274516751}
   buttonDetector: {fileID: 1721290435}
   OnLandEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  chosenAbility: 2
+  m_AbilityEvent:
     m_PersistentCalls:
       m_Calls: []
 --- !u!114 &89766935
@@ -447,7 +451,7 @@ MonoBehaviour:
   savePath: 
   attackSource: {fileID: 266886288}
   attackHandSource: {fileID: 1926458545}
-  projectileName: 
+  projectileName: Shotgun
 --- !u!70 &89766937
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
