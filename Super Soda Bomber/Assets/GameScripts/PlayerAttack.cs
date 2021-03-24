@@ -32,7 +32,7 @@ public class PlayerAttack : PublicScripts
     //weapon prefab (fix this to make it more flexible)
     private GameObject projectilePrefab;
     public string projectileName;
-    private bool isPrefabConfig;
+    private bool isPrefabLoaded;
 
     //firing properties
     private float fireRate;
@@ -51,7 +51,7 @@ public class PlayerAttack : PublicScripts
     {
         ProjectileProcessor.Init();
         isCreated = false;
-        isPrefabConfig = false;
+        isPrefabLoaded = false;
         attackTime = 0;
     }
 
@@ -59,13 +59,13 @@ public class PlayerAttack : PublicScripts
         //creates a projectile clone
 		if (attack && (attackTime <= Time.time && !isCreated)){
 
-            if (!isPrefabConfig){
+            if (!isPrefabLoaded){
                 projectilePrefab = ProjectileProcessor.GetPrefab(projectileName);
-                isPrefabConfig = true;
+                isPrefabLoaded = true;
             }
 
             //set the shotgun location to attackhandsource
-                if (projectileName == "shotgun")
+                if (projectileName == "Shotgun")
                     projectile = Instantiate(projectilePrefab, attackHandSource.position, 
                     attackHandSource.rotation);
                 else

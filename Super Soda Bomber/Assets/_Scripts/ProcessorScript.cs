@@ -3,6 +3,7 @@ using System.Linq;
 using System.Reflection;
 using System;
 using UnityEngine;
+using UnityEngine.Events;
 
 // Projectile Processor
 /// <summary>
@@ -100,21 +101,31 @@ public static class ProjectileProcessor{
 
 public static class AbilityProcessor
 {
-    public static Ability Fetch(PlayerAbilities key)
+    public static Ability ability;
+    public static ActiveAbility activeAbility;
+    public static PassiveAbility passiveAbility;
+    
+    /// <summary>
+    /// Selects the ability according to the inputted key
+    /// </summary>
+    /// <param name="key">Type of ability</param>
+    /// <returns>Respective ability class</returns>
+    public static void Fetch(PlayerAbilities key, PlayerMovement controller)
     {
-        //small switch statement to choose the correct ability
-        switch (key)
-        {
-            case PlayerAbilities.LongJump:
-                return new LongJump();
-            case PlayerAbilities.DoubleJump:
-                return new DoubleJump();
-            case PlayerAbilities.Dash:
-                return new Dash();
-            default:
-                return new Ability();
+        //small if-else statement to choose the correct ability
+        if (key == PlayerAbilities.DoubleJump){
+            activeAbility = new DoubleJump();
+        }
+        else if (key == PlayerAbilities.Dash){
+            activeAbility = new Dash();
+        }
+        else if (key == PlayerAbilities.LongJump){
+            passiveAbility = new LongJump();
+            controller.m_JumpForce = passiveAbility.ApplyPassiveAbility(
+                controller.m_JumpForce);
         }
 
-        //
+        //call the init if the active ability is loaded
+        activeAbility?.Init(controller.m_AbilityEvent);
     }
 }

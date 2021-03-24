@@ -14,7 +14,7 @@ public class PlayerMovement : PublicScripts
 	[Header("Variables")]
 	[Space]
 
-	[SerializeField] private float m_JumpForce = 400f;                          // Amount of force added when the player jumps.
+	public float m_JumpForce = 400f;                          // Amount of force added when the player jumps.
 	[Range(0, .3f)] [SerializeField] private float m_MovementSmoothing = .75f;  // How much to smooth out the movement
 	[SerializeField] private LayerMask m_WhatIsGround;                          // A mask determining what is ground to the character
 	[SerializeField] private Transform m_GroundCheck;                           // A position marking where to check if the player is grounded.
@@ -31,6 +31,7 @@ public class PlayerMovement : PublicScripts
 	private bool m_Grounded;            // Whether or not the player is grounded.
 	private bool m_hangJump = false;    // If player is eligible to perform a hangjump (Coyote Time)
 	private bool m_FacingRight = true;  // For determining which way the player is currently facing.
+	private bool m_abilityReady = true;
 
 	//animator
 	private PlayerAnimation animator = PlayerAnimation.current;
@@ -57,8 +58,7 @@ public class PlayerMovement : PublicScripts
 	void Awake()
 	{
 		m_Rigidbody2D = GetComponent<Rigidbody2D>();
-		ConfigureAbility();
-
+		AbilityProcessor.Fetch(chosenAbility, this);
 
 		if (OnLandEvent == null)
 			OnLandEvent = new UnityEvent();
@@ -68,31 +68,6 @@ public class PlayerMovement : PublicScripts
 		}
 
 	}
-
-	void Start()
-    {
-	}
-
-	void ConfigureAbility()
-    {
-		ActiveAbility a;
-		Ability ability = AbilityProcessor.Fetch(chosenAbility);
-		Debug.Log($"ability: {ability.GetType()}");
-
-		if (typeof(ActiveAbility).IsAssignableFrom(ability.GetType())){
-			a = ability as ActiveAbility;
-			m_AbilityEvent.AddListener(a.CallAbility);
-			Debug.Log("the ability inherits ActiveAbility");
-        }
-		else if (typeof(PassiveAbility).IsAssignableFrom(ability.GetType())){
-			Debug.Log("the ability inherits Passive Ability");
-        }
-        else
-        {
-			Debug.Log("the ability does not inherit a particular ability");
-        }
-
-    }
 
 
 	void FixedUpdate()
@@ -148,11 +123,20 @@ public class PlayerMovement : PublicScripts
 			m_Rigidbody2D.AddForce(new Vector2(0f, m_hangJump? m_JumpForce*1.25f : m_JumpForce));
 			m_Grounded = false;
             m_hangJump = false;
+			m_abilityReady = true;		//[TEST]
 			hangTime = Time.time;
 
 			// Add score
 			GameplayScript.current.AddScore(scores["jump"]);
 		}
+
+		//[TESTING] Double Jump
+		else if (!m_Grounded && jump && m_abilityReady)
+        {
+			m_AbilityEvent.Invoke(m_Rigidbody2D);
+			m_abilityReady = false;
+        }
+
 		ManageAnim(move);
 	}
 
@@ -183,8 +167,9 @@ public class PlayerMovement : PublicScripts
 		transform.Rotate(0f,180f,0);
 	}
 
+
 	// triggers when player touches the checkpoint
-    private void OnTriggerEnter2D(Collider2D col){
+	private void OnTriggerEnter2D(Collider2D col){
 		if (col.gameObject.layer == 10){
 			//gets SpriteRenderer and changes the image
 			checkScript = col.GetComponent<CheckpointScript>();
@@ -199,5 +184,4 @@ public class PlayerMovement : PublicScripts
 			}
 		}
     }
-
 }

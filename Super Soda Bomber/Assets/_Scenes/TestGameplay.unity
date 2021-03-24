@@ -321,9 +321,9 @@ Transform:
   m_LocalPosition: {x: 9.02, y: 2.03, z: 18.55002}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 1274516751}
   - {fileID: 266886288}
   - {fileID: 1926458545}
+  - {fileID: 1274516751}
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -340,7 +340,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.025388718, y: -0.015922368}
+  m_Offset: {x: 0.027614594, y: -0.03373158}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -351,8 +351,8 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.551651, y: 0.9347087}
-  m_EdgeRadius: 0
+  m_Size: {x: 0.48783493, y: 0.842695}
+  m_EdgeRadius: 0.03
 --- !u!50 &89766932
 Rigidbody2D:
   serializedVersion: 4
@@ -416,7 +416,7 @@ MonoBehaviour:
   OnLandEvent:
     m_PersistentCalls:
       m_Calls: []
-  chosenAbility: 2
+  chosenAbility: 1
   m_AbilityEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -451,7 +451,7 @@ MonoBehaviour:
   savePath: 
   attackSource: {fileID: 266886288}
   attackHandSource: {fileID: 1926458545}
-  projectileName: Shotgun
+  projectileName: 
 --- !u!70 &89766937
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -796,7 +796,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 89766930}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &270545816 stripped
 Transform:
@@ -6641,7 +6641,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 89766930}
-  m_RootOrder: 0
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1309902650 stripped
 GameObject:
@@ -7870,7 +7870,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 89766930}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1974386778
 GameObject:

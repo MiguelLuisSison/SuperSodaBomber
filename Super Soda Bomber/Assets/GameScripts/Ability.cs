@@ -13,17 +13,21 @@ using UnityEngine.Events;
                 Long Jump
 */
 
-public class Ability: MonoBehaviour { }
+public class Ability
+{
+    /// <summary>
+    /// Initializes the ability
+    /// </summary>
+    public virtual void Init(UnityEvent<Rigidbody2D> e) {}
+}
 
 /// <summary>
 /// Abilities that require player's action in order to activate it.
 /// </summary>
 public abstract class ActiveAbility : Ability
 {
-    /// <summary>
-    /// Initializes the ability
-    /// </summary>
-    public virtual void Init(UnityEvent<Rigidbody2D> e)
+
+    public override void Init(UnityEvent<Rigidbody2D> e)
     {
         e.AddListener(CallAbility);
     }
@@ -132,7 +136,7 @@ public class Dash : ActiveAbility
 
 public class LongJump : PassiveAbility
 {
-    void Awake(){
-        multiplier = 1.5f;
-    }
+   public LongJump(){
+       multiplier = 1.25f;
+   }
 }

@@ -36,7 +36,8 @@ public class PublicScripts : MonoBehaviour
         {"smallCluster_s", 15},
         {"smallCluster_m", 30},
         {"smallCluster_l", 75},
-        {"shotgun", 5}
+        {"shotgun", 5},
+        {"fizztol", 15}
     };
 
     //description constants
@@ -66,6 +67,7 @@ public class PublicScripts : MonoBehaviour
         {"sodaBomb_min", 20f},
         {"smallCluster_max", 30f},
         {"smallCluster_min", 10f},
+        {"fizztol", 30f},
         {"shotgun", 15f}
 
     };
