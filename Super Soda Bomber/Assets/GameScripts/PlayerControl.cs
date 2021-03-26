@@ -16,8 +16,9 @@ public class PlayerControl : MonoBehaviour {
 
 	//Variables
 	float horizontalMove = 0f;
-	public Joystick joystick;
-	public float runSpeed = 40f;
+	[SerializeField] private Joystick joystick;
+	[SerializeField] private static float runSpeed = 40f;
+	[SerializeField] private float walkSpeed = 15f;
 	bool jump = false;
 	bool attack = false;
 
@@ -31,7 +32,10 @@ public class PlayerControl : MonoBehaviour {
 		attack = true;
 	}
 
-
+	//returns the run speed of the player. used for animaiton check
+	public static float GetRunSpeed(){
+		return runSpeed * Time.fixedDeltaTime;
+	}
 
 	void Update () {
 
@@ -39,8 +43,14 @@ public class PlayerControl : MonoBehaviour {
 		if (joystick.Horizontal >= .5f || Input.GetAxisRaw("Horizontal") > 0){
 			horizontalMove = runSpeed;
 		}
+		else if(joystick.Horizontal >= .25f){
+			horizontalMove = walkSpeed;
+		}
 		else if (joystick.Horizontal <= -.5f || Input.GetAxisRaw("Horizontal") < 0){
 			horizontalMove = -runSpeed;
+		}
+		else if(joystick.Horizontal <= -.25f){
+			horizontalMove = -walkSpeed;
 		}
 		else{
 			horizontalMove = 0;

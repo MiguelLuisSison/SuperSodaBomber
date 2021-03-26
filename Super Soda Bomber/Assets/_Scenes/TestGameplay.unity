@@ -416,7 +416,7 @@ MonoBehaviour:
   OnLandEvent:
     m_PersistentCalls:
       m_Calls: []
-  chosenAbility: 1
+  chosenAbility: 0
   m_AbilityEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -435,7 +435,7 @@ MonoBehaviour:
   controller: {fileID: 89766934}
   attacker: {fileID: 89766936}
   joystick: {fileID: 462118944}
-  runSpeed: 30
+  walkSpeed: 20
 --- !u!114 &89766936
 MonoBehaviour:
   m_ObjectHideFlags: 0

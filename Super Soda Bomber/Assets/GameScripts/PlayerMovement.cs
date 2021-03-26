@@ -146,18 +146,26 @@ public class PlayerMovement : PublicScripts
 			return;
 		}
 
-		if (m_Rigidbody2D.velocity.y > 0 && !m_Grounded){
+		if (!m_Grounded){
+			if (m_Rigidbody2D.velocity.y > 0){
 			animator.ChangeAnimState("JUMP");
+			}
+			else if(m_Rigidbody2D.velocity.y < 0){
+				animator.ChangeAnimState("FALL");
+			}
 		}
-		else if(m_Rigidbody2D.velocity.y < 0 && !m_Grounded){
-			animator.ChangeAnimState("FALL");
+		else {
+			if ((Mathf.Abs(move) == PlayerControl.GetRunSpeed())){
+				animator.ChangeAnimState("RUN");
+			}
+			else if (move != 0){
+				animator.ChangeAnimState("WALK");
+			}
+			else{
+				animator.ChangeAnimState("IDLE");
+			}
 		}
-		else if (move != 0 && m_Grounded){
-			animator.ChangeAnimState("RUN");
-		}
-		else if (m_Grounded){
-			animator.ChangeAnimState("IDLE");
-		}
+
 	}
 
 	private void Flip()

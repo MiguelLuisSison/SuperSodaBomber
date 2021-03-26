@@ -14,6 +14,7 @@ public class PlayerAnimation : MonoBehaviour
     //animation states
 	private Dictionary<string, string> ANIM = new Dictionary<string, string>(){
 		{"IDLE", "fizzy_idle"},
+		{"WALK", "fizzy_walk"},
 		{"RUN", "fizzy_run"},
 		{"READY_JUMP", "fizzy_readyJump"},
 		{"JUMP", "fizzy_jump"},
@@ -23,7 +24,7 @@ public class PlayerAnimation : MonoBehaviour
 		{"LAND", "fizzy_land"},
 		{"THROW", "fizzy_throw"},
 		{"FIRE", "fizzy_fire_gun"},
-		{"DASH", "fizzy_dash"},
+		{"DASH", "fizzy_dash"}
 		*/
 	};
 
