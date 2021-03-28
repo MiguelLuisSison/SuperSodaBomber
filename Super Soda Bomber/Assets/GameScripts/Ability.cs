@@ -13,6 +13,9 @@ using UnityEngine.Events;
                 Long Jump
 */
 
+/// <summary>
+/// Empty Base Class Ability.
+/// </summary>
 public class Ability
 {
     /// <summary>
@@ -26,7 +29,7 @@ public class Ability
 /// </summary>
 public abstract class ActiveAbility : Ability
 {
-
+    public float cooldown { get; protected set; }
     public override void Init(UnityEvent<Rigidbody2D> e)
     {
         e.AddListener(CallAbility);
@@ -36,7 +39,7 @@ public abstract class ActiveAbility : Ability
     /// Calls the ability and applies it to the player
     /// </summary>
     /// <param name="rigid">RigidBody of the player</param>
-    public virtual void CallAbility(Rigidbody2D rigid) { }
+    public abstract void CallAbility(Rigidbody2D rigid);
 }
 
 
@@ -120,6 +123,11 @@ public class DoubleJump : ActiveAbility
 public class Dash : ActiveAbility
 {
     private float dashForce = 15f;
+
+    public Dash(){
+        cooldown = 3f;
+    }
+    
     public override void CallAbility(Rigidbody2D rigid)
     {
         rigid.velocity += new Vector2(dashForce, 0);

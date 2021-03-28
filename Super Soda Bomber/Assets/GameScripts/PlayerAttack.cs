@@ -61,6 +61,7 @@ public class PlayerAttack : PublicScripts
 
             if (!isPrefabLoaded){
                 projectilePrefab = ProjectileProcessor.GetPrefab(projectileName);
+                projectileName = ProjectileProcessor.GetProjectileName();
                 isPrefabLoaded = true;
             }
 

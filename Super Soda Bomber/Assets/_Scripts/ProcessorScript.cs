@@ -101,14 +101,18 @@ public static class ProjectileProcessor{
 
 public static class AbilityProcessor
 {
-    public static Ability ability;
-    public static ActiveAbility activeAbility;
-    public static PassiveAbility passiveAbility;
+    private static Ability ability;
+    private static ActiveAbility activeAbility;
+    private static PassiveAbility passiveAbility;
+
+    //handles the cooldown of the ability
+    private static Coroutine coroutine;
     
     /// <summary>
-    /// Selects the ability according to the inputted key
+    /// Selects and configures the ability to the player according to the inputted key
     /// </summary>
     /// <param name="key">Type of ability</param>
+    /// <param name="controller">Player Control</param>
     /// <returns>Respective ability class</returns>
     public static void Fetch(PlayerAbilities key, PlayerMovement controller)
     {

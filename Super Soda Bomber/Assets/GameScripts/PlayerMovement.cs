@@ -37,7 +37,7 @@ public class PlayerMovement : PublicScripts
 	private PlayerAnimation animator = PlayerAnimation.current;
 
 	//this will be used for solely on jump anticipation
-	public DetectButtonPress buttonDetector;
+	public DetectButtonPress jumpButtonDetector;
 
 	[Header("Events")]
 	[Space]
@@ -141,7 +141,7 @@ public class PlayerMovement : PublicScripts
 	}
 
 	private void ManageAnim(float move){
-		if (buttonDetector.getPressedStatus() && m_Grounded){
+		if (jumpButtonDetector.getPressedStatus() && m_Grounded){
 			animator.ChangeAnimState("READY_JUMP");
 			return;
 		}
@@ -165,7 +165,6 @@ public class PlayerMovement : PublicScripts
 				animator.ChangeAnimState("IDLE");
 			}
 		}
-
 	}
 
 	private void Flip()
