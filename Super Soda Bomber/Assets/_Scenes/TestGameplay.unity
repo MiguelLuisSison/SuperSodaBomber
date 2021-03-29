@@ -5520,8 +5520,8 @@ MonoBehaviour:
   OnLandEvent:
     m_PersistentCalls:
       m_Calls: []
-  chosenAbility: 0
-  m_AbilityEvent:
+  chosenAbility: 1
+  m_AbilityCallEvent:
     m_PersistentCalls:
       m_Calls: []
 --- !u!114 &637979649
@@ -7336,7 +7336,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 637979649}
         m_MethodName: PressAttack
         m_Mode: 1
         m_Arguments:
@@ -7462,7 +7462,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 637979649}
         m_MethodName: PressJump
         m_Mode: 1
         m_Arguments:

@@ -19,7 +19,6 @@ public static class ProjectileProcessor{
     //directory of projectile prefabs
     public static string projectilePath = "Prefabs/Weapons/";
     private static string projectileName;
-    private static bool isInitialized;
 
     /// <summary>
     /// Creates a lookup table of projectile classes.
@@ -41,7 +40,6 @@ public static class ProjectileProcessor{
         foreach (var projType in allProjectileTypes){
             projectileDict.Add(projType.FullName, projType);
         }
-        isInitialized = true;
     }
 
     //returns the projectile prefab
@@ -104,6 +102,7 @@ public static class AbilityProcessor
     private static Ability ability;
     private static ActiveAbility activeAbility;
     private static PassiveAbility passiveAbility;
+    private static bool isInitialized;
 
     //handles the cooldown of the ability
     private static Coroutine coroutine;
@@ -113,23 +112,34 @@ public static class AbilityProcessor
     /// </summary>
     /// <param name="key">Type of ability</param>
     /// <param name="controller">Player Control</param>
-    /// <returns>Respective ability class</returns>
     public static void Fetch(PlayerAbilities key, PlayerMovement controller)
     {
-        //small if-else statement to choose the correct ability
-        if (key == PlayerAbilities.DoubleJump){
-            activeAbility = new DoubleJump();
-        }
-        else if (key == PlayerAbilities.Dash){
-            activeAbility = new Dash();
-        }
-        else if (key == PlayerAbilities.LongJump){
-            passiveAbility = new LongJump();
-            controller.m_JumpForce = passiveAbility.ApplyPassiveAbility(
-                controller.m_JumpForce);
-        }
+        //NOTE: Fetch() should only be called ONCE.
+        if (!isInitialized){
+            //small if-else statement to choose the correct ability
+            if (key == PlayerAbilities.DoubleJump){
+                activeAbility = new DoubleJump();
+            }
+            else if (key == PlayerAbilities.Dash){
+                activeAbility = new Dash();
+                controller.flipEvent += activeAbility.OnFlip;
+            }
+            else if (key == PlayerAbilities.LongJump){
+                passiveAbility = new LongJump();
+                controller.m_JumpForce = passiveAbility.ApplyPassiveAbility(
+                    controller.m_JumpForce);
+            }
 
-        //call the init if the active ability is loaded
-        activeAbility?.Init(controller.m_AbilityEvent);
+            //call the init if the active ability is loaded
+            activeAbility?.Init(controller.m_AbilityCallEvent);
+            isInitialized = true;
+        }
+    }
+
+    public static float GetCooldown(){
+        if (activeAbility != null){
+            return activeAbility.cooldown;
+        }
+        return 0;
     }
 }

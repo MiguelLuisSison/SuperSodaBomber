@@ -52,7 +52,7 @@ public class PlayerControl : MonoBehaviour {
 		if (tapPosition == 0){
 			tapPosition = currentPos;
 		}
-		else{
+		else if (tapPosition != currentPos){
 			tapPosition = 0;
 			return false;
 		}
@@ -102,8 +102,11 @@ public class PlayerControl : MonoBehaviour {
 	{
 		// interprets the controls to the script
 		controller.Move(horizontalMove * Time.fixedDeltaTime, jump);
+		controller.DoubleTap(isDoubleTap);
 		attacker.Attack(horizontalMove != 0, attack);
+
 		jump = false;
 		attack = false;
+		isDoubleTap = false;
 	}
 }

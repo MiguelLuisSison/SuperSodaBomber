@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -47,7 +48,14 @@ public class PlayerMovement : PublicScripts
 
 	//this will be used on abilities
 	public PlayerAbilities chosenAbility;
-	public AbilityEvent m_AbilityEvent;
+	public AbilityEvent m_AbilityCallEvent;
+	private AbilityVerifier a_Verifier;
+
+	public delegate void flipDelegate();
+    /// <summary>
+    /// Event when the player flips. (Dash)
+    /// </summary>
+    public event flipDelegate flipEvent;
 
 	[System.Serializable]
 	public class AbilityEvent: UnityEvent<Rigidbody2D>{}			
@@ -58,15 +66,20 @@ public class PlayerMovement : PublicScripts
 	void Awake()
 	{
 		m_Rigidbody2D = GetComponent<Rigidbody2D>();
+		a_Verifier = gameObject.AddComponent<AbilityVerifier>();
 		AbilityProcessor.Fetch(chosenAbility, this);
 
 		if (OnLandEvent == null)
 			OnLandEvent = new UnityEvent();
 
-		if (m_AbilityEvent == null) {
-			m_AbilityEvent = new AbilityEvent();
+		if (m_AbilityCallEvent == null) {
+			m_AbilityCallEvent = new AbilityEvent();
 		}
 
+	}
+
+	void Start(){
+		a_Verifier.Init(m_AbilityCallEvent, m_Rigidbody2D, chosenAbility);
 	}
 
 
@@ -123,21 +136,28 @@ public class PlayerMovement : PublicScripts
 			m_Rigidbody2D.AddForce(new Vector2(0f, m_hangJump? m_JumpForce*1.25f : m_JumpForce));
 			m_Grounded = false;
             m_hangJump = false;
-			m_abilityReady = true;		//[TEST]
+
+			//prevents user from double jumping indefinely midair
+			m_abilityReady = true;		
+
 			hangTime = Time.time;
 
 			// Add score
 			GameplayScript.current.AddScore(scores["jump"]);
 		}
 
-		//[TESTING] Double Jump
-		else if (!m_Grounded && jump && m_abilityReady)
+		//verifier for double jump
+		else if (m_abilityReady && jump)
         {
-			m_AbilityEvent.Invoke(m_Rigidbody2D);
+			a_Verifier.Verify(m_Grounded, jump);
 			m_abilityReady = false;
         }
 
 		ManageAnim(move);
+	}
+
+	public void DoubleTap(bool _doubleTap){
+		a_Verifier.Verify(_doubleTap);
 	}
 
 	private void ManageAnim(float move){
@@ -172,6 +192,9 @@ public class PlayerMovement : PublicScripts
 		// Switch the way the player is labelled as facing.
 		m_FacingRight = !m_FacingRight;
 		transform.Rotate(0f,180f,0);
+
+		//calls the flip event
+		flipEvent?.Invoke();
 	}
 
 
@@ -191,4 +214,59 @@ public class PlayerMovement : PublicScripts
 			}
 		}
     }
+}
+
+/// <summary>
+/// Verifies the use of active abilities on runtime.
+/// </summary>
+public class AbilityVerifier: MonoBehaviour{
+	private UnityEvent<Rigidbody2D> _event;
+	private PlayerAbilities chosenAbility;
+	private Rigidbody2D rigid;
+	private bool ready = true;
+
+	//asynchronous work
+	private Coroutine coro;
+
+	public void Init(UnityEvent<Rigidbody2D> e, 
+					Rigidbody2D r, PlayerAbilities a){
+		_event = e;
+		chosenAbility = a;
+		rigid = r;
+	}
+	
+	//Only one of these Verify() works because of the chosen ability
+	
+	/// <summary>
+    /// Ability Verifier for Dash
+    /// </summary>
+    public void Verify(bool doubleTap){
+        if (chosenAbility == PlayerAbilities.Dash && 
+			doubleTap && ready){
+				InvokeAbility();
+		}
+            
+    }
+
+    /// <summary>
+    /// Ability Verifier for Double Jump
+    /// </summary>
+    public void Verify(bool grounded, bool jumped){
+        if (chosenAbility == PlayerAbilities.DoubleJump &&
+			!grounded && jumped && ready){
+				InvokeAbility();
+		}
+    }
+
+	private void InvokeAbility(){
+		float cooldown = AbilityProcessor.GetCooldown();
+		_event.Invoke(rigid);
+		coro = StartCoroutine(AbilityCooldown(cooldown));
+	}
+
+	private IEnumerator AbilityCooldown(float secs){
+		ready = false;
+		yield return new WaitForSeconds(secs);
+		ready = true;
+	}
 }
