@@ -18,6 +18,7 @@ public class PlayerControl : MonoBehaviour {
 	float horizontalMove = 0f;
 	[SerializeField] private Joystick joystick;
 	[SerializeField] private static float runSpeed = 40f;
+	[SerializeField] private DetectButtonPress jumpButton; //this will be used for solely on jump anticipation
 	[SerializeField] private float walkSpeed = 15f;
 	bool jump = false;
 	bool attack = false;
@@ -101,7 +102,9 @@ public class PlayerControl : MonoBehaviour {
 	void FixedUpdate()
 	{
 		// interprets the controls to the script
-		controller.Move(horizontalMove * Time.fixedDeltaTime, jump);
+		controller.Move(horizontalMove * Time.fixedDeltaTime, jumpButton.GetPressedStatus());
+		controller.Jump(jump);
+		controller.ManageAnim(horizontalMove * Time.fixedDeltaTime, jumpButton.GetPressedStatus());
 		controller.DoubleTap(isDoubleTap);
 		attacker.Attack(horizontalMove != 0, attack);
 

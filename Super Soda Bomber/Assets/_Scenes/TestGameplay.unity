@@ -5496,7 +5496,7 @@ MonoBehaviour:
   savePath: 
   attackSource: {fileID: 1194588448}
   attackHandSource: {fileID: 22353608}
-  projectileName: 
+  projectileName: Fizztol
 --- !u!114 &637979648
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5516,11 +5516,10 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 2560
   m_GroundCheck: {fileID: 188688908}
-  jumpButtonDetector: {fileID: 1721290435}
   OnLandEvent:
     m_PersistentCalls:
       m_Calls: []
-  chosenAbility: 1
+  chosenAbility: 3
   m_AbilityCallEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -5539,6 +5538,7 @@ MonoBehaviour:
   controller: {fileID: 637979648}
   attacker: {fileID: 637979647}
   joystick: {fileID: 462118944}
+  jumpButton: {fileID: 1721290435}
   walkSpeed: 15
 --- !u!70 &637979650
 CapsuleCollider2D:

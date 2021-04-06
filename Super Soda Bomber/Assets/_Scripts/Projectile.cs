@@ -85,7 +85,7 @@ public abstract class Projectile: PublicScripts{
                 enemyScript.Damage(25);           
             }
         }
-        else{
+        else if (isExplosive){
             //gets a circlecast to get enemies that are within the blast radius
             var g_Collider = gameObject.GetComponent<BoxCollider2D>();
             Collider2D[] colliders = Physics2D.OverlapCircleAll(gameObject.transform.position, blastRadius);

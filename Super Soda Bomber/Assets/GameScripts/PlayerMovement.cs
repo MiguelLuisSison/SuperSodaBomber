@@ -16,6 +16,7 @@ public class PlayerMovement : PublicScripts
 	[Space]
 
 	public float m_JumpForce = 400f;                          // Amount of force added when the player jumps.
+	private float m_readyJumpSpeed = .15f;
 	[Range(0, .3f)] [SerializeField] private float m_MovementSmoothing = .75f;  // How much to smooth out the movement
 	[SerializeField] private LayerMask m_WhatIsGround;                          // A mask determining what is ground to the character
 	[SerializeField] private Transform m_GroundCheck;                           // A position marking where to check if the player is grounded.
@@ -37,9 +38,6 @@ public class PlayerMovement : PublicScripts
 	//animator
 	private PlayerAnimation animator = PlayerAnimation.current;
 
-	//this will be used for solely on jump anticipation
-	public DetectButtonPress jumpButtonDetector;
-
 	[Header("Events")]
 	[Space]
 
@@ -52,6 +50,7 @@ public class PlayerMovement : PublicScripts
 	private AbilityVerifier a_Verifier;
 
 	public delegate void flipDelegate();
+
     /// <summary>
     /// Event when the player flips. (Dash)
     /// </summary>
@@ -115,8 +114,12 @@ public class PlayerMovement : PublicScripts
 		}
 	}
 
-	public void Move(float move, bool jump)
+	public void Move(float move, bool readyJump)
 	{
+		//if the player is ready to jump, decrease the speed
+		if (readyJump)
+			move *= m_readyJumpSpeed;
+
 		// Move the character by finding the target velocity
 		Vector3 targetVelocity = new Vector2(move * 10f, m_Rigidbody2D.velocity.y);
 		// And then smoothing it out and applying it to the character
@@ -128,7 +131,9 @@ public class PlayerMovement : PublicScripts
 			// ... flip the player.
 			Flip();
 		}
+	}
 
+	public void Jump(bool jump){
 		// If the player should jump...
 		if ((m_Grounded||m_hangJump) && jump)
 		{
@@ -136,11 +141,10 @@ public class PlayerMovement : PublicScripts
 			m_Rigidbody2D.AddForce(new Vector2(0f, m_hangJump? m_JumpForce*1.25f : m_JumpForce));
 			m_Grounded = false;
             m_hangJump = false;
+			hangTime = Time.time;
 
 			//prevents user from double jumping indefinely midair
-			m_abilityReady = true;		
-
-			hangTime = Time.time;
+			m_abilityReady = true;
 
 			// Add score
 			GameplayScript.current.AddScore(scores["jump"]);
@@ -152,20 +156,18 @@ public class PlayerMovement : PublicScripts
 			a_Verifier.Verify(m_Grounded, jump);
 			m_abilityReady = false;
         }
-
-		ManageAnim(move);
 	}
 
 	public void DoubleTap(bool _doubleTap){
 		a_Verifier.Verify(_doubleTap);
 	}
 
-	private void ManageAnim(float move){
-		if (jumpButtonDetector.getPressedStatus() && m_Grounded){
+	public void ManageAnim(float move, bool readyJump){
+		if (readyJump && m_Grounded){
 			animator.ChangeAnimState("READY_JUMP");
 			return;
 		}
-
+		
 		if (!m_Grounded){
 			if (m_Rigidbody2D.velocity.y > 0){
 			animator.ChangeAnimState("JUMP");
@@ -219,7 +221,7 @@ public class PlayerMovement : PublicScripts
 /// <summary>
 /// Verifies the use of active abilities on runtime.
 /// </summary>
-public class AbilityVerifier: MonoBehaviour{
+public class AbilityVerifier: PublicScripts{
 	private UnityEvent<Rigidbody2D> _event;
 	private PlayerAbilities chosenAbility;
 	private Rigidbody2D rigid;
@@ -259,6 +261,9 @@ public class AbilityVerifier: MonoBehaviour{
     }
 
 	private void InvokeAbility(){
+		//add score
+		GameplayScript.current.AddScore(scores["ability"]);
+
 		float cooldown = AbilityProcessor.GetCooldown();
 		_event.Invoke(rigid);
 		coro = StartCoroutine(AbilityCooldown(cooldown));

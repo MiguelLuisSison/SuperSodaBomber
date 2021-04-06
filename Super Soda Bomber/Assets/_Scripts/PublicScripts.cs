@@ -19,7 +19,8 @@ public class PublicScripts : MonoBehaviour
     protected readonly Dictionary<string, int> scores = new Dictionary<string, int>(){
         {"jump", 10},
         {"checkpoint", 125},
-        {"fire", 10}
+        {"fire", 10},
+        {"ability", 10}
     };
 
     /*list of projectile scores

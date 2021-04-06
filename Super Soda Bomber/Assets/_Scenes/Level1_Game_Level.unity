@@ -412,12 +412,11 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 2560
   m_GroundCheck: {fileID: 1274516751}
-  jumpButtonDetector: {fileID: 1721290435}
   OnLandEvent:
     m_PersistentCalls:
       m_Calls: []
-  chosenAbility: 0
-  m_AbilityEvent:
+  chosenAbility: 3
+  m_AbilityCallEvent:
     m_PersistentCalls:
       m_Calls: []
 --- !u!114 &89766935
@@ -435,6 +434,7 @@ MonoBehaviour:
   controller: {fileID: 89766934}
   attacker: {fileID: 89766936}
   joystick: {fileID: 1345853734}
+  jumpButton: {fileID: 1721290435}
   walkSpeed: 15
 --- !u!114 &89766936
 MonoBehaviour:
