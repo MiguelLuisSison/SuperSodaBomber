@@ -108,3 +108,7 @@ public enum PlayerAbilities
 public enum PlayerProjectiles{
     Undefined, SodaBomb, Fizztol, Cannade, Shotgun
 }
+
+public enum MapName{
+    None, Test, Level1
+}

@@ -404,6 +404,7 @@ GameObject:
   - component: {fileID: 176260803}
   - component: {fileID: 176260802}
   - component: {fileID: 176260805}
+  - component: {fileID: 176260806}
   m_Layer: 2
   m_Name: GameplayDebug
   m_TagString: Untagged
@@ -471,11 +472,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a9489dae81bda945831bf6633c19147, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  savePath: 
   scoreTxtObject: {fileID: 319986850}
   player: {fileID: 637979644}
   tileObject: {fileID: 1336283094}
   pausePrompt: {fileID: 1309902650}
+  mapName: 1
+--- !u!114 &176260806
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 176260801}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a8804e0acedffb4791b068a4c87a2c3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &188688907
 GameObject:
   m_ObjectHideFlags: 0
@@ -5493,10 +5506,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 537ca37642bf6f0489922d474328b998, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  savePath: 
   attackSource: {fileID: 1194588448}
   attackHandSource: {fileID: 22353608}
-  projectileName: Fizztol
+  chosenProjectile: 0
 --- !u!114 &637979648
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5509,7 +5521,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20ad3aefcce80aa468abf60ccc898d41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  savePath: 
   m_JumpForce: 475
   m_MovementSmoothing: 0.15
   m_WhatIsGround:

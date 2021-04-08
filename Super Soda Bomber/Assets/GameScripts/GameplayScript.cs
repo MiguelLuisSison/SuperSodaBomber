@@ -38,6 +38,7 @@ public class GameplayScript : PublicScripts
     private int score = 0;
     private Vector3 coords;
     private string checkpointTag;
+    public MapName mapName;
 
     private bool isPaused = false;
 
@@ -80,6 +81,7 @@ public class GameplayScript : PublicScripts
         playerData.coords = new float[] {coords[0], coords[1], coords[2]};
         playerData.checkpointTag = checkpointTag;
         playerData.projectileType = (int) ProjectileProcessor.projectileType;
+        playerData.map = (int) mapName;
         Debug.Log($"saved projectile: {ProjectileProcessor.projectileType}");
 
         //save part
@@ -96,42 +98,48 @@ public class GameplayScript : PublicScripts
             //load part
             PlayerData playerData = (PlayerData)saveLoad.bf.Deserialize(file);
             file.Close();
+            int savedMap = playerData.map;
 
-            score = playerData.score;
-            PlayerPrefs.SetInt("CurrentScore", score);
+            //don't load if the data is for a different map
+            if (savedMap == 0|| savedMap.Equals(mapName)){
+                score = playerData.score;
+                PlayerPrefs.SetInt("CurrentScore", score);
 
-            float[] c = playerData.coords;
-            coords = new Vector3(c[0], c[1], c[2]);
-            player.transform.position = coords;
-            ProjectileProcessor.SetProjectileName((PlayerProjectiles) playerData.projectileType);
+                float[] c = playerData.coords;
+                coords = new Vector3(c[0], c[1], c[2]);
+                player.transform.position = coords;
+                ProjectileProcessor.SetProjectileName((PlayerProjectiles) playerData.projectileType);
 
-            /*
-            Sample Hierarchy of GameObject Tile
-            to change the checkpoint image
-                Tile
-                    -> Obstacles
-                    -> Checkpoint1
-                        -> CheckpointScript
+                /*
+                Sample Hierarchy of GameObject Tile
+                to change the checkpoint image
+                    Tile
+                        -> Obstacles
+                        -> Checkpoint1
+                            -> CheckpointScript
 
-            Process:
-                - Find the child gameobject using the name
-                - Call the ChangeState() of the child script
-            */
+                Process:
+                    - Find the child gameobject using the name
+                    - Call the ChangeState() of the child script
+                */
 
-            //name of the loaded checkpoint
-            checkpointTag = playerData.checkpointTag;
+                //name of the loaded checkpoint
+                checkpointTag = playerData.checkpointTag;
 
-            //gets the list its children
-            Transform[] childrenObj = tileObject.GetComponentsInChildren<Transform>();
+                //gets the list its children
+                Transform[] childrenObj = tileObject.GetComponentsInChildren<Transform>();
 
-            foreach(Transform obj in childrenObj){
-                //if name matches with checkpointTag, change the state
-                if (obj.name == checkpointTag){
-                    CheckpointScript objScript = obj.GetComponent<CheckpointScript>();
-                    objScript.ChangeState();
-                    break;
+                foreach(Transform obj in childrenObj){
+                    //if name matches with checkpointTag, change the state
+                    if (obj.name == checkpointTag){
+                        CheckpointScript objScript = obj.GetComponent<CheckpointScript>();
+                        objScript.ChangeState();
+                        break;
+                    }
                 }
             }
+            else
+                Debug.Log("Data is for the different map. Data is not loaded");
         }
     }
 
@@ -211,6 +219,7 @@ class PlayerData{
     public float[] coords;
     public int projectileType;
     public int abilityType;
+    public int map;
 
     //checkpoint data
     public string checkpointTag;

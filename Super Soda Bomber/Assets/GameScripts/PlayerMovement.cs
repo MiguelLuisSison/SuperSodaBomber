@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using System.Reflection;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
@@ -45,6 +45,7 @@ public class PlayerMovement : PublicScripts
 	public UnityEvent OnLandEvent;
 
 	//this will be used on abilities
+	[EnumFlags]
 	public PlayerAbilities chosenAbility;
 	public AbilityEvent m_AbilityCallEvent;
 	private AbilityVerifier a_Verifier;
@@ -79,6 +80,7 @@ public class PlayerMovement : PublicScripts
 
 	void Start(){
 		a_Verifier.Init(m_AbilityCallEvent, m_Rigidbody2D, chosenAbility);
+        Debug.Log(chosenAbility);
 	}
 
 
@@ -243,7 +245,7 @@ public class AbilityVerifier: PublicScripts{
     /// Ability Verifier for Dash
     /// </summary>
     public void Verify(bool doubleTap){
-        if (chosenAbility == PlayerAbilities.Dash && 
+        if (chosenAbility.HasFlag(PlayerAbilities.Dash) && 
 			doubleTap && ready){
 				InvokeAbility();
 		}
@@ -254,7 +256,7 @@ public class AbilityVerifier: PublicScripts{
     /// Ability Verifier for Double Jump
     /// </summary>
     public void Verify(bool grounded, bool jumped){
-        if (chosenAbility == PlayerAbilities.DoubleJump &&
+        if (chosenAbility.HasFlag(PlayerAbilities.DoubleJump) &&
 			!grounded && jumped && ready){
 				InvokeAbility();
 		}
@@ -267,6 +269,7 @@ public class AbilityVerifier: PublicScripts{
 		float cooldown = AbilityProcessor.GetCooldown();
 		_event.Invoke(rigid);
 		coro = StartCoroutine(AbilityCooldown(cooldown));
+		Debug.Log("ability called");
 	}
 
 	private IEnumerator AbilityCooldown(float secs){

@@ -108,7 +108,6 @@ public static class ProjectileProcessor{
 
 public static class AbilityProcessor
 {
-    private static Ability ability;
     private static ActiveAbility activeAbility;
     private static PassiveAbility passiveAbility;
     private static bool isInitialized;
@@ -119,36 +118,49 @@ public static class AbilityProcessor
     /// <summary>
     /// Selects and configures the ability to the player according to the inputted key
     /// </summary>
-    /// <param name="key">Type of ability</param>
+    /// <param name="key">Chosen Ability/ies</param>
     /// <param name="controller">Player Control</param>
     public static void Fetch(PlayerAbilities key, PlayerMovement controller)
     {
         //NOTE: Fetch() should only be called ONCE.
         if (!isInitialized){
+
             //small if-else statement to choose the correct ability
-            if (key == PlayerAbilities.DoubleJump){
+            //key.HasFlag detects if it contains a certain ability
+            if (key.HasFlag(PlayerAbilities.DoubleJump)){
                 activeAbility = new DoubleJump();
             }
-            else if (key == PlayerAbilities.Dash){
-                activeAbility = new Dash();
-                controller.flipEvent += activeAbility.OnFlip;
+            if (key.HasFlag(PlayerAbilities.Dash)){
+                var obj = new Dash();
+                activeAbility = obj;
+                controller.flipEvent += obj.OnFlip;
             }
-            else if (key == PlayerAbilities.LongJump){
+            if (key.HasFlag(PlayerAbilities.LongJump)){
                 passiveAbility = new LongJump();
                 controller.m_JumpForce = passiveAbility.ApplyPassiveAbility(
                     controller.m_JumpForce);
             }
 
             //call the init if the active ability is loaded
-            activeAbility?.Init(controller.m_AbilityCallEvent);
+            /*
+            foreach (ActiveAbility a in activeAbilityList)
+            {
+                a.Init(controller.m_AbilityCallEvent);
+            }*/
+            activeAbility.Init(controller.m_AbilityCallEvent);
+            
             isInitialized = true;
         }
     }
 
     public static float GetCooldown(){
-        if (activeAbility != null){
-            return activeAbility.cooldown;
+        return 2;
+        /*
+        try{
+            return activeAbilityList[ability].cooldown;
         }
-        return 0;
+        catch(KeyNotFoundException) {return 0;}
+        */
+        
     }
 }

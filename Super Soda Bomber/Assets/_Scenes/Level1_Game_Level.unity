@@ -414,7 +414,7 @@ MonoBehaviour:
   OnLandEvent:
     m_PersistentCalls:
       m_Calls: []
-  chosenAbility: 3
+  chosenAbility: 6
   m_AbilityCallEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -837,6 +837,7 @@ MonoBehaviour:
   player: {fileID: 89766928}
   tileObject: {fileID: 1336283094}
   pausePrompt: {fileID: 1309902650}
+  mapName: 2
 --- !u!114 &176260806
 MonoBehaviour:
   m_ObjectHideFlags: 0
