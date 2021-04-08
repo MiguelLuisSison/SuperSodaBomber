@@ -18,6 +18,7 @@ public static class ProjectileProcessor{
 
     //directory of projectile prefabs
     public static string projectilePath = "Prefabs/Weapons/";
+    public static PlayerProjectiles projectileType { get; private set; }
     private static string projectileName;
 
     /// <summary>
@@ -43,23 +44,19 @@ public static class ProjectileProcessor{
     }
 
     //returns the projectile prefab
-    public static GameObject GetPrefab(string projType){
-        if (projType == "")
-            projType = null;
-
+    public static GameObject GetPrefab(PlayerProjectiles projType){
+        projectileType = projType;
         if (projectileName == "")
             projectileName = null;
 
         // if the projectile name and projType is empty, call soda bomb as default
-        if (projType == null){
-            if (projectileName == null){
-                    projectileName = "Soda Bomb";
-                    Debug.Log("projectile name is empty! Redirecting to Soda Bomb");
-            }
+        if (projType == PlayerProjectiles.Undefined && projectileName == null){
+            projectileName = "Soda Bomb";
+            Debug.Log("projectile name is empty! Redirecting to Soda Bomb");
             //retain data if projectileName exists
         }
-        else
-            projectileName = projType;
+        else if (projType != PlayerProjectiles.Undefined)
+            projectileName = EnumToString(projType);
 
         Debug.Log($"projectile type @ get prefab: \"{projectileName}\"");
 
@@ -89,10 +86,22 @@ public static class ProjectileProcessor{
         return projectileName;
     }
 
-    public static void SetProjectileName(string projType){
+    public static void SetProjectileName(PlayerProjectiles projType){
         Debug.Log($"setting projectile name: {projType}");
-        if (projType != null || projType == "")
-            projectileName = projType;
+        string projTypeString = EnumToString(projType);
+        if (projTypeString != null)
+            projectileName = projTypeString;
+    }
+
+    private static string EnumToString(PlayerProjectiles p){
+        switch (p){
+            case PlayerProjectiles.SodaBomb:
+                return "Soda Bomb";
+            case PlayerProjectiles.Undefined:
+                return null;
+            default:
+                return p.ToString();
+        }
     }
 
 }

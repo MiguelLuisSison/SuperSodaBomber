@@ -23,6 +23,7 @@ public class Ability
     /// </summary>
     public virtual void Init(UnityEvent<Rigidbody2D> e) {}
 }
+/// 
 /// <summary>
 /// Abilities that require player's action in order to activate it.
 /// </summary>
@@ -42,7 +43,6 @@ public abstract class ActiveAbility : Ability
     public virtual void OnFlip(){}
 }
 
-
 /// <summary>
 /// Abilities that enhances one of the player's abilities permanently.
 /// </summary>
@@ -60,7 +60,6 @@ public abstract class PassiveAbility: Ability
         return oldValue * multiplier;
     }
 }
-
 
 /// <summary>
 /// Abilities that enhances one of the player's abilities temporarily.

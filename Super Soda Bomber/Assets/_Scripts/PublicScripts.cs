@@ -1,7 +1,5 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -77,18 +75,12 @@ public class PublicScripts : MonoBehaviour
     /// <summary>
     /// Explosion Type of the Projectile
     /// </summary>
-    public enum explosionType{
+    public enum ExplosionType{
         Contact = 0,        //collision triggers explosion (default)
         Detonate,           //player or time triggers explosion
         Delay,              //time triggers explosion
         Instant             //instantly explodes
     }
-
-    [HideInInspector]
-    public string savePath;
-    
-    //used for save/load processes
-    public BinaryFormatter bf = new BinaryFormatter();
 
     /// <summary>
     /// Moves to selected scene
@@ -104,22 +96,15 @@ public class PublicScripts : MonoBehaviour
         bool status = prompt.activeInHierarchy;
         prompt.SetActive(!status);
     }
-
-    /// <summary>
-    /// Deletes saved data
-    /// </summary>
-    public void ClearData(){
-        File.Delete(savePath);
-    }
-
-    //path dir
-    void Awake(){
-        savePath = Application.persistentDataPath + "saved_data.soda";
-    }
 }
 
 //this will be used on abilities
+[Flags]
 public enum PlayerAbilities
 {
-    None, LongJump, DoubleJump, Dash
+    None, LongJump, DoubleJump, Dash = 4
+}
+
+public enum PlayerProjectiles{
+    Undefined, SodaBomb, Fizztol, Cannade, Shotgun
 }

@@ -405,7 +405,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20ad3aefcce80aa468abf60ccc898d41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  savePath: 
   m_JumpForce: 475
   m_MovementSmoothing: 0.15
   m_WhatIsGround:
@@ -448,10 +447,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 537ca37642bf6f0489922d474328b998, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  savePath: 
   attackSource: {fileID: 266886288}
   attackHandSource: {fileID: 1926458545}
-  projectileName: 
+  chosenProjectile: 0
 --- !u!70 &89766937
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -767,6 +765,7 @@ GameObject:
   - component: {fileID: 176260803}
   - component: {fileID: 176260802}
   - component: {fileID: 176260805}
+  - component: {fileID: 176260806}
   m_Layer: 2
   m_Name: GameplayDebug
   m_TagString: Untagged
@@ -834,11 +833,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a9489dae81bda945831bf6633c19147, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  savePath: 
   scoreTxtObject: {fileID: 319986850}
   player: {fileID: 89766928}
   tileObject: {fileID: 1336283094}
   pausePrompt: {fileID: 1309902650}
+--- !u!114 &176260806
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 176260801}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a8804e0acedffb4791b068a4c87a2c3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &199775549 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3057747435157726336, guid: d37d50d3bc5764745833f29c067898f5,
@@ -19477,7 +19487,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 176260805}
+      - m_Target: {fileID: 176260806}
         m_MethodName: ClearData
         m_Mode: 1
         m_Arguments:

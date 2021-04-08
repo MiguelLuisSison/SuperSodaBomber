@@ -19,8 +19,6 @@ GameplayScript
 
 public class GameplayScript : PublicScripts
 {
-    // Script for TestGameplay
-
     /*
     Processes:
     When user touches the checkpoint:
@@ -43,8 +41,13 @@ public class GameplayScript : PublicScripts
 
     private bool isPaused = false;
 
-    //Removes the script dependency using a self-static variable.
+    //Removes the object dependency using a self-static variable.
     public static GameplayScript current;
+    private SaveLoadManager saveLoad;
+
+    void Awake(){
+        saveLoad = gameObject.AddComponent<SaveLoadManager>();
+    }
 
     void Start(){
         Load();
@@ -71,27 +74,27 @@ public class GameplayScript : PublicScripts
         coords += new Vector3(0, .5f, 0);
 
         //I/O
-        FileStream file = File.Create(savePath);
+        FileStream file = File.Create(saveLoad.savePath);
         PlayerData playerData = new PlayerData();
         playerData.score = score;
         playerData.coords = new float[] {coords[0], coords[1], coords[2]};
         playerData.checkpointTag = checkpointTag;
-        playerData.projectileName = ProjectileProcessor.GetProjectileName();
-        Debug.Log($"saved projectile: {playerData.projectileName}");
+        playerData.projectileType = (int) ProjectileProcessor.projectileType;
+        Debug.Log($"saved projectile: {ProjectileProcessor.projectileType}");
 
         //save part
-        bf.Serialize(file, playerData);
+        saveLoad.bf.Serialize(file, playerData);
         file.Close();
     }
 
     //load game
     public void Load(){
-        if (File.Exists(savePath)){
+        if (File.Exists(saveLoad.savePath)){
             //I/O
-            FileStream file = File.Open(savePath, FileMode.Open);
+            FileStream file = File.Open(saveLoad.savePath, FileMode.Open);
 
             //load part
-            PlayerData playerData = (PlayerData)bf.Deserialize(file);
+            PlayerData playerData = (PlayerData)saveLoad.bf.Deserialize(file);
             file.Close();
 
             score = playerData.score;
@@ -100,7 +103,7 @@ public class GameplayScript : PublicScripts
             float[] c = playerData.coords;
             coords = new Vector3(c[0], c[1], c[2]);
             player.transform.position = coords;
-            ProjectileProcessor.SetProjectileName(playerData.projectileName);
+            ProjectileProcessor.SetProjectileName((PlayerProjectiles) playerData.projectileType);
 
             /*
             Sample Hierarchy of GameObject Tile
@@ -155,7 +158,7 @@ public class GameplayScript : PublicScripts
 
     //DevTools
     public void Restart(){
-        if (File.Exists(savePath)){
+        if (File.Exists(saveLoad.savePath)){
             Load();
         }
         else{
@@ -163,13 +166,18 @@ public class GameplayScript : PublicScripts
         }
     }
 
+    /*
+        HOTKEYS
+            r - Restart
+            c - Erase Data
+            esc - Pause
+    */
     void Update(){
         if(Input.GetKey("r")){
             Restart();
         }
         else if(Input.GetKey("c")){
-            ClearData();
-            Debug.Log("Data has been erased!");
+            saveLoad.ClearData();
         }
         else if(Input.GetKeyDown(KeyCode.Escape)){
             _TogglePause();
@@ -201,7 +209,8 @@ public class GameplayScript : PublicScripts
 class PlayerData{
     public int score;
     public float[] coords;
-    public string projectileName;
+    public int projectileType;
+    public int abilityType;
 
     //checkpoint data
     public string checkpointTag;

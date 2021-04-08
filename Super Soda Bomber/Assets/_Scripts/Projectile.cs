@@ -32,6 +32,7 @@ public abstract class Projectile: PublicScripts{
     //metadata
     /// <summary>Projectile name</summary>
     public string p_name = "sodaBomb";
+    public PlayerProjectiles p_tag;
 
     //projectile attributes
     //throwing physics
@@ -45,7 +46,7 @@ public abstract class Projectile: PublicScripts{
     /// <summary>Provides blast damage + explosion fx </summary>
     protected bool isExplosive = true;
     /// <summary>Selected Explosion Type</summary>
-    public explosionType selectedType;
+    public ExplosionType selectedType;
     /// <summary>Time until the projectile explodes by itself</summary>
     public float detonateTime = 0f;
 
@@ -170,7 +171,7 @@ public class Fizztol: Projectile{
 }
 
 /*
-    Cannad
+    Cannade
         A projectile that fires on a curve. When detonate 
         or waited within several seconds, it will let out
         a small group of cluster bombs
@@ -181,7 +182,7 @@ public class Cannade: Projectile{
     private int clusterAmount = 5;
 
     void Awake(){
-        selectedType = explosionType.Detonate;
+        selectedType = ExplosionType.Detonate;
         spin = 10f;
         p_name = "cannade";
         detonateTime = 2f;
@@ -215,7 +216,7 @@ public class SmallCluster: Projectile{
     
     void Awake(){
         p_name = "smallCluster";
-        selectedType = explosionType.Delay;
+        selectedType = ExplosionType.Delay;
         throwX *= UnityEngine.Random.Range(-.25f, 1.15f);
         throwY = UnityEngine.Random.Range(-100,100);
         blastRadius = 1.5f;
@@ -237,7 +238,7 @@ public class Shotgun: Projectile{
 
     void Awake(){
         p_name = "shotgun";
-        selectedType = explosionType.Instant;
+        selectedType = ExplosionType.Instant;
         //lowers the y-value for attack source of the pellets
         // attackSource = gameObject.transform.position + new Vector3(.2f, -.45f, 0f);
     }
@@ -250,7 +251,7 @@ public class Shotgun: Projectile{
 }
 
 /*
-    Shotgun Pellet (Sfizz) (internal)
+    Shotgun Pellet (Sfizz internal)
         Small projectiles that inflict large damage the closer it hits the enemy
         It has a short reach.
 */
