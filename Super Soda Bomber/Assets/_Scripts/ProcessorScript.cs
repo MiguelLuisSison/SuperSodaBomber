@@ -5,6 +5,13 @@ using System;
 using UnityEngine;
 using UnityEngine.Events;
 
+/*
+Processor Script
+    Used to determine what component/prefab to use for:
+        - Projectiles
+        - Abilities
+*/
+
 // Projectile Processor
 /// <summary>
 /// Automatically determines the projectile type and its component using the prefab.
@@ -108,9 +115,12 @@ public static class ProjectileProcessor{
 
 public static class AbilityProcessor
 {
-    private static ActiveAbility activeAbility;
+    public class AbilityEvent: UnityEvent<Rigidbody2D>{}
     private static PassiveAbility passiveAbility;
     private static bool isInitialized;
+    
+    private static Dictionary<PlayerAbilities, UnityEvent<Rigidbody2D>> abilityDict = new Dictionary<PlayerAbilities, UnityEvent<Rigidbody2D>>();
+    private static Dictionary<PlayerAbilities, float> abilityCooldown = new Dictionary<PlayerAbilities, float>();
 
     //handles the cooldown of the ability
     private static Coroutine coroutine;
@@ -128,11 +138,19 @@ public static class AbilityProcessor
             //small if-else statement to choose the correct ability
             //key.HasFlag detects if it contains a certain ability
             if (key.HasFlag(PlayerAbilities.DoubleJump)){
-                activeAbility = new DoubleJump();
+                var tag = PlayerAbilities.DoubleJump;
+                var obj = new DoubleJump();
+                var e = ConfigureEvent(obj);
+                abilityDict.Add(tag, e);
+                abilityCooldown.Add(tag, obj.cooldown);
+
             }
             if (key.HasFlag(PlayerAbilities.Dash)){
+                var tag = PlayerAbilities.Dash;
                 var obj = new Dash();
-                activeAbility = obj;
+                var e = ConfigureEvent(obj);
+                abilityDict.Add(tag, e);
+                abilityCooldown.Add(tag, obj.cooldown);
                 controller.flipEvent += obj.OnFlip;
             }
             if (key.HasFlag(PlayerAbilities.LongJump)){
@@ -141,26 +159,37 @@ public static class AbilityProcessor
                     controller.m_JumpForce);
             }
 
-            //call the init if the active ability is loaded
-            /*
-            foreach (ActiveAbility a in activeAbilityList)
-            {
-                a.Init(controller.m_AbilityCallEvent);
-            }*/
-            activeAbility.Init(controller.m_AbilityCallEvent);
+            Debug.Log(abilityDict);
             
             isInitialized = true;
         }
     }
 
-    public static float GetCooldown(){
-        return 2;
-        /*
-        try{
-            return activeAbilityList[ability].cooldown;
+    /// <summary>
+    /// Applies the Init() of the ability with UnityEvent.
+    /// </summary>
+    private static UnityEvent<Rigidbody2D> ConfigureEvent(ActiveAbility activeAbility){
+            var uEvent = new AbilityEvent();
+            activeAbility.Init(uEvent);
+            return uEvent;
+    }
+
+    /// <summary>
+    /// Searches the key from the dictionary and then call it.
+    /// </summary>
+    /// <param name="key">Player Ability Type</param>
+    /// <param name="r">Player RigidBody2D</param>
+    public static void CallEvent(PlayerAbilities key, Rigidbody2D r){
+        if(abilityDict.ContainsKey(key)){
+            abilityDict[key].Invoke(r);
         }
-        catch(KeyNotFoundException) {return 0;}
-        */
-        
+    }
+
+    public static float GetCooldown(PlayerAbilities key){
+        Debug.Log($"ability called {key}");
+        if(abilityDict.ContainsKey(key)){
+            return abilityCooldown[key];
+        }
+        return 0;
     }
 }

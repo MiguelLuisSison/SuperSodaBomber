@@ -33,7 +33,7 @@ public class PlayerMovement : PublicScripts
 	private bool m_Grounded;            // Whether or not the player is grounded.
 	private bool m_hangJump = false;    // If player is eligible to perform a hangjump (Coyote Time)
 	private bool m_FacingRight = true;  // For determining which way the player is currently facing.
-	private bool m_abilityReady = true;
+	private bool m_doubleJump = true;
 
 	//animator
 	private PlayerAnimation animator = PlayerAnimation.current;
@@ -146,17 +146,17 @@ public class PlayerMovement : PublicScripts
 			hangTime = Time.time;
 
 			//prevents user from double jumping indefinely midair
-			m_abilityReady = true;
+			m_doubleJump = true;
 
 			// Add score
 			GameplayScript.current.AddScore(scores["jump"]);
 		}
 
 		//verifier for double jump
-		else if (m_abilityReady && jump)
+		else if (m_doubleJump && jump)
         {
 			a_Verifier.Verify(m_Grounded, jump);
-			m_abilityReady = false;
+			m_doubleJump = false;
         }
 	}
 
@@ -247,7 +247,7 @@ public class AbilityVerifier: PublicScripts{
     public void Verify(bool doubleTap){
         if (chosenAbility.HasFlag(PlayerAbilities.Dash) && 
 			doubleTap && ready){
-				InvokeAbility();
+				InvokeAbility(PlayerAbilities.Dash);
 		}
             
     }
@@ -257,19 +257,19 @@ public class AbilityVerifier: PublicScripts{
     /// </summary>
     public void Verify(bool grounded, bool jumped){
         if (chosenAbility.HasFlag(PlayerAbilities.DoubleJump) &&
-			!grounded && jumped && ready){
-				InvokeAbility();
+			!grounded && jumped){
+				InvokeAbility(PlayerAbilities.DoubleJump);
 		}
     }
 
-	private void InvokeAbility(){
+	private void InvokeAbility(PlayerAbilities ability){
 		//add score
 		GameplayScript.current.AddScore(scores["ability"]);
 
-		float cooldown = AbilityProcessor.GetCooldown();
-		_event.Invoke(rigid);
+		float cooldown = AbilityProcessor.GetCooldown(ability);
+		AbilityProcessor.CallEvent(ability, rigid);
 		coro = StartCoroutine(AbilityCooldown(cooldown));
-		Debug.Log("ability called");
+
 	}
 
 	private IEnumerator AbilityCooldown(float secs){
