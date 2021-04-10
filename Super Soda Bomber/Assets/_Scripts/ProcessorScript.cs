@@ -132,6 +132,9 @@ public static class AbilityProcessor
     /// <param name="controller">Player Control</param>
     public static void Fetch(PlayerAbilities key, PlayerMovement controller)
     {
+        if (key == PlayerAbilities.None && abilities != PlayerAbilities.None)
+            return;
+            
         Debug.Log($"fetched {key}");
         //clear the data if it's used again
         abilityDict.Clear();

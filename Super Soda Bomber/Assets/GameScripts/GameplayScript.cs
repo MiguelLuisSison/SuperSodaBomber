@@ -214,12 +214,6 @@ public class GameplayScript : PublicScripts
         
     }
 
-    void FixedUpdate(){
-        if(player.transform.position.y < 0){
-            GameOver();
-        }
-    }
-
     void LateUpdate()
     {
         scoreTxt.text = $"{score}";

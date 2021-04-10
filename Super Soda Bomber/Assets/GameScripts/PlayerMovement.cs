@@ -193,14 +193,6 @@ public class PlayerMovement : PublicScripts
 		flipEvent?.Invoke();
 	}
 
-	private void Damage(){
-		--health;
-		GameplayScript.SetHpUI(health);
-		if (health <= 0){
-			GameplayScript.current.GameOver();
-		}
-	}
-
 	// triggers when player touches the checkpoint
 	private void OnTriggerEnter2D(Collider2D col){
 		if (col.gameObject.layer == 10){
@@ -217,14 +209,6 @@ public class PlayerMovement : PublicScripts
 			}
 		}
     }
-
-	//triggers when player touches an enemy
-	private void OnCollisionEnter2D(Collision2D col){
-		if(col.gameObject.layer == 11){
-			Damage();
-			Debug.Log("called");
-		}
-	}
 }
 
 /// <summary>
