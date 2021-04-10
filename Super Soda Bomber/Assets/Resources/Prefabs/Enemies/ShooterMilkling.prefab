@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 1012268689671413905}
   - component: {fileID: 6415519384098594783}
   m_Layer: 11
-  m_Name: MeleeMilkling
+  m_Name: ShooterMilkling
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -116,8 +116,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ceacd4a954333204288a7e66c956ae94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 100
-  type: 0
+  scriptObject: {fileID: 11400000, guid: 46103f2373947b04fbde52770e22f551, type: 2}
 --- !u!60 &1012268689671413905
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -143,18 +142,13 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 0.009283304, y: 0.32016802}
-      - {x: -0.064251184, y: 0.40220356}
-      - {x: -0.1837256, y: 0.40045214}
-      - {x: -0.24595356, y: 0.33674502}
-      - {x: -0.24420214, y: 0.22575474}
-      - {x: -0.22062016, y: 0.015761137}
-      - {x: -0.2521422, y: -0.35061884}
-      - {x: -0.25605273, y: -0.5}
-      - {x: 0.24069977, y: -0.5052538}
-      - {x: 0.36920214, y: -0.12391186}
-      - {x: 0.2466166, y: 0.058742523}
-      - {x: 0.22116423, y: 0.27788377}
+    - - {x: -0.030017138, y: 0.24998856}
+      - {x: -0.19012833, y: 0.25017524}
+      - {x: -0.19009829, y: -0.5000894}
+      - {x: 0.24993706, y: -0.50006723}
+      - {x: 0.24976254, y: -0.030191183}
+      - {x: 0.18998957, y: -0.030005455}
+      - {x: 0.18991804, y: 0.2500763}
 --- !u!95 &6415519384098594783
 Animator:
   serializedVersion: 3

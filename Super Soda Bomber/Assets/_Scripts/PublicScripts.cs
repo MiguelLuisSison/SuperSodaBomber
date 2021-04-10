@@ -110,3 +110,7 @@ public enum PlayerProjectiles{
 public enum MapName{
     None, Test, Level1
 }
+
+public enum EnemyType{
+    Shooter, Roller
+}

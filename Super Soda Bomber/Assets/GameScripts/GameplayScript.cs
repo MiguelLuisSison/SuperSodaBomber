@@ -32,7 +32,10 @@ public class GameplayScript : PublicScripts
     */
     
     //Config Variables
-    public GameObject scoreTxtObject, player, tileObject, pausePrompt;
+    [SerializeField] private GameObject scoreTxtObject, hpTxtObject, player, tileObject, pausePrompt;
+
+    private Text scoreTxt, hpTxt;
+    private static int health;
 
     //Variables to Save
     private int score = 0;
@@ -53,6 +56,8 @@ public class GameplayScript : PublicScripts
     void Start(){
         Load();
         current = this;
+        scoreTxt = scoreTxtObject.GetComponent<Text>();
+        hpTxt = hpTxtObject.GetComponent<Text>();
     }
 
     /// <summary>
@@ -148,6 +153,10 @@ public class GameplayScript : PublicScripts
         }
     }
 
+    public static void SetHpUI(int newHP){
+        health = newHP;
+    }
+
     //when player dies
     public void GameOver(){
         //save the current score at PlayerPrefs
@@ -213,8 +222,8 @@ public class GameplayScript : PublicScripts
 
     void LateUpdate()
     {
-        Text scoreTxt = scoreTxtObject.GetComponent<Text>();
-        scoreTxt.text = "" + score;
+        scoreTxt.text = $"{score}";
+        hpTxt.text = $"HP: {health}";
     }
 }
 

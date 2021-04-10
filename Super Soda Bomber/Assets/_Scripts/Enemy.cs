@@ -19,19 +19,18 @@ Enemy
 
 public class Enemy : MonoBehaviour
 {
-    [SerializeField] private float health = 100;
+    [SerializeField] private Enemy_ScriptObject scriptObject;
+    private float health, movementSpeed, attackSpeed;
+    private GameObject projectilePrefab;
+    private EnemyType type;
 
-    private enum Type{
-    Melee, Charging, Ranged
-    }
-
-    [SerializeField]
-    private Type type;
-
-    // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
-
+        health = scriptObject.health;
+        movementSpeed = scriptObject.movementSpeed;
+        attackSpeed = scriptObject.attackSpeed;
+        projectilePrefab = scriptObject.projectilePrefab;
+        type = scriptObject.enemyType;
     }
 
     void FixedUpdate()
@@ -49,6 +48,7 @@ public class Enemy : MonoBehaviour
 
     //when the enemy rans out of health
     void Die(){
+        scriptObject.OnDeath();
         Destroy(gameObject);
     }
 }
