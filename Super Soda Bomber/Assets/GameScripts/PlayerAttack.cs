@@ -82,13 +82,11 @@ public class PlayerAttack : PublicScripts
             fireRate = fireRates[projectileScript.GetName()];
             explodeType = projectileScript.GetExplosionType();
 
-            //adds the score and updates the attack time
-            GameplayScript.current.AddScore(scores["fire"]);
+            //updates the attack time
             attackTime = fireRate + Time.time;
 
             //start waiting if it's a detonation projectile
             if (explodeType == ExplosionType.Detonate){
-                Debug.Log("set isCreated to true");
                 coro = projectileScript.coro;
                 isCreated = true;
             }
@@ -96,8 +94,6 @@ public class PlayerAttack : PublicScripts
 
         //detonate the projectile using the button
         else if (attack && projectileScript != null && isCreated){
-            Debug.Log("Detonated");
-
             StopCoroutine(coro);
             projectileScript.DetonateProjectile();
             isCreated = false;

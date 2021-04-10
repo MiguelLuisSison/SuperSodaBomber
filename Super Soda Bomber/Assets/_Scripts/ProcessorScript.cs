@@ -117,13 +117,13 @@ public static class AbilityProcessor
 {
     public class AbilityEvent: UnityEvent<Rigidbody2D>{}
     private static PassiveAbility passiveAbility;
-    private static bool isInitialized;
     
     private static Dictionary<PlayerAbilities, UnityEvent<Rigidbody2D>> abilityDict = new Dictionary<PlayerAbilities, UnityEvent<Rigidbody2D>>();
     private static Dictionary<PlayerAbilities, float> abilityCooldown = new Dictionary<PlayerAbilities, float>();
 
     //handles the cooldown of the ability
     private static Coroutine coroutine;
+    public static PlayerAbilities abilities { get; private set; }
     
     /// <summary>
     /// Selects and configures the ability to the player according to the inputted key
@@ -132,36 +132,35 @@ public static class AbilityProcessor
     /// <param name="controller">Player Control</param>
     public static void Fetch(PlayerAbilities key, PlayerMovement controller)
     {
-        //NOTE: Fetch() should only be called ONCE.
-        if (!isInitialized){
+        Debug.Log($"fetched {key}");
+        //clear the data if it's used again
+        abilityDict.Clear();
+        abilityCooldown.Clear();
 
-            //small if-else statement to choose the correct ability
-            //key.HasFlag detects if it contains a certain ability
-            if (key.HasFlag(PlayerAbilities.DoubleJump)){
-                var tag = PlayerAbilities.DoubleJump;
-                var obj = new DoubleJump();
-                var e = ConfigureEvent(obj);
-                abilityDict.Add(tag, e);
-                abilityCooldown.Add(tag, obj.cooldown);
+        abilities = key;
 
-            }
-            if (key.HasFlag(PlayerAbilities.Dash)){
-                var tag = PlayerAbilities.Dash;
-                var obj = new Dash();
-                var e = ConfigureEvent(obj);
-                abilityDict.Add(tag, e);
-                abilityCooldown.Add(tag, obj.cooldown);
-                controller.flipEvent += obj.OnFlip;
-            }
-            if (key.HasFlag(PlayerAbilities.LongJump)){
-                passiveAbility = new LongJump();
-                controller.m_JumpForce = passiveAbility.ApplyPassiveAbility(
-                    controller.m_JumpForce);
-            }
+        //small if-else statement to choose the correct ability
+        //key.HasFlag detects if it contains a certain ability
+        if (key.HasFlag(PlayerAbilities.DoubleJump)){
+            var tag = PlayerAbilities.DoubleJump;
+            var obj = new DoubleJump();
+            var e = ConfigureEvent(obj);
+            abilityDict.Add(tag, e);
+            abilityCooldown.Add(tag, obj.cooldown);
 
-            Debug.Log(abilityDict);
-            
-            isInitialized = true;
+        }
+        if (key.HasFlag(PlayerAbilities.Dash)){
+            var tag = PlayerAbilities.Dash;
+            var obj = new Dash();
+            var e = ConfigureEvent(obj);
+            abilityDict.Add(tag, e);
+            abilityCooldown.Add(tag, obj.cooldown);
+            controller.flipEvent += obj.OnFlip;
+        }
+        if (key.HasFlag(PlayerAbilities.LongJump)){
+            passiveAbility = new LongJump();
+            controller.m_JumpForce = passiveAbility.ApplyPassiveAbility(
+                controller.m_JumpForce);
         }
     }
 
@@ -185,8 +184,11 @@ public static class AbilityProcessor
         }
     }
 
+    /// <summary>
+    /// Gets the cooldown of the active ability.
+    /// </summary>
+    /// <param name="key">Active Ability</param>
     public static float GetCooldown(PlayerAbilities key){
-        Debug.Log($"ability called {key}");
         if(abilityDict.ContainsKey(key)){
             return abilityCooldown[key];
         }

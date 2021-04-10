@@ -47,7 +47,6 @@ public class PlayerMovement : PublicScripts
 	//this will be used on abilities
 	[EnumFlags]
 	public PlayerAbilities chosenAbility;
-	public AbilityEvent m_AbilityCallEvent;
 	private AbilityVerifier a_Verifier;
 
 	public delegate void flipDelegate();
@@ -55,32 +54,27 @@ public class PlayerMovement : PublicScripts
     /// <summary>
     /// Event when the player flips. (Dash)
     /// </summary>
-    public event flipDelegate flipEvent;
-
-	[System.Serializable]
-	public class AbilityEvent: UnityEvent<Rigidbody2D>{}			
+    public event flipDelegate flipEvent;		
 
 	[System.Serializable]
 	public class BoolEvent : UnityEvent<bool> {}
 
 	void Awake()
 	{
+		//config variables
 		m_Rigidbody2D = GetComponent<Rigidbody2D>();
+
+		//config ability and the verifier
 		a_Verifier = gameObject.AddComponent<AbilityVerifier>();
 		AbilityProcessor.Fetch(chosenAbility, this);
 
 		if (OnLandEvent == null)
 			OnLandEvent = new UnityEvent();
 
-		if (m_AbilityCallEvent == null) {
-			m_AbilityCallEvent = new AbilityEvent();
-		}
-
 	}
 
 	void Start(){
-		a_Verifier.Init(m_AbilityCallEvent, m_Rigidbody2D, chosenAbility);
-        Debug.Log(chosenAbility);
+		a_Verifier.Init(m_Rigidbody2D, chosenAbility);
 	}
 
 
@@ -147,9 +141,6 @@ public class PlayerMovement : PublicScripts
 
 			//prevents user from double jumping indefinely midair
 			m_doubleJump = true;
-
-			// Add score
-			GameplayScript.current.AddScore(scores["jump"]);
 		}
 
 		//verifier for double jump
@@ -224,7 +215,6 @@ public class PlayerMovement : PublicScripts
 /// Verifies the use of active abilities on runtime.
 /// </summary>
 public class AbilityVerifier: PublicScripts{
-	private UnityEvent<Rigidbody2D> _event;
 	private PlayerAbilities chosenAbility;
 	private Rigidbody2D rigid;
 	private bool ready = true;
@@ -232,9 +222,7 @@ public class AbilityVerifier: PublicScripts{
 	//asynchronous work
 	private Coroutine coro;
 
-	public void Init(UnityEvent<Rigidbody2D> e, 
-					Rigidbody2D r, PlayerAbilities a){
-		_event = e;
+	public void Init(Rigidbody2D r, PlayerAbilities a){
 		chosenAbility = a;
 		rigid = r;
 	}

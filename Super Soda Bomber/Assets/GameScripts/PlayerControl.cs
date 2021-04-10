@@ -59,7 +59,6 @@ public class PlayerControl : MonoBehaviour {
 		}
 
 		if (joystickDetector.isDoubleClick){
-			Debug.Log("double tap");
 			tapPosition = 0;
 			return true;
 		}

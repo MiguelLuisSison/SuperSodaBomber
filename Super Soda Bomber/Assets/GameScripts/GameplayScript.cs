@@ -82,6 +82,7 @@ public class GameplayScript : PublicScripts
         playerData.checkpointTag = checkpointTag;
         playerData.projectileType = (int) ProjectileProcessor.projectileType;
         playerData.map = (int) mapName;
+        playerData.abilityType = (int) AbilityProcessor.abilities;
         Debug.Log($"saved projectile: {ProjectileProcessor.projectileType}");
 
         //save part
@@ -98,16 +99,20 @@ public class GameplayScript : PublicScripts
             //load part
             PlayerData playerData = (PlayerData)saveLoad.bf.Deserialize(file);
             file.Close();
-            int savedMap = playerData.map;
+            MapName savedMap = (MapName) playerData.map;
 
             //don't load if the data is for a different map
-            if (savedMap == 0|| savedMap.Equals(mapName)){
+            if (savedMap == 0 || savedMap.Equals(mapName)){
                 score = playerData.score;
                 PlayerPrefs.SetInt("CurrentScore", score);
 
                 float[] c = playerData.coords;
                 coords = new Vector3(c[0], c[1], c[2]);
                 player.transform.position = coords;
+                
+                var playerMove = player.GetComponent<PlayerMovement>();
+                AbilityProcessor.Fetch((PlayerAbilities) playerData.abilityType, playerMove);
+
                 ProjectileProcessor.SetProjectileName((PlayerProjectiles) playerData.projectileType);
 
                 /*
