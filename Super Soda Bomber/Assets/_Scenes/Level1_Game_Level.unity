@@ -255,6 +255,7 @@ GameObject:
   - component: {fileID: 89766938}
   - component: {fileID: 89766937}
   - component: {fileID: 89766933}
+  - component: {fileID: 89766939}
   m_Layer: 8
   m_Name: Player
   m_TagString: Untagged
@@ -460,8 +461,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 3
-  onPlayerDamage: {fileID: 11400000, guid: ac774140692c0e64990a43ca26a22ae2, type: 2}
-  onPlayerDeath: {fileID: 11400000, guid: b6e910f99b2822e40bc7b019800bab50, type: 2}
+  onPlayerDamageEvent: {fileID: 0}
+  onPlayerDeathEvent: {fileID: 0}
 --- !u!114 &89766938
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -474,6 +475,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3747addff0dd6154284c58690f0402df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &89766939
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 89766928}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c3cd00a62478544995dd2d10d60dbf9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameEvent: {fileID: 0}
+  unityEventResponse:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &111112491
 GameObject:
   m_ObjectHideFlags: 0
