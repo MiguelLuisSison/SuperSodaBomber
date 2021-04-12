@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System;
+using SuperSodaBomber.Enemies;
 
 /*
     Projectile
@@ -73,7 +73,7 @@ public abstract class Projectile: PublicScripts{
     public virtual void Explode(Collider2D col = null, GameObject explosion = null){
         //if it's not an explosive and directly hits the enemy and collider is not empty
         if (col != null && col.gameObject.tag == "Enemy" && !isExplosive){
-            var enemyScript = col.gameObject.GetComponent<Enemy>();
+            var enemyScript = col.gameObject.GetComponent<EnemyMovement>();
 
             //checks whether it has the key from PublicScripts.cs
             try{
@@ -96,7 +96,8 @@ public abstract class Projectile: PublicScripts{
                     if(colliders[i].gameObject.tag == "Enemy"){
                         //gets the distance between the enemy and the bomb
                         float distance = colliders[i].Distance(g_Collider).distance;
-                        var enemyScript = colliders[i].gameObject.GetComponent<Enemy>();
+                        var enemyScript = colliders[i].gameObject.GetComponent<EnemyMovement>();
+                        
                         //damage the enemy
                         enemyScript.Damage(GetSplashDamage(Mathf.Abs(distance)));
                     }
@@ -278,7 +279,7 @@ public class Pellet: Projectile{
     {
         if (col != null && col.gameObject.tag == "Enemy"){
             newDistance = gameObject.transform.position;
-            var enemyScript = col.gameObject.GetComponent<Enemy>();
+            var enemyScript = col.gameObject.GetComponent<EnemyMovement>();
 
             //gets the distance, damage it and adds the score
             try{
@@ -313,3 +314,5 @@ public class Pellet: Projectile{
     }
     
 }
+
+//ENEMY PROJECTILE TYPES

@@ -28,17 +28,18 @@ public class PlayerHealth : MonoBehaviour
     void Damage(){
         --health;
         onPlayerDamageEvent?.Raise();
-        GameplayScript.SetHpUI(health);
+        GameplayScript.SetHpUI(health<0 ? 0 : health);
         if (health <= 0)
             OnPlayerDeath();
         else{
-            Debug.Log("temp-immunity called");
             coroutine = StartCoroutine(TemporaryImmunity());
         }
 
     }
 
     void OnPlayerDeath(){
+        if (coroutine != null)
+            StopCoroutine(coroutine);
         onPlayerDeathEvent?.Raise();
         GameplayScript.current.GameOver();
     }
@@ -47,8 +48,6 @@ public class PlayerHealth : MonoBehaviour
     void FixedUpdate()
     {
         if (player.transform.position.y < 0){
-            if (coroutine != null)
-                StopCoroutine(coroutine);
             OnPlayerDeath();
         }
     }

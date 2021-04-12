@@ -8,17 +8,19 @@ Enemy_ScriptObject
         - Shooter
         - Roller
 */
+namespace SuperSodaBomber.Enemies{
+    [CreateAssetMenu(fileName = "New Enemy ScriptableObject", menuName = "ScriptableObjects/Enemy")]
+    public class Enemy_ScriptObject : ScriptableObject
+    {
+        public float health = 100;
+        public float movementSpeed;
+        public float attackSpeed, attackRadius, attackRate;
+        public float spotRadius;
+        public GameObject projectilePrefab;
+        public EnemyType enemyType;
+        public EnemyPhase enemyPhase;
+        public bool isMoving = false;
+        public bool facingRight = true;
 
-[CreateAssetMenu(fileName = "New Enemy ScriptableObject", menuName = "ScriptableObjects/Enemy")]
-public class Enemy_ScriptObject : ScriptableObject
-{
-    public float health = 100;
-    public float movementSpeed;
-    public float attackSpeed;
-    public GameObject projectilePrefab;
-    public EnemyType enemyType;
-
-    public void OnDeath(){
-        //insert the events when the enemy dies
     }
 }

@@ -4,12 +4,14 @@ using System.Reflection;
 using System;
 using UnityEngine;
 using UnityEngine.Events;
+using SuperSodaBomber.Enemies;
 
 /*
 Processor Script
     Used to determine what component/prefab to use for:
         - Projectiles
         - Abilities
+        - Enemies
 */
 
 // Projectile Processor
@@ -113,6 +115,9 @@ public static class ProjectileProcessor{
 
 }
 
+/// <summary>
+/// Gets and calls the events that are used in an ability.
+/// </summary>
 public static class AbilityProcessor
 {
     public class AbilityEvent: UnityEvent<Rigidbody2D>{}
@@ -196,5 +201,24 @@ public static class AbilityProcessor
             return abilityCooldown[key];
         }
         return 0;
+    }
+}
+
+public static class EnemyProcessor{
+    private static Dictionary<EnemyType, Type> enemyDict = new Dictionary<EnemyType, Type>();
+    private static bool isConfig = false;
+
+    private static void Configure(){
+        enemyDict.Add(EnemyType.Shooter, typeof(Shooter));
+        isConfig = true;
+    }
+    public static Type Fetch(Enemy_ScriptObject scriptObject, GameObject enemyPrefab){
+        if (!isConfig)
+            Configure();
+
+        // BaseEnemy chosenComponent = enemyPrefab.AddComponent(enemyDict[scriptObject.enemyType]) as BaseEnemy;
+        // chosenComponent.Init(scriptObject);
+        // return enemyPrefab;
+        return enemyDict[scriptObject.enemyType];
     }
 }

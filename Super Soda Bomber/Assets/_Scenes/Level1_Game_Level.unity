@@ -255,7 +255,6 @@ GameObject:
   - component: {fileID: 89766938}
   - component: {fileID: 89766937}
   - component: {fileID: 89766933}
-  - component: {fileID: 89766939}
   m_Layer: 8
   m_Name: Player
   m_TagString: Untagged
@@ -319,7 +318,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 89766928}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 9.02, y: 2.03, z: 18.55002}
+  m_LocalPosition: {x: 9.02, y: 2.03, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1274516751}
@@ -372,7 +371,7 @@ Rigidbody2D:
   m_GravityScale: 3
   m_Material: {fileID: 6200000, guid: d57e89c8d13b7634b9d70928b6f7c440, type: 2}
   m_Interpolate: 0
-  m_SleepingMode: 1
+  m_SleepingMode: 0
   m_CollisionDetection: 1
   m_Constraints: 4
 --- !u!95 &89766933
@@ -461,8 +460,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 3
-  onPlayerDamageEvent: {fileID: 0}
-  onPlayerDeathEvent: {fileID: 0}
+  onPlayerDamageEvent: {fileID: 11400000, guid: ac774140692c0e64990a43ca26a22ae2,
+    type: 2}
+  onPlayerDeathEvent: {fileID: 11400000, guid: b6e910f99b2822e40bc7b019800bab50, type: 2}
 --- !u!114 &89766938
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -475,22 +475,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3747addff0dd6154284c58690f0402df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &89766939
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 89766928}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3c3cd00a62478544995dd2d10d60dbf9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gameEvent: {fileID: 0}
-  unityEventResponse:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!1 &111112491
 GameObject:
   m_ObjectHideFlags: 0
@@ -626,12 +610,12 @@ PrefabInstance:
     - target: {fileID: 6243056072295389845, guid: ad9b427d648f0bf4a871b7aa95d6bc85,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 87.28
+      value: 125.14
       objectReference: {fileID: 0}
     - target: {fileID: 6243056072295389845, guid: ad9b427d648f0bf4a871b7aa95d6bc85,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 5.21
+      value: 6.7
       objectReference: {fileID: 0}
     - target: {fileID: 6243056072295389845, guid: ad9b427d648f0bf4a871b7aa95d6bc85,
         type: 3}
@@ -683,6 +667,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: MeleeMilkling11
       objectReference: {fileID: 0}
+    - target: {fileID: 6243056072295389850, guid: ad9b427d648f0bf4a871b7aa95d6bc85,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ad9b427d648f0bf4a871b7aa95d6bc85, type: 3}
 --- !u!4 &158565749 stripped
@@ -701,12 +690,12 @@ PrefabInstance:
     - target: {fileID: 6243056072295389845, guid: ad9b427d648f0bf4a871b7aa95d6bc85,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 70.08
+      value: 107.92
       objectReference: {fileID: 0}
     - target: {fileID: 6243056072295389845, guid: ad9b427d648f0bf4a871b7aa95d6bc85,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.69
+      value: 0.73
       objectReference: {fileID: 0}
     - target: {fileID: 6243056072295389845, guid: ad9b427d648f0bf4a871b7aa95d6bc85,
         type: 3}
@@ -757,6 +746,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: MeleeMilkling8
+      objectReference: {fileID: 0}
+    - target: {fileID: 6243056072295389850, guid: ad9b427d648f0bf4a871b7aa95d6bc85,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ad9b427d648f0bf4a871b7aa95d6bc85, type: 3}
@@ -16609,12 +16603,12 @@ PrefabInstance:
     - target: {fileID: 6243056072295389845, guid: ad9b427d648f0bf4a871b7aa95d6bc85,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 77.49
+      value: 78.64
       objectReference: {fileID: 0}
     - target: {fileID: 6243056072295389845, guid: ad9b427d648f0bf4a871b7aa95d6bc85,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 8.18
+      value: 6.05
       objectReference: {fileID: 0}
     - target: {fileID: 6243056072295389845, guid: ad9b427d648f0bf4a871b7aa95d6bc85,
         type: 3}
@@ -16665,6 +16659,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: MeleeMilkling9
+      objectReference: {fileID: 0}
+    - target: {fileID: 6243056072295389850, guid: ad9b427d648f0bf4a871b7aa95d6bc85,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ad9b427d648f0bf4a871b7aa95d6bc85, type: 3}
@@ -16769,12 +16768,12 @@ PrefabInstance:
     - target: {fileID: 6243056072295389845, guid: ad9b427d648f0bf4a871b7aa95d6bc85,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 61.75
+      value: 99.1
       objectReference: {fileID: 0}
     - target: {fileID: 6243056072295389845, guid: ad9b427d648f0bf4a871b7aa95d6bc85,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3.26
+      value: 4.68
       objectReference: {fileID: 0}
     - target: {fileID: 6243056072295389845, guid: ad9b427d648f0bf4a871b7aa95d6bc85,
         type: 3}
@@ -16826,6 +16825,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: MeleeMilkling5
       objectReference: {fileID: 0}
+    - target: {fileID: 6243056072295389850, guid: ad9b427d648f0bf4a871b7aa95d6bc85,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ad9b427d648f0bf4a871b7aa95d6bc85, type: 3}
 --- !u!4 &711268788 stripped
@@ -16844,12 +16848,12 @@ PrefabInstance:
     - target: {fileID: 6243056072295389845, guid: ad9b427d648f0bf4a871b7aa95d6bc85,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 89.52
+      value: 126.94
       objectReference: {fileID: 0}
     - target: {fileID: 6243056072295389845, guid: ad9b427d648f0bf4a871b7aa95d6bc85,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.77
+      value: 0.7
       objectReference: {fileID: 0}
     - target: {fileID: 6243056072295389845, guid: ad9b427d648f0bf4a871b7aa95d6bc85,
         type: 3}
@@ -16900,6 +16904,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: MeleeMilkling10
+      objectReference: {fileID: 0}
+    - target: {fileID: 6243056072295389850, guid: ad9b427d648f0bf4a871b7aa95d6bc85,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ad9b427d648f0bf4a871b7aa95d6bc85, type: 3}
@@ -16998,12 +17007,12 @@ PrefabInstance:
     - target: {fileID: 6243056072295389845, guid: ad9b427d648f0bf4a871b7aa95d6bc85,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 12.69
+      value: 50.69
       objectReference: {fileID: 0}
     - target: {fileID: 6243056072295389845, guid: ad9b427d648f0bf4a871b7aa95d6bc85,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.21
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 6243056072295389845, guid: ad9b427d648f0bf4a871b7aa95d6bc85,
         type: 3}
@@ -17054,6 +17063,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: MeleeMilkling2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6243056072295389850, guid: ad9b427d648f0bf4a871b7aa95d6bc85,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ad9b427d648f0bf4a871b7aa95d6bc85, type: 3}
@@ -17160,7 +17174,7 @@ RectTransform:
   - {fileID: 319986851}
   - {fileID: 1345853733}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -17177,12 +17191,12 @@ PrefabInstance:
     - target: {fileID: 6243056072295389845, guid: ad9b427d648f0bf4a871b7aa95d6bc85,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 134.91
+      value: 172.93
       objectReference: {fileID: 0}
     - target: {fileID: 6243056072295389845, guid: ad9b427d648f0bf4a871b7aa95d6bc85,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.13
+      value: 1.62
       objectReference: {fileID: 0}
     - target: {fileID: 6243056072295389845, guid: ad9b427d648f0bf4a871b7aa95d6bc85,
         type: 3}
@@ -17233,6 +17247,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: MeleeMilkling15
+      objectReference: {fileID: 0}
+    - target: {fileID: 6243056072295389850, guid: ad9b427d648f0bf4a871b7aa95d6bc85,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ad9b427d648f0bf4a871b7aa95d6bc85, type: 3}
@@ -17454,12 +17473,12 @@ PrefabInstance:
     - target: {fileID: 6243056072295389845, guid: ad9b427d648f0bf4a871b7aa95d6bc85,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 120.63
+      value: 158.63
       objectReference: {fileID: 0}
     - target: {fileID: 6243056072295389845, guid: ad9b427d648f0bf4a871b7aa95d6bc85,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.04
+      value: 1.65
       objectReference: {fileID: 0}
     - target: {fileID: 6243056072295389845, guid: ad9b427d648f0bf4a871b7aa95d6bc85,
         type: 3}
@@ -17510,6 +17529,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: MeleeMilkling14
+      objectReference: {fileID: 0}
+    - target: {fileID: 6243056072295389850, guid: ad9b427d648f0bf4a871b7aa95d6bc85,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ad9b427d648f0bf4a871b7aa95d6bc85, type: 3}
@@ -17583,7 +17607,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1078728655}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: -1}
-  m_LocalPosition: {x: 3.5919404, y: -2.3876, z: 0.022960663}
+  m_LocalPosition: {x: 3.5919404, y: -2.3876, z: -18.52706}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1385053691}
@@ -18201,12 +18225,12 @@ PrefabInstance:
     - target: {fileID: 6243056072295389845, guid: ad9b427d648f0bf4a871b7aa95d6bc85,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 176.37
+      value: 214.29
       objectReference: {fileID: 0}
     - target: {fileID: 6243056072295389845, guid: ad9b427d648f0bf4a871b7aa95d6bc85,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.32
+      value: 2.58
       objectReference: {fileID: 0}
     - target: {fileID: 6243056072295389845, guid: ad9b427d648f0bf4a871b7aa95d6bc85,
         type: 3}
@@ -18257,6 +18281,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: MeleeMilkling16
+      objectReference: {fileID: 0}
+    - target: {fileID: 6243056072295389850, guid: ad9b427d648f0bf4a871b7aa95d6bc85,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ad9b427d648f0bf4a871b7aa95d6bc85, type: 3}
@@ -18642,12 +18671,12 @@ PrefabInstance:
     - target: {fileID: 6243056072295389845, guid: ad9b427d648f0bf4a871b7aa95d6bc85,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 41
+      value: 78.97
       objectReference: {fileID: 0}
     - target: {fileID: 6243056072295389845, guid: ad9b427d648f0bf4a871b7aa95d6bc85,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.33
+      value: 1.59
       objectReference: {fileID: 0}
     - target: {fileID: 6243056072295389845, guid: ad9b427d648f0bf4a871b7aa95d6bc85,
         type: 3}
@@ -18699,6 +18728,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: MeleeMilkling3
       objectReference: {fileID: 0}
+    - target: {fileID: 6243056072295389850, guid: ad9b427d648f0bf4a871b7aa95d6bc85,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ad9b427d648f0bf4a871b7aa95d6bc85, type: 3}
 --- !u!4 &1439801326 stripped
@@ -18731,7 +18765,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1448927305}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 37.87, y: 1.38, z: 42.61133}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 270545816}
@@ -18763,12 +18797,12 @@ PrefabInstance:
     - target: {fileID: 6243056072295389845, guid: ad9b427d648f0bf4a871b7aa95d6bc85,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 53.33
+      value: 91.28
       objectReference: {fileID: 0}
     - target: {fileID: 6243056072295389845, guid: ad9b427d648f0bf4a871b7aa95d6bc85,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.22
+      value: 2.73
       objectReference: {fileID: 0}
     - target: {fileID: 6243056072295389845, guid: ad9b427d648f0bf4a871b7aa95d6bc85,
         type: 3}
@@ -18819,6 +18853,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: MeleeMilkling4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6243056072295389850, guid: ad9b427d648f0bf4a871b7aa95d6bc85,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ad9b427d648f0bf4a871b7aa95d6bc85, type: 3}
@@ -18871,12 +18910,12 @@ PrefabInstance:
     - target: {fileID: 6243056072295389845, guid: ad9b427d648f0bf4a871b7aa95d6bc85,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 68.58
+      value: 106.58
       objectReference: {fileID: 0}
     - target: {fileID: 6243056072295389845, guid: ad9b427d648f0bf4a871b7aa95d6bc85,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 4.07
+      value: 5.79
       objectReference: {fileID: 0}
     - target: {fileID: 6243056072295389845, guid: ad9b427d648f0bf4a871b7aa95d6bc85,
         type: 3}
@@ -18927,6 +18966,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: MeleeMilkling6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6243056072295389850, guid: ad9b427d648f0bf4a871b7aa95d6bc85,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ad9b427d648f0bf4a871b7aa95d6bc85, type: 3}
@@ -19013,7 +19057,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1524053558}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: -1}
-  m_LocalPosition: {x: 3.5919404, y: -2.3876, z: 0.022960663}
+  m_LocalPosition: {x: 3.5919404, y: -2.3876, z: -18.52706}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 231876222}
@@ -19594,12 +19638,12 @@ PrefabInstance:
     - target: {fileID: 6243056072295389845, guid: ad9b427d648f0bf4a871b7aa95d6bc85,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 110.47
+      value: 148.42
       objectReference: {fileID: 0}
     - target: {fileID: 6243056072295389845, guid: ad9b427d648f0bf4a871b7aa95d6bc85,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 4.19
+      value: 5.61
       objectReference: {fileID: 0}
     - target: {fileID: 6243056072295389845, guid: ad9b427d648f0bf4a871b7aa95d6bc85,
         type: 3}
@@ -19650,6 +19694,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: MeleeMilkling13
+      objectReference: {fileID: 0}
+    - target: {fileID: 6243056072295389850, guid: ad9b427d648f0bf4a871b7aa95d6bc85,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ad9b427d648f0bf4a871b7aa95d6bc85, type: 3}
@@ -19901,12 +19950,12 @@ PrefabInstance:
     - target: {fileID: 6243056072295389845, guid: ad9b427d648f0bf4a871b7aa95d6bc85,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 37.75
+      value: 75.75
       objectReference: {fileID: 0}
     - target: {fileID: 6243056072295389845, guid: ad9b427d648f0bf4a871b7aa95d6bc85,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.53
+      value: 1.53
       objectReference: {fileID: 0}
     - target: {fileID: 6243056072295389845, guid: ad9b427d648f0bf4a871b7aa95d6bc85,
         type: 3}
@@ -19957,6 +20006,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: MeleeMilkling7
+      objectReference: {fileID: 0}
+    - target: {fileID: 6243056072295389850, guid: ad9b427d648f0bf4a871b7aa95d6bc85,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ad9b427d648f0bf4a871b7aa95d6bc85, type: 3}
@@ -20053,12 +20107,12 @@ PrefabInstance:
     - target: {fileID: 6243056072295389845, guid: ad9b427d648f0bf4a871b7aa95d6bc85,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 100.09
+      value: 138.09
       objectReference: {fileID: 0}
     - target: {fileID: 6243056072295389845, guid: ad9b427d648f0bf4a871b7aa95d6bc85,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.17
+      value: 1.61
       objectReference: {fileID: 0}
     - target: {fileID: 6243056072295389845, guid: ad9b427d648f0bf4a871b7aa95d6bc85,
         type: 3}
@@ -20109,6 +20163,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: MeleeMilkling12
+      objectReference: {fileID: 0}
+    - target: {fileID: 6243056072295389850, guid: ad9b427d648f0bf4a871b7aa95d6bc85,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ad9b427d648f0bf4a871b7aa95d6bc85, type: 3}
@@ -20327,7 +20386,7 @@ PrefabInstance:
     - target: {fileID: 2041560207544345657, guid: 27d0f2bee960e7644b91257c559fdba4,
         type: 3}
       propertyPath: m_RootOrder
-      value: 6
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 2041560207544345657, guid: 27d0f2bee960e7644b91257c559fdba4,
         type: 3}
@@ -20611,7 +20670,7 @@ PrefabInstance:
     - target: {fileID: 4565031751597982988, guid: d8ddd31a46bebfb4b997f415d95bf446,
         type: 3}
       propertyPath: m_RootOrder
-      value: 5
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 4565031751597982988, guid: d8ddd31a46bebfb4b997f415d95bf446,
         type: 3}
@@ -20780,12 +20839,12 @@ PrefabInstance:
     - target: {fileID: 6243056072295389845, guid: ad9b427d648f0bf4a871b7aa95d6bc85,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 7.27
+      value: 45.27
       objectReference: {fileID: 0}
     - target: {fileID: 6243056072295389845, guid: ad9b427d648f0bf4a871b7aa95d6bc85,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.25
+      value: 1.61
       objectReference: {fileID: 0}
     - target: {fileID: 6243056072295389845, guid: ad9b427d648f0bf4a871b7aa95d6bc85,
         type: 3}
@@ -20836,6 +20895,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: MeleeMilkling1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6243056072295389850, guid: ad9b427d648f0bf4a871b7aa95d6bc85,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ad9b427d648f0bf4a871b7aa95d6bc85, type: 3}

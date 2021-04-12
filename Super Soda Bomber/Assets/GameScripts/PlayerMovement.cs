@@ -35,6 +35,8 @@ public class PlayerMovement : PublicScripts
 	private bool m_FacingRight = true;  // For determining which way the player is currently facing.
 	private bool m_doubleJump = true;
 
+	public static Vector3 playerPosition { get; private set; }
+
 	//animator
 	private PlayerAnimation animator = PlayerAnimation.current;
 
@@ -78,9 +80,10 @@ public class PlayerMovement : PublicScripts
 		GameplayScript.SetHpUI(health);
 	}
 
-
 	void FixedUpdate()
 	{
+		//Updates the player tranform
+		playerPosition = transform.position;
 		//Player Animation script
 		animator = PlayerAnimation.current;
 		bool wasGrounded = m_Grounded;
