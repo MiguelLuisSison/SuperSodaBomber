@@ -22,7 +22,7 @@ public class DetectButtonPress : MonoBehaviour, IPointerDownHandler, IPointerUpH
 		isPressed = false;
 	}
 
-	public bool getPressedStatus(){
+	public bool GetPressedStatus(){
 		return isPressed;
 	}
 }

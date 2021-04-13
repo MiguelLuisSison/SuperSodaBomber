@@ -19,8 +19,6 @@ GameplayScript
 
 public class GameplayScript : PublicScripts
 {
-    // Script for TestGameplay
-
     /*
     Processes:
     When user touches the checkpoint:
@@ -34,21 +32,32 @@ public class GameplayScript : PublicScripts
     */
     
     //Config Variables
-    public GameObject scoreTxtObject, player, tileObject, pausePrompt;
+    [SerializeField] private GameObject scoreTxtObject, hpTxtObject, player, tileObject, pausePrompt;
+
+    private Text scoreTxt, hpTxt;
+    private static int health;
 
     //Variables to Save
     private int score = 0;
     private Vector3 coords;
     private string checkpointTag;
+    public MapName mapName;
 
     private bool isPaused = false;
 
-    //Removes the script dependency using a self-static variable.
+    //Removes the object dependency using a self-static variable.
     public static GameplayScript current;
+    private SaveLoadManager saveLoad;
+
+    void Awake(){
+        saveLoad = gameObject.AddComponent<SaveLoadManager>();
+    }
 
     void Start(){
         Load();
         current = this;
+        scoreTxt = scoreTxtObject.GetComponent<Text>();
+        hpTxt = hpTxtObject.GetComponent<Text>();
     }
 
     /// <summary>
@@ -71,65 +80,81 @@ public class GameplayScript : PublicScripts
         coords += new Vector3(0, .5f, 0);
 
         //I/O
-        FileStream file = File.Create(savePath);
+        FileStream file = File.Create(saveLoad.savePath);
         PlayerData playerData = new PlayerData();
         playerData.score = score;
         playerData.coords = new float[] {coords[0], coords[1], coords[2]};
         playerData.checkpointTag = checkpointTag;
-        playerData.projectileName = ProjectileProcessor.GetProjectileName();
-        Debug.Log($"saved projectile: {playerData.projectileName}");
+        playerData.projectileType = (int) ProjectileProcessor.projectileType;
+        playerData.map = (int) mapName;
+        playerData.abilityType = (int) AbilityProcessor.abilities;
+        Debug.Log($"saved projectile: {ProjectileProcessor.projectileType}");
 
         //save part
-        bf.Serialize(file, playerData);
+        saveLoad.bf.Serialize(file, playerData);
         file.Close();
     }
 
     //load game
     public void Load(){
-        if (File.Exists(savePath)){
+        if (File.Exists(saveLoad.savePath)){
             //I/O
-            FileStream file = File.Open(savePath, FileMode.Open);
+            FileStream file = File.Open(saveLoad.savePath, FileMode.Open);
 
             //load part
-            PlayerData playerData = (PlayerData)bf.Deserialize(file);
+            PlayerData playerData = (PlayerData)saveLoad.bf.Deserialize(file);
             file.Close();
+            MapName savedMap = (MapName) playerData.map;
 
-            score = playerData.score;
-            PlayerPrefs.SetInt("CurrentScore", score);
+            //don't load if the data is for a different map
+            if (savedMap == 0 || savedMap.Equals(mapName)){
+                score = playerData.score;
+                PlayerPrefs.SetInt("CurrentScore", score);
 
-            float[] c = playerData.coords;
-            coords = new Vector3(c[0], c[1], c[2]);
-            player.transform.position = coords;
-            ProjectileProcessor.SetProjectileName(playerData.projectileName);
+                float[] c = playerData.coords;
+                coords = new Vector3(c[0], c[1], c[2]);
+                player.transform.position = coords;
+                
+                var playerMove = player.GetComponent<PlayerMovement>();
+                AbilityProcessor.Fetch((PlayerAbilities) playerData.abilityType, playerMove);
 
-            /*
-            Sample Hierarchy of GameObject Tile
-            to change the checkpoint image
-                Tile
-                    -> Obstacles
-                    -> Checkpoint1
-                        -> CheckpointScript
+                ProjectileProcessor.SetProjectileName((PlayerProjectiles) playerData.projectileType);
 
-            Process:
-                - Find the child gameobject using the name
-                - Call the ChangeState() of the child script
-            */
+                /*
+                Sample Hierarchy of GameObject Tile
+                to change the checkpoint image
+                    Tile
+                        -> Obstacles
+                        -> Checkpoint1
+                            -> CheckpointScript
 
-            //name of the loaded checkpoint
-            checkpointTag = playerData.checkpointTag;
+                Process:
+                    - Find the child gameobject using the name
+                    - Call the ChangeState() of the child script
+                */
 
-            //gets the list its children
-            Transform[] childrenObj = tileObject.GetComponentsInChildren<Transform>();
+                //name of the loaded checkpoint
+                checkpointTag = playerData.checkpointTag;
 
-            foreach(Transform obj in childrenObj){
-                //if name matches with checkpointTag, change the state
-                if (obj.name == checkpointTag){
-                    CheckpointScript objScript = obj.GetComponent<CheckpointScript>();
-                    objScript.ChangeState();
-                    break;
+                //gets the list its children
+                Transform[] childrenObj = tileObject.GetComponentsInChildren<Transform>();
+
+                foreach(Transform obj in childrenObj){
+                    //if name matches with checkpointTag, change the state
+                    if (obj.name == checkpointTag){
+                        CheckpointScript objScript = obj.GetComponent<CheckpointScript>();
+                        objScript.ChangeState();
+                        break;
+                    }
                 }
             }
+            else
+                Debug.Log("Data is for the different map. Data is not loaded");
         }
+    }
+
+    public static void SetHpUI(int newHP){
+        health = newHP;
     }
 
     //when player dies
@@ -155,7 +180,7 @@ public class GameplayScript : PublicScripts
 
     //DevTools
     public void Restart(){
-        if (File.Exists(savePath)){
+        if (File.Exists(saveLoad.savePath)){
             Load();
         }
         else{
@@ -163,13 +188,18 @@ public class GameplayScript : PublicScripts
         }
     }
 
+    /*
+        HOTKEYS
+            r - Restart
+            c - Erase Data
+            esc - Pause
+    */
     void Update(){
         if(Input.GetKey("r")){
             Restart();
         }
         else if(Input.GetKey("c")){
-            ClearData();
-            Debug.Log("Data has been erased!");
+            saveLoad.ClearData();
         }
         else if(Input.GetKeyDown(KeyCode.Escape)){
             _TogglePause();
@@ -184,16 +214,10 @@ public class GameplayScript : PublicScripts
         
     }
 
-    void FixedUpdate(){
-        if(player.transform.position.y < 0){
-            GameOver();
-        }
-    }
-
     void LateUpdate()
     {
-        Text scoreTxt = scoreTxtObject.GetComponent<Text>();
-        scoreTxt.text = "" + score;
+        scoreTxt.text = $"{score}";
+        hpTxt.text = $"HP: {health}";
     }
 }
 
@@ -201,7 +225,9 @@ public class GameplayScript : PublicScripts
 class PlayerData{
     public int score;
     public float[] coords;
-    public string projectileName;
+    public int projectileType;
+    public int abilityType;
+    public int map;
 
     //checkpoint data
     public string checkpointTag;

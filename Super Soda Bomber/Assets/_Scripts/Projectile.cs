@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System;
+using SuperSodaBomber.Enemies;
 
 /*
     Projectile
@@ -32,6 +32,7 @@ public abstract class Projectile: PublicScripts{
     //metadata
     /// <summary>Projectile name</summary>
     public string p_name = "sodaBomb";
+    public PlayerProjectiles p_tag;
 
     //projectile attributes
     //throwing physics
@@ -45,7 +46,7 @@ public abstract class Projectile: PublicScripts{
     /// <summary>Provides blast damage + explosion fx </summary>
     protected bool isExplosive = true;
     /// <summary>Selected Explosion Type</summary>
-    public explosionType selectedType;
+    public ExplosionType selectedType;
     /// <summary>Time until the projectile explodes by itself</summary>
     public float detonateTime = 0f;
 
@@ -72,7 +73,7 @@ public abstract class Projectile: PublicScripts{
     public virtual void Explode(Collider2D col = null, GameObject explosion = null){
         //if it's not an explosive and directly hits the enemy and collider is not empty
         if (col != null && col.gameObject.tag == "Enemy" && !isExplosive){
-            var enemyScript = col.gameObject.GetComponent<Enemy>();
+            var enemyScript = col.gameObject.GetComponent<EnemyMovement>();
 
             //checks whether it has the key from PublicScripts.cs
             try{
@@ -85,7 +86,7 @@ public abstract class Projectile: PublicScripts{
                 enemyScript.Damage(25);           
             }
         }
-        else{
+        else if (isExplosive){
             //gets a circlecast to get enemies that are within the blast radius
             var g_Collider = gameObject.GetComponent<BoxCollider2D>();
             Collider2D[] colliders = Physics2D.OverlapCircleAll(gameObject.transform.position, blastRadius);
@@ -95,7 +96,8 @@ public abstract class Projectile: PublicScripts{
                     if(colliders[i].gameObject.tag == "Enemy"){
                         //gets the distance between the enemy and the bomb
                         float distance = colliders[i].Distance(g_Collider).distance;
-                        var enemyScript = colliders[i].gameObject.GetComponent<Enemy>();
+                        var enemyScript = colliders[i].gameObject.GetComponent<EnemyMovement>();
+                        
                         //damage the enemy
                         enemyScript.Damage(GetSplashDamage(Mathf.Abs(distance)));
                     }
@@ -170,7 +172,7 @@ public class Fizztol: Projectile{
 }
 
 /*
-    Cannad
+    Cannade
         A projectile that fires on a curve. When detonate 
         or waited within several seconds, it will let out
         a small group of cluster bombs
@@ -181,7 +183,7 @@ public class Cannade: Projectile{
     private int clusterAmount = 5;
 
     void Awake(){
-        selectedType = explosionType.Detonate;
+        selectedType = ExplosionType.Detonate;
         spin = 10f;
         p_name = "cannade";
         detonateTime = 2f;
@@ -215,7 +217,7 @@ public class SmallCluster: Projectile{
     
     void Awake(){
         p_name = "smallCluster";
-        selectedType = explosionType.Delay;
+        selectedType = ExplosionType.Delay;
         throwX *= UnityEngine.Random.Range(-.25f, 1.15f);
         throwY = UnityEngine.Random.Range(-100,100);
         blastRadius = 1.5f;
@@ -237,7 +239,7 @@ public class Shotgun: Projectile{
 
     void Awake(){
         p_name = "shotgun";
-        selectedType = explosionType.Instant;
+        selectedType = ExplosionType.Instant;
         //lowers the y-value for attack source of the pellets
         // attackSource = gameObject.transform.position + new Vector3(.2f, -.45f, 0f);
     }
@@ -250,7 +252,7 @@ public class Shotgun: Projectile{
 }
 
 /*
-    Shotgun Pellet (Sfizz) (internal)
+    Shotgun Pellet (Sfizz internal)
         Small projectiles that inflict large damage the closer it hits the enemy
         It has a short reach.
 */
@@ -277,7 +279,7 @@ public class Pellet: Projectile{
     {
         if (col != null && col.gameObject.tag == "Enemy"){
             newDistance = gameObject.transform.position;
-            var enemyScript = col.gameObject.GetComponent<Enemy>();
+            var enemyScript = col.gameObject.GetComponent<EnemyMovement>();
 
             //gets the distance, damage it and adds the score
             try{
@@ -312,3 +314,5 @@ public class Pellet: Projectile{
     }
     
 }
+
+//ENEMY PROJECTILE TYPES

@@ -38,14 +38,14 @@ public class ProjectileManager : PublicScripts
         //adds component
         s_Projectile = ProjectileProcessor.ConfigureComponent(gameObject);
         //activates delayed detonation for some projectiles
-        explosionType explodeType = GetExplosionType();
+        ExplosionType explodeType = GetExplosionType();
 
-        if (explodeType == explosionType.Delay ||
-            explodeType == explosionType.Detonate)
+        if (explodeType == ExplosionType.Delay ||
+            explodeType == ExplosionType.Detonate)
                 coro = StartCoroutine(WaitUntilDetonate());
 
         //instantly explode this one because why not
-        else if (explodeType == explosionType.Instant)
+        else if (explodeType == ExplosionType.Instant)
             ExplodeProjectile();
     }
 
@@ -57,7 +57,7 @@ public class ProjectileManager : PublicScripts
     void OnTriggerEnter2D(Collider2D col){
         //detects whether if the projectile collides with the map or the enemy
         if ((layersToCollide.value & 1 << col.gameObject.layer) != 0 && 
-            (GetExplosionType() != explosionType.Delay)){
+            (GetExplosionType() != ExplosionType.Delay)){
             //if it collides, activate the particle effect and then destroy the Bomb projectile.
             ExplodeProjectile(col);
         }
@@ -101,7 +101,7 @@ public class ProjectileManager : PublicScripts
     }
 
     /// <returns>Explosion Type of the projectile</returns>
-    public Projectile.explosionType GetExplosionType(){
+    public Projectile.ExplosionType GetExplosionType(){
         return s_Projectile.selectedType;
     }
 

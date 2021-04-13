@@ -40,7 +40,7 @@ public class ConfirmPromptScript : PublicScripts
             _TogglePrompt(prompt);
         }
         else{
-            Debug.Log("LoadConfirmPrompt has nothing to load!");
+            Debug.LogError("LoadConfirmPrompt has nothing to load!");
         }
     }
 
@@ -50,7 +50,7 @@ public class ConfirmPromptScript : PublicScripts
             gameplayScript.Restart();
         }
         else{
-            Debug.Log("gameplayScirpt is notconfigured!");
+            Debug.LogError("gameplayScript is not configured!");
         }
         
     }

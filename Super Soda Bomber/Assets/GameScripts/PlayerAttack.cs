@@ -31,7 +31,8 @@ public class PlayerAttack : PublicScripts
 
     //weapon prefab (fix this to make it more flexible)
     private GameObject projectilePrefab;
-    public string projectileName;
+    public PlayerProjectiles chosenProjectile;
+    private string projectileName;
     private bool isPrefabLoaded;
 
     //firing properties
@@ -41,7 +42,7 @@ public class PlayerAttack : PublicScripts
     private GameObject projectile;
     private ProjectileManager projectileScript;
     private bool isCreated;             //only applies to detonation projectiles. otherwise, it will stay false
-    private explosionType explodeType;  //explosion type of the projectile. Located at PublicScripts.cs
+    private ExplosionType explodeType;  //explosion type of the projectile. Located at PublicScripts.cs
 
     //asynchronous work
     private Coroutine coro;
@@ -60,7 +61,8 @@ public class PlayerAttack : PublicScripts
 		if (attack && (attackTime <= Time.time && !isCreated)){
 
             if (!isPrefabLoaded){
-                projectilePrefab = ProjectileProcessor.GetPrefab(projectileName);
+                projectilePrefab = ProjectileProcessor.GetPrefab(chosenProjectile);
+                projectileName = ProjectileProcessor.GetProjectileName();
                 isPrefabLoaded = true;
             }
 
@@ -80,13 +82,11 @@ public class PlayerAttack : PublicScripts
             fireRate = fireRates[projectileScript.GetName()];
             explodeType = projectileScript.GetExplosionType();
 
-            //adds the score and updates the attack time
-            GameplayScript.current.AddScore(scores["fire"]);
+            //updates the attack time
             attackTime = fireRate + Time.time;
 
             //start waiting if it's a detonation projectile
-            if (explodeType == explosionType.Detonate){
-                Debug.Log("set isCreated to true");
+            if (explodeType == ExplosionType.Detonate){
                 coro = projectileScript.coro;
                 isCreated = true;
             }
@@ -94,8 +94,6 @@ public class PlayerAttack : PublicScripts
 
         //detonate the projectile using the button
         else if (attack && projectileScript != null && isCreated){
-            Debug.Log("Detonated");
-
             StopCoroutine(coro);
             projectileScript.DetonateProjectile();
             isCreated = false;

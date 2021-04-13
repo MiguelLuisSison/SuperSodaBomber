@@ -192,7 +192,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f8fa9b1c67c53141b222ce52ecc4e96, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  savePath: 
   gameplayScript: {fileID: 0}
   messageTxt: {fileID: 2041560208844440742}
   key: 0
@@ -309,8 +308,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 258, y: -122}
-  m_SizeDelta: {x: 257.16333, y: 113.66843}
+  m_AnchoredPosition: {x: -229.4, y: -110}
+  m_SizeDelta: {x: 400, y: 113.66843}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2041560208321079696
 CanvasRenderer:
@@ -434,8 +433,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -244, y: -122}
-  m_SizeDelta: {x: 257.16333, y: 113.66843}
+  m_AnchoredPosition: {x: 235.9, y: -110}
+  m_SizeDelta: {x: 400, y: 113.66843}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2041560208366004553
 CanvasRenderer:

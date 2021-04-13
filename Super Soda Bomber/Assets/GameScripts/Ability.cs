@@ -13,6 +13,9 @@ using UnityEngine.Events;
                 Long Jump
 */
 
+/// <summary>
+/// Empty Base Class Ability.
+/// </summary>
 public class Ability
 {
     /// <summary>
@@ -20,13 +23,13 @@ public class Ability
     /// </summary>
     public virtual void Init(UnityEvent<Rigidbody2D> e) {}
 }
-
+/// 
 /// <summary>
 /// Abilities that require player's action in order to activate it.
 /// </summary>
 public abstract class ActiveAbility : Ability
 {
-
+    public float cooldown { get; protected set; }
     public override void Init(UnityEvent<Rigidbody2D> e)
     {
         e.AddListener(CallAbility);
@@ -36,9 +39,9 @@ public abstract class ActiveAbility : Ability
     /// Calls the ability and applies it to the player
     /// </summary>
     /// <param name="rigid">RigidBody of the player</param>
-    public virtual void CallAbility(Rigidbody2D rigid) { }
+    public abstract void CallAbility(Rigidbody2D rigid);
+    public virtual void OnFlip(){}
 }
-
 
 /// <summary>
 /// Abilities that enhances one of the player's abilities permanently.
@@ -57,7 +60,6 @@ public abstract class PassiveAbility: Ability
         return oldValue * multiplier;
     }
 }
-
 
 /// <summary>
 /// Abilities that enhances one of the player's abilities temporarily.
@@ -103,8 +105,9 @@ public abstract class Powerup: PassiveAbility
 
 public class DoubleJump : ActiveAbility
 {
-    private float jumpForce = 400f;
+    private float jumpForce = 300f;
     private float jumpMultiplier = 1.25f;
+
     public override void CallAbility(Rigidbody2D rigid)
     {
         rigid.AddForce(new Vector2(0f, jumpForce * jumpMultiplier));
@@ -113,16 +116,24 @@ public class DoubleJump : ActiveAbility
 
 /*
     Dash
-        Lets the player move quickly by pressing
-        attack button twice
+        Lets the player move quickly by tapping the
+        joystick twice
 */
 
 public class Dash : ActiveAbility
 {
     private float dashForce = 15f;
+
+    public Dash(){
+        cooldown = 3f;
+    }
+    
     public override void CallAbility(Rigidbody2D rigid)
     {
         rigid.velocity += new Vector2(dashForce, 0);
+    }
+    public override void OnFlip(){
+        dashForce *= -1;
     }
 }
 
