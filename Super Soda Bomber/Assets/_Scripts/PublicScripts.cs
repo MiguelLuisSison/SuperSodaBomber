@@ -108,5 +108,5 @@ public enum PlayerProjectiles{
 }
 
 public enum MapName{
-    None, Test, Level1
+    None, Test, Level1, Level2
 }

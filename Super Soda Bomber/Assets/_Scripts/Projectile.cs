@@ -316,3 +316,35 @@ public class Pellet: Projectile{
 }
 
 //ENEMY PROJECTILE TYPES
+public class ShooterProjectile: Projectile{
+
+    void Awake(){
+        p_name = "shooterProjectile";
+        //throwing physics
+        throwX = 4f;
+        throwY = 0;
+        gravity = 0;
+
+        //explosion & player moving mechanic
+        isExplosive = false;
+        applyMovingMechanic = false;
+    }
+
+    public override void Explode(Collider2D col = null, GameObject explosion = null)
+    {
+        if (col != null && col.gameObject.tag == "Enemy"){
+            var enemyScript = col.gameObject.GetComponent<EnemyMovement>();
+
+            //gets the distance, damage it and adds the score
+            try{
+                GameplayScript.current.AddScore(projScores[p_name]);
+                enemyScript.Damage(projDamage[p_name]);            
+            }
+
+            catch (KeyNotFoundException){
+                Debug.LogError($"Key '{p_name}' cannot be found at the PublicScripts.cs.");
+                enemyScript.Damage(25);           
+            }
+        }
+    }
+}

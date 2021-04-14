@@ -1,10 +1,13 @@
-﻿
+﻿/*
+EnemyInternal
+    Internal and essential data for enemy.
+*/
+
 namespace SuperSodaBomber.Enemies{
     /// /// <summary>
     /// Interface for the Concrete Enemy Outer Class
     /// </summary>
     public interface IEnemyOuter{
-        EnemyState GetState();
         void Flip();
     }
 

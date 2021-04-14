@@ -35,7 +35,7 @@ public class PlayerMovement : PublicScripts
 	private bool m_FacingRight = true;  // For determining which way the player is currently facing.
 	private bool m_doubleJump = true;
 
-	public static Vector3 playerPosition { get; private set; }
+	public static Vector3 playerPos { get; private set; }
 
 	//animator
 	private PlayerAnimation animator = PlayerAnimation.current;
@@ -83,7 +83,7 @@ public class PlayerMovement : PublicScripts
 	void FixedUpdate()
 	{
 		//Updates the player tranform
-		playerPosition = transform.position;
+		playerPos = transform.position;
 		//Player Animation script
 		animator = PlayerAnimation.current;
 		bool wasGrounded = m_Grounded;
@@ -195,23 +195,6 @@ public class PlayerMovement : PublicScripts
 		//calls the flip event
 		flipEvent?.Invoke();
 	}
-
-	// triggers when player touches the checkpoint
-	private void OnTriggerEnter2D(Collider2D col){
-		if (col.gameObject.layer == 10){
-			//gets SpriteRenderer and changes the image
-			checkScript = col.GetComponent<CheckpointScript>();
-
-			//activate these scripts if the checkpoint was not saved yet
-			if(!checkScript.isTouched){
-				checkScript.ChangeState();
-				GameplayScript.current.AddScore(scores["checkpoint"]);
-				GameplayScript.current.SetCheckpoint(col.transform.position, col.name);
-				StartCoroutine(checkScript.Notify());
-				Debug.Log("Checkpoint Saved!");
-			}
-		}
-    }
 }
 
 /// <summary>

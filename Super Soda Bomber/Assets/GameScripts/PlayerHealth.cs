@@ -62,11 +62,11 @@ public class PlayerHealth : MonoBehaviour
     private IEnumerator TemporaryImmunity(){
         //contains number of seconds to blink 8 times
         float[] durations = {2f, 1f};
-        float blinkCycle = 8f;
+        float blinkCycle = 16f;
         isTempImmune = true;
 
         Color oldColor = p_Renderer.color;  //opaque
-        Color blinkColor = new Color(oldColor.r, oldColor.g, oldColor.b, .5f);  //semi-transparent
+        Color blinkColor = new Color(oldColor.r, oldColor.g, oldColor.b, .25f);  //semi-transparent
 
         //loops through the durations array
         for (int i = 0; i < durations.Length; i++){

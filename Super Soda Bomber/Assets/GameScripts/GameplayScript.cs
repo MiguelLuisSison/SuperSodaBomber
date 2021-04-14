@@ -69,6 +69,11 @@ public class GameplayScript : PublicScripts
             score += amount;
     }
 
+    /// <summary>
+    /// Sets and saves the checkpoint data.
+    /// </summary>
+    /// <param name="checkpointCoords">Checkpoint position</param>
+    /// <param name="name">Name of the checkpoint</param>
     public void SetCheckpoint(Vector3 checkpointCoords, string name){
         coords = checkpointCoords;
         checkpointTag = name;

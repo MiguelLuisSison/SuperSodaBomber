@@ -13,7 +13,7 @@ public class ProjectileManager : PublicScripts
     //selects what kind of projectile is it to change the properties
     [HideInInspector]
     public enum Type{
-        Bomb, Pistol, Cluster, smallCluster, Shotgun, pellet
+        Bomb, Pistol, Cluster, smallCluster, Shotgun, pellet, EnemyShooter
     }
 
     //the selected property

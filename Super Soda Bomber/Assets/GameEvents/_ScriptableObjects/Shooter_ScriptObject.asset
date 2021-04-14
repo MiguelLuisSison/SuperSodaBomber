@@ -14,12 +14,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 100
   movementSpeed: 0
-  attackSpeed: 10
+  attackRate: 1.29
   attackRadius: 5
-  attackRate: 10
   spotRadius: 10
-  projectilePrefab: {fileID: 0}
+  projectilePrefab: {fileID: 6374188849564462713, guid: 426fc3268d0f80947aa5e51ca187dde3,
+    type: 3}
   enemyType: 0
   enemyPhase: 0
   isMoving: 0
   facingRight: 0
+  healthMultiplier: 1
+  attackRateMultiplier: 1
+  phase2Sprite: {fileID: 0}

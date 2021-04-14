@@ -1,7 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using SuperSodaBomber.Events;
 
 /*
 Enemy
@@ -18,36 +16,45 @@ Enemy
 */
 
 namespace SuperSodaBomber.Enemies{
+    //base class template for milklings. all milkling classes will use this
     public abstract class BaseEnemy: MonoBehaviour, IEnemyOuter{
+        //list of phase classes that are inside the BaseEnemy
         protected Dictionary<EnemyPhase, IEnemyInner> phaseDict = new Dictionary<EnemyPhase, IEnemyInner>();
+
         protected IEnemyInner chosenPhase;
 
+        //enemies always start at wandering phase
         protected EnemyState currentState = EnemyState.Wander;
-        protected bool facingRight;
+        //player position to track
         protected Vector3 playerPos;
         
         //data needed from scriptable object
         protected float spotRadius, attackRadius, attackRate;
+        protected float attackRateMultiplier, healthMultiplier;
+        protected bool facingRight;
 
         //configures data
-        public virtual void Init(Enemy_ScriptObject scriptObject){
+        public virtual void Init(Enemy_ScriptObject scriptObject, Transform attackSource){
             spotRadius = scriptObject.spotRadius;
             attackRadius = scriptObject.attackRadius;
-            attackRate = scriptObject.attackRate;
             facingRight = scriptObject.facingRight;
-        }
+            attackRate = scriptObject.attackRate;
 
-        //changes the state of the enemy
-        public EnemyState GetState(){
-            return currentState;
+            if (scriptObject.enemyPhase == EnemyPhase.Phase2)
+                attackRate /= scriptObject.attackRateMultiplier;
         }
 
         //flips the character if it's within the firing radius
         public void Flip(){
+            //if the player:
+                //is at the right and the enemy is facing left
+                //is at the left and the enemy is facing right
             if(facingRight && (playerPos.x < transform.position.x) ||
             !facingRight && playerPos.x > transform.position.x){
 
+                //flip it
                 facingRight = !facingRight;
+
                 //Unlike the player, the enemy has a different shape of collider.
                 transform.localScale = new Vector3(transform.localScale.x*-1, 1f, 1f);
             }
@@ -55,11 +62,14 @@ namespace SuperSodaBomber.Enemies{
 
         //returns true if the enemy is within the radius
         protected bool FindTarget(float radius){
-            playerPos = PlayerMovement.playerPosition;
+            playerPos = PlayerMovement.playerPos;
             return (Vector3.Distance(transform.position, playerPos)  < radius);
         }
 
-        public abstract void InvokeState();
+        //calls the state with the chosen phase
+        public void InvokeState(){
+            chosenPhase.CallState();
+        }
 
         //nested class for phases, since it will have different behavior
         public abstract class BaseInnerEnemy:IEnemyInner{
@@ -68,25 +78,52 @@ namespace SuperSodaBomber.Enemies{
         }
     }
 
-    public class Shooter: BaseEnemy{
-        public override void Init(Enemy_ScriptObject scriptObject)
-        {
-            base.Init(scriptObject);
-            phaseDict.Add(EnemyPhase.Phase1, new Phase1(this));
-            // phaseDict.Add(EnemyPhase.Phase2, new Phase2(this));
+//ENEMY CLASSES
 
-            chosenPhase = phaseDict[scriptObject.enemyPhase];     
+/*
+    Shooter Milkling
+        An enemy that shoots a milk projectile to the player.
+*/
+
+    public class Shooter: BaseEnemy{
+        protected GameObject projectilePrefab;
+        protected Transform attackSource;
+
+        public override void Init(Enemy_ScriptObject scriptObject, Transform attackSource)
+        {
+            base.Init(scriptObject, attackSource);
+
+            //add the phase sub-classes at the dictionary
+            phaseDict.Add(EnemyPhase.Phase1, new Phase1(this));
+            phaseDict.Add(EnemyPhase.Phase2, new Phase2(this));
+
+            chosenPhase = phaseDict[scriptObject.enemyPhase];
+            projectilePrefab = scriptObject.projectilePrefab;
+            this.attackSource = attackSource;
         }
 
-        public override void InvokeState()
-        {
-            chosenPhase.CallState();
+        protected void FireProjectile(){
+            //get the angle by getting the target direction
+            Vector3 targetDir = playerPos - attackSource.position;
+            //use trigonometry to get the angle
+            //then convert (y/x) rad to degrees
+            float angle = Mathf.Atan2(targetDir.y, targetDir.x) * Mathf.Rad2Deg;
+
+            //convert to quaternion (datatype for rotations)
+            Quaternion q = Quaternion.AngleAxis(angle, Vector3.forward);
+
+            //spawn the projectile
+            Instantiate(projectilePrefab, attackSource.position, q);
         }
 
         public class Phase1: BaseInnerEnemy{
+            //outer class to access the functions
             private Shooter outer;
+            private float shootTime;
+
             public Phase1(Shooter o){
                 outer = o;
+                shootTime = Time.time;
             }
 
             public override void CallState(){
@@ -97,8 +134,10 @@ namespace SuperSodaBomber.Enemies{
                             outer.currentState = EnemyState.Attack;                
                         break;
                     case EnemyState.Attack:
-                        if (outer.FindTarget(outer.attackRadius)){
+                        if (outer.FindTarget(outer.attackRadius) && Time.time > shootTime){
                             //attack
+                            shootTime = Time.time + outer.attackRate;
+                            outer.FireProjectile();
                         }
                         else if (!outer.FindTarget(outer.spotRadius))
                             outer.currentState = EnemyState.Wander;
@@ -110,14 +149,32 @@ namespace SuperSodaBomber.Enemies{
         }
         public class Phase2: BaseInnerEnemy{
             private Shooter outer;
+            private float shootTime;
+
             public Phase2(Shooter o){
                 outer = o;
             }
 
             public override void CallState(){
-            
+                switch (outer.currentState){
+                    case EnemyState.Wander:
+                        //find if the player is within the range
+                        if (outer.FindTarget(outer.spotRadius))
+                            outer.currentState = EnemyState.Attack;                
+                        break;
+                    case EnemyState.Attack:
+                        if (outer.FindTarget(outer.attackRadius) && Time.time > shootTime){
+                            //attack
+                            shootTime = Time.time + outer.attackRate;
+                            outer.FireProjectile();
+                        }
+                        else if (!outer.FindTarget(outer.spotRadius))
+                            outer.currentState = EnemyState.Wander;
+
+                        outer.Flip();
+                        break;
+                }
             }
         }
     }
-    
 }
