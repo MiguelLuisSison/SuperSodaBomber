@@ -10,14 +10,7 @@ Projectile
 
 public class ProjectileManager : PublicScripts
 {
-    //selects what kind of projectile is it to change the properties
-    [HideInInspector]
-    public enum Type{
-        Bomb, Pistol, Cluster, smallCluster, Shotgun, pellet, EnemyShooter
-    }
-
-    //the selected property
-    public Type type;
+    public Projectile_ScriptObject scriptObject;
 
     //projectile attributes
     private bool playerMoving;          //is the player fires while moving
@@ -26,9 +19,6 @@ public class ProjectileManager : PublicScripts
 
     //determines on what destroys the projectile
     [SerializeField] private LayerMask layersToCollide;
-
-    //particle system (explosion)
-    public GameObject explosion;
 
     //asynchronous work
     public Coroutine coro;
@@ -46,12 +36,13 @@ public class ProjectileManager : PublicScripts
 
         //instantly explode this one because why not
         else if (explodeType == ExplosionType.Instant)
-            ExplodeProjectile();
+            ExplodeProjectile(scriptObject.explosionPrefab, scriptObject.explosionAmount);
     }
 
     void Start(){
         //central throwing attributes
-        s_Projectile.Init(rigid, playerMoving);
+        s_Projectile.Init(scriptObject, rigid, playerMoving);
+        s_Projectile.GetDamageLayer(layersToCollide);
     }
 
     void OnTriggerEnter2D(Collider2D col){
@@ -85,12 +76,21 @@ public class ProjectileManager : PublicScripts
     /// <summary>
     /// Explodes the projectile.
     /// </summary>
-    /// <param name="col">collider message</param>
+    /// <param name="col">collider</param>
     public void ExplodeProjectile(Collider2D col = null){
-        s_Projectile.Explode(col, explosion);
+        s_Projectile.Explode(col);
         Destroy(gameObject);
     }
 
+    /// <summary>
+    /// Explodes the projectile.
+    /// </summary>
+    /// <param name="prefab">Explosion Prefab</param>
+    /// <param name="amount">Amount of Explosion being shown</param>
+    public void ExplodeProjectile(GameObject prefab, int amount){
+        s_Projectile.Explode(prefab, amount);
+        Destroy(gameObject);
+    }
     //getters and setters
     /// <summary>
     /// Updates the PlayerMoving.
@@ -101,8 +101,8 @@ public class ProjectileManager : PublicScripts
     }
 
     /// <returns>Explosion Type of the projectile</returns>
-    public Projectile.ExplosionType GetExplosionType(){
-        return s_Projectile.selectedType;
+    public ExplosionType GetExplosionType(){
+        return scriptObject.explosionType;
     }
 
     /// <returns>Projectile Name</returns>
@@ -112,6 +112,6 @@ public class ProjectileManager : PublicScripts
 
     /// <returns>Detonation Time of the Projectile</returns>
     public float GetDetonateTime(){
-        return s_Projectile.detonateTime;
+        return scriptObject.detonateTime;
     }
 }

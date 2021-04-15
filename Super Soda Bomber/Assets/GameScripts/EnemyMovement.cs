@@ -8,7 +8,7 @@ EnemyMovement
     Uses the Enemy AI and manages the health along with its event.
 */
 namespace SuperSodaBomber.Enemies{
-    public class EnemyMovement : MonoBehaviour
+    public class EnemyMovement : MonoBehaviour, IDamageable
     {
         [SerializeField] private Enemy_ScriptObject scriptObject;   //holds saved data for the enemy
         [SerializeField] private VoidEvent enemyDeathEvent;         //contains the events when the enemy dies

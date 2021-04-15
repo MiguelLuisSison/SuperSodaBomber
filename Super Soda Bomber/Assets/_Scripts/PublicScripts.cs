@@ -27,14 +27,14 @@ public class PublicScripts : MonoBehaviour
             you can find the name of the projectile at Projectile.cs, p_name
     */
     protected readonly Dictionary<string, int> projScores = new Dictionary<string, int>(){
-        {"sodaBomb_s", 15},
-        {"sodaBomb_m", 30},
-        {"sodaBomb_l", 75},
-        {"smallCluster_s", 15},
-        {"smallCluster_m", 30},
-        {"smallCluster_l", 75},
-        {"shotgun", 5},
-        {"fizztol", 15}
+        {"SodaBomb_s", 15},
+        {"SodaBomb_m", 30},
+        {"SodaBomb_l", 75},
+        {"SmallCluster_s", 15},
+        {"SmallCluster_m", 30},
+        {"SmallCluster_l", 75},
+        {"Pellet", 5},
+        {"Fizztol", 15}
     };
 
     //description constants
@@ -47,10 +47,10 @@ public class PublicScripts : MonoBehaviour
 
     //firing rates of the weapons (shows cooldown in secs)
     protected readonly Dictionary <string, float> fireRates = new Dictionary <string, float>(){
-        {"sodaBomb", .6f},
-        {"fizztol", .4f},
-        {"cannade", 1.2f},
-        {"shotgun", .8f}
+        {"SodaBomb", .6f},
+        {"Fizztol", .4f},
+        {"Cannade", 1.2f},
+        {"Shotgun", .8f}
 
     };
 
@@ -60,25 +60,13 @@ public class PublicScripts : MonoBehaviour
             otherwise, add the name as is
     */
     protected readonly Dictionary <string, float> projDamage = new Dictionary<string, float>(){
-        {"sodaBomb_max", 50f},
-        {"sodaBomb_min", 20f},
-        {"smallCluster_max", 30f},
-        {"smallCluster_min", 10f},
-        {"fizztol", 30f},
-        {"shotgun", 15f}
-
+        {"SodaBomb_max", 50f},
+        {"SodaBomb_min", 20f},
+        {"SmallCluster_max", 30f},
+        {"SmallCluster_min", 10f},
+        {"Fizztol", 30f},
+        {"Pellet", 15f}
     };
-
-    //explosion types
-    /// <summary>
-    /// Explosion Type of the Projectile
-    /// </summary>
-    public enum ExplosionType{
-        Contact = 0,        //collision triggers explosion (default)
-        Detonate,           //player or time triggers explosion
-        Delay,              //time triggers explosion
-        Instant             //instantly explodes
-    }
 
     /// <summary>
     /// Moves to selected scene
@@ -103,10 +91,31 @@ public enum PlayerAbilities
     None, LongJump, DoubleJump, Dash = 4
 }
 
+public enum ProjectileTypes{
+    Undefined, SodaBomb, Fizztol, Cannade, Shotgun,
+    Shooter, Milcher_Bullet,
+    smallCluster, pellet
+}
+
 public enum PlayerProjectiles{
     Undefined, SodaBomb, Fizztol, Cannade, Shotgun
 }
 
 public enum MapName{
     None, Test, Level1, Level2
+}
+
+//explosion types
+/// <summary>
+/// Explosion Type of the Projectile
+/// </summary>
+    public enum ExplosionType{
+        Contact = 0,        //collision triggers explosion (default)
+        Detonate,           //player or time triggers explosion
+        Delay,              //time triggers explosion
+        Instant             //instantly explodes
+    }
+
+public interface IDamageable{
+    void Damage(float hp = 1);
 }

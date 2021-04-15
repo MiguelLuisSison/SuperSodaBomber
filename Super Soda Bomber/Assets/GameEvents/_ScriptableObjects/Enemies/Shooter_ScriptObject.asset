@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 100
   movementSpeed: 0
-  attackRate: 1.29
+  attackRate: 1.5
   attackRadius: 5
   spotRadius: 10
   projectilePrefab: {fileID: 6374188849564462713, guid: 426fc3268d0f80947aa5e51ca187dde3,

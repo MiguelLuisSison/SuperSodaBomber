@@ -9,7 +9,7 @@ Player Health
     It also triggers the damage and death of the player.
 */
 
-public class PlayerHealth : MonoBehaviour
+public class PlayerHealth : MonoBehaviour, IDamageable
 {
     [SerializeField][Range(0, 10)] private int health = 3;  //health of the player
     [SerializeField] private VoidEvent onPlayerDamageEvent; //events to trigger when player takes damage (e.g. sound)
@@ -25,7 +25,11 @@ public class PlayerHealth : MonoBehaviour
         p_Renderer = player.GetComponent<SpriteRenderer>();
     }
 
-    void Damage(){
+    public void Damage(float hp = 1){
+        //don't damage the player if it has temp immunity
+        if (isTempImmune)
+            return;
+
         --health;
         onPlayerDamageEvent?.Raise();
         GameplayScript.SetHpUI(health<0 ? 0 : health);
@@ -54,7 +58,7 @@ public class PlayerHealth : MonoBehaviour
 
     //triggers when player touches an enemy
 	void OnCollisionStay2D(Collision2D col){
-		if (col.gameObject.layer == 11 && !isTempImmune){
+		if (col.gameObject.layer == 11){
 			Damage();
 		}
 	}
@@ -62,7 +66,7 @@ public class PlayerHealth : MonoBehaviour
     private IEnumerator TemporaryImmunity(){
         //contains number of seconds to blink 8 times
         float[] durations = {2f, 1f};
-        float blinkCycle = 16f;
+        float blinkCycle = 10f;
         isTempImmune = true;
 
         Color oldColor = p_Renderer.color;  //opaque

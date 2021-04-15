@@ -446,7 +446,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackSource: {fileID: 266886288}
   attackHandSource: {fileID: 1926458545}
-  chosenProjectile: 0
+  chosenProjectile: 4
 --- !u!114 &89766937
 MonoBehaviour:
   m_ObjectHideFlags: 0
