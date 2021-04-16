@@ -23,6 +23,9 @@ public class ProjectileManager : PublicScripts
     //asynchronous work
     public Coroutine coro;
 
+    //forces projectile to destroy itself with the time limit
+    private float spawnDuration = 5f;
+
     void Awake()
     {
         //adds component
@@ -37,6 +40,9 @@ public class ProjectileManager : PublicScripts
         //instantly explode this one because why not
         else if (explodeType == ExplosionType.Instant)
             ExplodeProjectile(scriptObject.explosionPrefab, scriptObject.explosionAmount);
+        
+        else
+            coro = StartCoroutine(SetDespawnTime());
     }
 
     void Start(){
@@ -63,6 +69,11 @@ public class ProjectileManager : PublicScripts
 
         //waits for a short amount of time before exploding/despawning it.
         yield return new WaitForSeconds(waitingTime);
+        DetonateProjectile();
+    }
+
+    private IEnumerator SetDespawnTime(){
+        yield return new WaitForSeconds(spawnDuration);
         DetonateProjectile();
     }
 

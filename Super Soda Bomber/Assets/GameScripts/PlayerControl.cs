@@ -24,6 +24,9 @@ public class PlayerControl : MonoBehaviour {
 	bool attack = false;
 	TapDetector joystickDetector;
 
+	//Player Ability List
+	private List<IPowerup> currentPowerups = new List<IPowerup>();
+
 	//double tapping
 	float tapPosition = 0;	 //position where it's tapped
 	public bool isDoubleTap { get; private set; } //did it double tapped?
@@ -31,6 +34,26 @@ public class PlayerControl : MonoBehaviour {
 	//gets the tap detector of the joystick
 	void Awake(){
 		joystickDetector = joystick.GetComponent<TapDetector>();
+	}
+
+	public void AddPowerup(IPowerup powerup){
+		if (!currentPowerups.Contains(powerup))
+			currentPowerups.Add(powerup);
+			ApplyPowerup(powerup);
+	}
+
+	public void RemovePowerup(IPowerup powerup){
+		if (currentPowerups.Contains(powerup))
+			currentPowerups.Remove(powerup);
+	}
+
+	private void ApplyPowerup(IPowerup powerup){
+		powerup.Apply(gameObject);
+
+		if (typeof(IDurationPowerup).IsAssignableFrom(powerup.GetType())){
+			IDurationPowerup durationPowerup = (IDurationPowerup) powerup;
+			StartCoroutine(durationPowerup.AbilityEffect());
+		}
 	}
 
 	//Jump Button

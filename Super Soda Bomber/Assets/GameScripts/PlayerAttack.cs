@@ -37,6 +37,7 @@ public class PlayerAttack : PublicScripts
 
     //firing properties
     private float fireRate;
+    public float rateMultiplier { get; private set; }
     private float attackTime;
 
     private GameObject projectile;
@@ -54,6 +55,11 @@ public class PlayerAttack : PublicScripts
         isCreated = false;
         isPrefabLoaded = false;
         attackTime = 0;
+        rateMultiplier = 1f;
+    }
+
+    public void SetAttackRateMultiplier(float newValue){
+        rateMultiplier = newValue;
     }
 
     public void Attack(bool isMoving, bool attack){
@@ -79,7 +85,7 @@ public class PlayerAttack : PublicScripts
 
             //updates and fetches projectile's data
             projectileScript.SetPlayerMoving(isMoving);
-            fireRate = fireRates[projectileScript.GetName()];
+            fireRate = fireRates[projectileScript.GetName()]/rateMultiplier;
             explodeType = projectileScript.GetExplosionType();
 
             //updates the attack time

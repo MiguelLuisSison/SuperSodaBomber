@@ -61,40 +61,6 @@ public abstract class PassiveAbility: Ability
     }
 }
 
-/// <summary>
-/// Abilities that enhances one of the player's abilities temporarily.
-/// </summary>
-public abstract class Powerup: PassiveAbility
-{
-    /// <summary>Time until the ability/effect rans out</summary>
-    protected float abilityDuration;
-    protected float oldValue;
-
-    /// <summary>Updates the value which is implemented by the passive ability.
-    /// </summary>
-    /// <param name="oldValue">variable being implemented</param>
-    /// <returns>Updated value</returns>
-    public override float ApplyPassiveAbility(float oldValue)
-    {
-        this.oldValue = oldValue;
-        return base.ApplyPassiveAbility(oldValue);
-    }
-
-    /// <summary>Reverts the current value, removing the ability effect.</summary>
-    public virtual float UnapplyPassiveAbility()
-    {
-        return oldValue;
-    }
-
-    /// <summary>Waits for duration and then unapply the ability.</summary>
-    public virtual IEnumerator WaitAbilityEffect()
-    {
-        yield return new WaitForSeconds(abilityDuration);
-        UnapplyPassiveAbility();
-    }
-}
-
-
 //ABILITY TYPES (ACTIVE)
 
 /*

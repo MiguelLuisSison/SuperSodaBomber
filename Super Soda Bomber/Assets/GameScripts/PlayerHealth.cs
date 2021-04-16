@@ -38,7 +38,10 @@ public class PlayerHealth : MonoBehaviour, IDamageable
         else{
             coroutine = StartCoroutine(TemporaryImmunity());
         }
+    }
 
+    public void AddHP(){
+        ++health;
     }
 
     void OnPlayerDeath(){

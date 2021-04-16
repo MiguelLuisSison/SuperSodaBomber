@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: ShooterProjectile_ScriptObject
   m_EditorClassIdentifier: 
   projectileType: 5
-  throwX: 4
+  throwX: 3
   throwY: 0
   spin: 0
   gravity: 0

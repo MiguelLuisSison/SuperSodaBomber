@@ -23,14 +23,11 @@ namespace SuperSodaBomber.Enemies{
 
         public GameObject projectilePrefab;
         public EnemyType enemyType;
-        public EnemyPhase enemyPhase;
         public bool isMoving = false;
         public bool facingRight = true;
 
         public float healthMultiplier = 1f;
         public float attackRateMultiplier = 1f;
-        public Sprite phase2Sprite;
-
 
     }
     
@@ -51,19 +48,14 @@ namespace SuperSodaBomber.Enemies{
 
             s.projectilePrefab = (GameObject)EditorGUILayout.ObjectField("Projectile Prefab", s.projectilePrefab, typeof(GameObject), false);
             s.enemyType = (EnemyType)EditorGUILayout.EnumPopup("Enemy Type", s.enemyType);
-            s.enemyPhase = (EnemyPhase)EditorGUILayout.EnumPopup("Enemy Phase", s.enemyPhase);
             s.isMoving = EditorGUILayout.Toggle("Is Moving", s.isMoving);
             s.facingRight = EditorGUILayout.Toggle("Facing Right", s.facingRight);
 
-            bool isP2 = s.enemyPhase == EnemyPhase.Phase2;
-
             //Phase 2
             EditorGUILayout.Space();
-            using(new EditorGUI.DisabledScope(!isP2)){
-                EditorGUILayout.LabelField("Phase 2 Modifiers", EditorStyles.boldLabel);
-                s.healthMultiplier = EditorGUILayout.Slider("Health Multiplier", s.healthMultiplier, 1f, 3f);
-                s.attackRateMultiplier = EditorGUILayout.Slider("Attack Rate Multiplier", s.attackRateMultiplier, 1f, 2f);
-            }
+            EditorGUILayout.LabelField("Phase 2 Modifiers", EditorStyles.boldLabel);
+            s.healthMultiplier = EditorGUILayout.Slider("Health Multiplier", s.healthMultiplier, 1f, 3f);
+            s.attackRateMultiplier = EditorGUILayout.Slider("Attack Rate Multiplier", s.attackRateMultiplier, 1f, 2f);
         }
     }
 }

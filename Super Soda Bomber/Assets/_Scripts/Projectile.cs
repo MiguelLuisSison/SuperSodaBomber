@@ -54,9 +54,9 @@ public abstract class Projectile: PublicScripts{
             throwX *= so.throwingMultiplier;
 
         rigid.velocity = transform.right * throwX;
-
     }
 
+    //used for projectiles that uses random numbers
     protected virtual void ConfigVariables(){}
 
     protected virtual void Awake(){
@@ -96,7 +96,6 @@ public abstract class Projectile: PublicScripts{
         if (col != null)
             targetName = VerifyLayer(col.gameObject.layer);
 
-        Debug.Log("target name: " + targetName);
         //if it does not deal splash damage and hits the target
         if (col != null && targetName != null && !so.isSplashDamage){
             var targetScript = col.gameObject.GetComponent<IDamageable>();
@@ -130,11 +129,18 @@ public abstract class Projectile: PublicScripts{
 
             if(colliders.Length != 0){
                 for(int i = 0; i< colliders.Length; ++i){
+                    //checks if the collider is a target
+                    targetName = VerifyLayer(colliders[i].gameObject.layer);
+
                     //if it hits a target
                     if(targetName != null){
                         //gets the distance between the target and the bomb
                         float distance = colliders[i].Distance(g_Collider).distance;
                         var targetScript = colliders[i].gameObject.GetComponent<IDamageable>();
+
+                        //if the target just died, don't damage it anymore
+                        if (targetScript == null)
+                            continue;
                         
                         if (targetName == "Enemy")
                             targetScript.Damage(GetSplashDamage(Mathf.Abs(distance)));

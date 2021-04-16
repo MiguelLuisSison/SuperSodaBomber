@@ -21,8 +21,8 @@ MonoBehaviour:
   explosionPrefab: {fileID: 6199953446600296795, guid: a9bfa17f516efea4884dff4eb5bc0e63,
     type: 3}
   explosionAmount: 1
-  isSplashDamage: 0
-  blastRadius: 1
+  isSplashDamage: 1
+  blastRadius: 2.5
   explosionType: 0
   detonateTime: 0
   applyMovingMechanic: 1

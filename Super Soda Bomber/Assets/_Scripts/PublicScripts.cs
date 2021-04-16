@@ -48,7 +48,7 @@ public class PublicScripts : MonoBehaviour
     //firing rates of the weapons (shows cooldown in secs)
     protected readonly Dictionary <string, float> fireRates = new Dictionary <string, float>(){
         {"SodaBomb", .6f},
-        {"Fizztol", .4f},
+        {"Fizztol", .3f},
         {"Cannade", 1.2f},
         {"Shotgun", .8f}
 
@@ -60,9 +60,9 @@ public class PublicScripts : MonoBehaviour
             otherwise, add the name as is
     */
     protected readonly Dictionary <string, float> projDamage = new Dictionary<string, float>(){
-        {"SodaBomb_max", 50f},
+        {"SodaBomb_max", 60f},
         {"SodaBomb_min", 20f},
-        {"SmallCluster_max", 30f},
+        {"SmallCluster_max", 45f},
         {"SmallCluster_min", 10f},
         {"Fizztol", 30f},
         {"Pellet", 15f}

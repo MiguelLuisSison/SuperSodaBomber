@@ -13,6 +13,7 @@ namespace SuperSodaBomber.Enemies{
         [SerializeField] private Enemy_ScriptObject scriptObject;   //holds saved data for the enemy
         [SerializeField] private VoidEvent enemyDeathEvent;         //contains the events when the enemy dies
         [SerializeField] private Transform attackSource;         //contains the events when the enemy dies
+        [SerializeField] private EnemyPhase phase;
         private float health;
 
         private BaseEnemy chosenScript;
@@ -21,15 +22,11 @@ namespace SuperSodaBomber.Enemies{
         void Awake()
         {
             health = scriptObject.health;
-            chosenScript = gameObject.AddComponent(EnemyProcessor.Fetch(scriptObject, gameObject)) as BaseEnemy;
-            chosenScript.Init(scriptObject, attackSource);
+            chosenScript = gameObject.AddComponent(EnemyProcessor.Fetch(scriptObject)) as BaseEnemy;
+            chosenScript.Init(scriptObject, attackSource, phase);
 
             //change sprite and buff health if it's at phase 2
-            if (scriptObject.enemyPhase == EnemyPhase.Phase2){
-                if (scriptObject.phase2Sprite != null){
-                    spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
-                    spriteRenderer.sprite = scriptObject.phase2Sprite;
-                }
+            if (phase == EnemyPhase.Phase2){
                 health *= scriptObject.healthMultiplier;
             }
         }
@@ -37,6 +34,9 @@ namespace SuperSodaBomber.Enemies{
         void FixedUpdate()
         {
             chosenScript.InvokeState();
+            if(transform.position.y < 0){
+                Die();
+            }
         }
 
         public void Damage(float hp){

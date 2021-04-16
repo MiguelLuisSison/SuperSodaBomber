@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 
 /*
@@ -34,13 +35,13 @@ namespace SuperSodaBomber.Enemies{
         protected bool facingRight;
 
         //configures data
-        public virtual void Init(Enemy_ScriptObject scriptObject, Transform attackSource){
+        public virtual void Init(Enemy_ScriptObject scriptObject, Transform attackSource, EnemyPhase phase){
             spotRadius = scriptObject.spotRadius;
             attackRadius = scriptObject.attackRadius;
             facingRight = scriptObject.facingRight;
             attackRate = scriptObject.attackRate;
 
-            if (scriptObject.enemyPhase == EnemyPhase.Phase2)
+            if (phase == EnemyPhase.Phase2)
                 attackRate /= scriptObject.attackRateMultiplier;
         }
 
@@ -72,7 +73,7 @@ namespace SuperSodaBomber.Enemies{
         }
 
         //nested class for phases, since it will have different behavior
-        public abstract class BaseInnerEnemy:IEnemyInner{
+        public abstract class BaseInnerEnemy: IEnemyInner{
             //this is where the behavior takes place
             public abstract void CallState();
         }
@@ -89,15 +90,15 @@ namespace SuperSodaBomber.Enemies{
         protected GameObject projectilePrefab;
         protected Transform attackSource;
 
-        public override void Init(Enemy_ScriptObject scriptObject, Transform attackSource)
+        public override void Init(Enemy_ScriptObject scriptObject, Transform attackSource, EnemyPhase phase)
         {
-            base.Init(scriptObject, attackSource);
+            base.Init(scriptObject, attackSource, phase);
 
             //add the phase sub-classes at the dictionary
             phaseDict.Add(EnemyPhase.Phase1, new Phase1(this));
             phaseDict.Add(EnemyPhase.Phase2, new Phase2(this));
 
-            chosenPhase = phaseDict[scriptObject.enemyPhase];
+            chosenPhase = phaseDict[phase];
             projectilePrefab = scriptObject.projectilePrefab;
             this.attackSource = attackSource;
         }
@@ -114,6 +115,10 @@ namespace SuperSodaBomber.Enemies{
 
             //spawn the projectile
             Instantiate(projectilePrefab, attackSource.position, q);
+        }
+
+        protected void InvokeCoroutine(IEnumerator coro){
+            StartCoroutine(coro);
         }
 
         public class Phase1: BaseInnerEnemy{
@@ -150,6 +155,8 @@ namespace SuperSodaBomber.Enemies{
         public class Phase2: BaseInnerEnemy{
             private Shooter outer;
             private float shootTime;
+            private float burstTime = 0.05f;
+            private int shootAmount = 3;
 
             public Phase2(Shooter o){
                 outer = o;
@@ -166,13 +173,21 @@ namespace SuperSodaBomber.Enemies{
                         if (outer.FindTarget(outer.attackRadius) && Time.time > shootTime){
                             //attack
                             shootTime = Time.time + outer.attackRate;
-                            outer.FireProjectile();
+                            outer.InvokeCoroutine(Burst());
                         }
                         else if (!outer.FindTarget(outer.spotRadius))
                             outer.currentState = EnemyState.Wander;
 
                         outer.Flip();
                         break;
+                }
+            }
+
+            private IEnumerator Burst(){
+                for (int i = 0; i < shootAmount; i++)
+                {
+                    outer.FireProjectile();
+                    yield return new WaitForSeconds(burstTime);                    
                 }
             }
         }
