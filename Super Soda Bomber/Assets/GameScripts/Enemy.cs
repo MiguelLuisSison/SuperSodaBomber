@@ -121,6 +121,9 @@ namespace SuperSodaBomber.Enemies{
             StartCoroutine(coro);
         }
 
+        /// <summary>
+        /// Shooter fires slowly
+        /// </summary>
         public class Phase1: BaseInnerEnemy{
             //outer class to access the functions
             private Shooter outer;
@@ -139,11 +142,13 @@ namespace SuperSodaBomber.Enemies{
                             outer.currentState = EnemyState.Attack;                
                         break;
                     case EnemyState.Attack:
+                        //if it's wihtin attacking range and it's within fire rate
                         if (outer.FindTarget(outer.attackRadius) && Time.time > shootTime){
                             //attack
                             shootTime = Time.time + outer.attackRate;
                             outer.FireProjectile();
                         }
+                        //switch to wander if it's outside spot radius
                         else if (!outer.FindTarget(outer.spotRadius))
                             outer.currentState = EnemyState.Wander;
 
@@ -152,6 +157,10 @@ namespace SuperSodaBomber.Enemies{
                 }
             }
         }
+
+        /// <summary>
+        /// Shooter fires on a burst
+        /// </summary>
         public class Phase2: BaseInnerEnemy{
             private Shooter outer;
             private float shootTime;

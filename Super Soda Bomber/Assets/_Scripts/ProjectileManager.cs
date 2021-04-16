@@ -2,7 +2,7 @@
 using System.Collections;
 
 /*
-Projectile
+Projectile Manager
     Responsible for handling the projectile properties
     and its behavior such as handling how the projectile
     explodes
@@ -10,17 +10,17 @@ Projectile
 
 public class ProjectileManager : PublicScripts
 {
-    public Projectile_ScriptObject scriptObject;
+    [SerializeField] private Projectile_ScriptObject scriptObject;    //projectile scriptable object
 
     //projectile attributes
     private bool playerMoving;          //is the player fires while moving
     public Rigidbody2D rigid;           //rigidbody2D of the projectile prefab
     private Projectile s_Projectile;    //projectile script of the prefab
 
-    //determines on what destroys the projectile
+    //determines on which layers destroys the projectile
     [SerializeField] private LayerMask layersToCollide;
 
-    //asynchronous work
+    //used on detonations
     public Coroutine coro;
 
     //forces projectile to destroy itself with the time limit
@@ -72,6 +72,9 @@ public class ProjectileManager : PublicScripts
         DetonateProjectile();
     }
 
+    /// <summary>
+    /// Sets the timer for depawning
+    /// </summary>
     private IEnumerator SetDespawnTime(){
         yield return new WaitForSeconds(spawnDuration);
         DetonateProjectile();
@@ -87,17 +90,17 @@ public class ProjectileManager : PublicScripts
     /// <summary>
     /// Explodes the projectile.
     /// </summary>
-    /// <param name="col">collider</param>
+    /// <param name="col">Collider Info</param>
     public void ExplodeProjectile(Collider2D col = null){
         s_Projectile.Explode(col);
         Destroy(gameObject);
     }
 
     /// <summary>
-    /// Explodes the projectile.
+    /// Explodes the projectile instantly.
     /// </summary>
     /// <param name="prefab">Explosion Prefab</param>
-    /// <param name="amount">Amount of Explosion being shown</param>
+    /// <param name="amount">Amount of Explosion</param>
     public void ExplodeProjectile(GameObject prefab, int amount){
         s_Projectile.Explode(prefab, amount);
         Destroy(gameObject);

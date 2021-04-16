@@ -36,22 +36,39 @@ public class PlayerControl : MonoBehaviour {
 		joystickDetector = joystick.GetComponent<TapDetector>();
 	}
 
+	/// <summary>
+	/// Adds a powerup to the player.
+	/// </summary>
+	/// <param name="powerup">Powerup to add</param>
 	public void AddPowerup(IPowerup powerup){
 		if (!currentPowerups.Contains(powerup))
 			currentPowerups.Add(powerup);
 			ApplyPowerup(powerup);
 	}
 
+	/// <summary>
+	/// Removes a powerup to the player.
+	/// </summary>
+	/// <param name="powerup">Powerup to remove</param>
 	public void RemovePowerup(IPowerup powerup){
 		if (currentPowerups.Contains(powerup))
 			currentPowerups.Remove(powerup);
 	}
 
+	/// <summary>
+	/// Calls the powerup to take effect.
+	/// </summary>
+	/// <param name="powerup">Powerup to activate</param>
 	private void ApplyPowerup(IPowerup powerup){
+
+		//configures powerup
 		powerup.Apply(gameObject);
 
+		//if it's a duration-type powerup
 		if (typeof(IDurationPowerup).IsAssignableFrom(powerup.GetType())){
+
 			IDurationPowerup durationPowerup = (IDurationPowerup) powerup;
+			//start the effect
 			StartCoroutine(durationPowerup.AbilityEffect());
 		}
 	}

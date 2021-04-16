@@ -30,6 +30,11 @@ public class Ability
 public abstract class ActiveAbility : Ability
 {
     public float cooldown { get; protected set; }
+
+    /// <summary>
+    /// Initializes the ability's UnityEvent.
+    /// </summary>
+    /// <param name="e"></param>
     public override void Init(UnityEvent<Rigidbody2D> e)
     {
         e.AddListener(CallAbility);
@@ -48,7 +53,7 @@ public abstract class ActiveAbility : Ability
 /// </summary>
 public abstract class PassiveAbility: Ability
 {
-    /// <summary>Multiplier of the ability/variable</summary>
+    //Multiplier of the ability/variable
     protected float multiplier = 2f;
 
     /// <summary>Updates the value which is implemented by the passive ability.

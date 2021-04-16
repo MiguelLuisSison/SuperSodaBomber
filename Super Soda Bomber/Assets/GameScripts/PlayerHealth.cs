@@ -25,25 +25,40 @@ public class PlayerHealth : MonoBehaviour, IDamageable
         p_Renderer = player.GetComponent<SpriteRenderer>();
     }
 
+    /// <summary>
+    /// Damages the player.
+    /// </summary>
+    /// <param name="hp">[not needed] Hit points</param>
     public void Damage(float hp = 1){
-        //don't damage the player if it has temp immunity
+        //if it has temp immunity, do nothing
         if (isTempImmune)
             return;
 
         --health;
+
+        //activates the event (sounds) and updates hud
         onPlayerDamageEvent?.Raise();
         GameplayScript.SetHpUI(health<0 ? 0 : health);
+
         if (health <= 0)
             OnPlayerDeath();
         else{
+            //if it has health left, call the temp immunity
             coroutine = StartCoroutine(TemporaryImmunity());
         }
     }
 
+    /// <summary>
+    /// Adds player a hit point.
+    /// </summary>
     public void AddHP(){
         ++health;
+        GameplayScript.SetHpUI(health);
     }
 
+    /// <summary>
+    /// Call the events when player dies.
+    /// </summary>
     void OnPlayerDeath(){
         if (coroutine != null)
             StopCoroutine(coroutine);
@@ -51,9 +66,9 @@ public class PlayerHealth : MonoBehaviour, IDamageable
         GameplayScript.current.GameOver();
     }
 
-    // Update is called once per frame
     void FixedUpdate()
     {
+        //if it fell, die.
         if (player.transform.position.y < 0){
             OnPlayerDeath();
         }
@@ -67,8 +82,8 @@ public class PlayerHealth : MonoBehaviour, IDamageable
 	}
 
     private IEnumerator TemporaryImmunity(){
-        //contains number of seconds to blink 8 times
-        float[] durations = {2f, 1f};
+        //contains number of seconds to blink 10 times
+        float[] durationsArr = {2f, 1f};   //in seconds
         float blinkCycle = 10f;
         isTempImmune = true;
 
@@ -76,7 +91,7 @@ public class PlayerHealth : MonoBehaviour, IDamageable
         Color blinkColor = new Color(oldColor.r, oldColor.g, oldColor.b, .25f);  //semi-transparent
 
         //loops through the durations array
-        for (int i = 0; i < durations.Length; i++){
+        for (int i = 0; i < durationsArr.Length; i++){
             for (int j = 0; j < blinkCycle; j++){
                 
                 //changes the player's renderer color using the blinkCycle
@@ -85,7 +100,8 @@ public class PlayerHealth : MonoBehaviour, IDamageable
                 else
                     p_Renderer.color = oldColor;
 
-                yield return new WaitForSeconds(durations[i]/blinkCycle);
+                //e.g. 2 seconds/10 cycles
+                yield return new WaitForSeconds(durationsArr[i]/blinkCycle);
             }
         }
 

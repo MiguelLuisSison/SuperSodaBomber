@@ -2,29 +2,32 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IPowerup{
-    void Apply(GameObject player);
-}
 
-public interface IDurationPowerup{
-    IEnumerator AbilityEffect();
-}
+/*
+Powerup
+    Manages and uses the powerups when needed.
+        - SugarRush
+        - 1UP
+*/
 
 /// <summary>
-/// Abilities that enhances one of the player's abilities temporarily.
+/// Abilities that enhances one of the player's stats at game proper.
 /// </summary>
-
 public class Powerup: MonoBehaviour{
-    public enum PowerupType{SugarRush, OneUP}
-    public PowerupType key;
+    public enum PowerupType{SugarRush, OneUP}       //powerup types
+    public PowerupType key;                         //selected powerup
 
-    private IPowerup powerupComponent;
+    private IPowerup powerupComponent;              //powerup script
 
     void OnTriggerEnter2D(Collider2D col){
+        //if it's not a player, do nothing
         if(col.gameObject.layer != 8)
             return;
 
+        //gets the PlayerControl script
         var playerControl = col.gameObject.GetComponent<PlayerControl>();
+
+        //adds the selected powerup to the player
         switch (key){
             case PowerupType.SugarRush:
                 playerControl.AddPowerup(new SugarRush());
@@ -34,26 +37,33 @@ public class Powerup: MonoBehaviour{
                 break;
         }
         
-        Debug.Log("powerup:" + key);
         Destroy(gameObject);
     }
 }
 
+/*
+    SugarRush
+        Adds temporary x2 Attack Speed to the Player
+*/
+
 public class SugarRush: IPowerup, IDurationPowerup
 {
-    private float abilityDuration = 5;
-    private float multiplier = 2;
-    private float oldValue;
-    private PlayerAttack playerAtk;
-    private PlayerControl playerControl;
+    private float abilityDuration = 5;      //how long the effect last
+    private float multiplier = 2;           //attack speed multiplier
+    private float oldMultiplier;            //old attack speed multiplier
+    private PlayerAttack playerAtk;         //player attack script
+    private PlayerControl playerControl;    //player control script
 
     public void Apply(GameObject player){
+        //gets the player scripts
         playerAtk = player.GetComponent<PlayerAttack>();
         playerControl = player.GetComponent<PlayerControl>();
 
-        oldValue = playerAtk.rateMultiplier;
+        //stores the current value
+        oldMultiplier = playerAtk.rateMultiplier;
 
-        playerAtk.SetAttackRateMultiplier(oldValue * multiplier);
+        //updates the speed multiploer
+        playerAtk.SetAttackRateMultiplier(multiplier);
         Debug.Log("sugar rush has started!");
     }
 
@@ -62,17 +72,49 @@ public class SugarRush: IPowerup, IDurationPowerup
     {
         yield return new WaitForSeconds(abilityDuration);
         Debug.Log("sugar rush has ended!");
-        playerAtk.SetAttackRateMultiplier(oldValue);
+
+        //revert to old value and then remove the powerup
+        playerAtk.SetAttackRateMultiplier(oldMultiplier);
         playerControl.RemovePowerup(this);
     }
 }
 
+/*
+    1UP
+        Adds extra health to the player.
+*/
 
 public class OneUP: IPowerup{
     public void Apply(GameObject player){
-        var playerHealth = player.GetComponent<PlayerHealth>();
         var playerControl = player.GetComponent<PlayerControl>();
+        var playerHealth = player.GetComponent<PlayerHealth>();
+
+        //call the function and then remove the powerup
         playerHealth.AddHP();
         playerControl.RemovePowerup(this);
     }
 }
+
+/// <summary>
+/// /// Interface for Powerups
+/// </summary>
+public interface IPowerup{
+
+    /// <summary>
+    /// Configures and applies the powerup to the player.
+    /// </summary>
+    /// <param name="player">Player GameObject</param>
+    void Apply(GameObject player);
+}
+
+/// <summary>
+/// Interfaces for Powerups with Limited Duration
+/// </summary>
+public interface IDurationPowerup{
+
+    /// <summary>
+    /// Ability part that lasts temporarily. Use StartCoroutine to take effect.
+    /// </summary>
+    IEnumerator AbilityEffect();
+}
+

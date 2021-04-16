@@ -4,10 +4,15 @@ EnemyInternal
 */
 
 namespace SuperSodaBomber.Enemies{
-    /// /// <summary>
+    /// 
+    /// <summary>
     /// Interface for the Concrete Enemy Outer Class
     /// </summary>
     public interface IEnemyOuter{
+        /// 
+        /// <summary>
+        /// Flips the sprite
+        /// </summary>
         void Flip();
     }
 
@@ -15,17 +20,24 @@ namespace SuperSodaBomber.Enemies{
     /// Interface for the Concrete Enemy Inner Class
     /// </summary>
     public interface IEnemyInner{
+        /// 
+        /// <summary>
+        /// Calls the behavior of the enemy using a state.
+        /// </summary>
         void CallState();
     }
 
+    //Enemy Types
     public enum EnemyType{
         Shooter, Roller
     }
 
+    //Phases
     public enum EnemyPhase{
         Phase1, Phase2
     }
 
+    //Enemy States
     public enum EnemyState{
         Wander, Chase, Attack
     }

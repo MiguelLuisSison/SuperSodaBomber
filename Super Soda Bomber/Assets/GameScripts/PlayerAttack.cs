@@ -29,23 +29,23 @@ public class PlayerAttack : PublicScripts
     public Transform attackSource;
     public Transform attackHandSource;
 
-    //weapon prefab (fix this to make it more flexible)
-    private GameObject projectilePrefab;
-    public PlayerProjectiles chosenProjectile;
-    private string projectileName;
-    private bool isPrefabLoaded;
+    //projectile properties
+    private GameObject projectilePrefab;        //projectile gameobject
+    public PlayerProjectiles chosenProjectile;  //chosen projectile (enum)
+    private string projectileName;              //name of the projectile
+    private bool isPrefabLoaded;                //state if the prefab is loaded
 
     //firing properties
-    private float fireRate;
-    public float rateMultiplier { get; private set; }
-    private float attackTime;
+    private float fireRate;                             //lower = faster
+    public float rateMultiplier { get; private set; }   //modifies firerate non-destructively
+    private float attackTime;                           //time when attack can be activated again
 
-    private GameObject projectile;
-    private ProjectileManager projectileScript;
-    private bool isCreated;             //only applies to detonation projectiles. otherwise, it will stay false
-    private ExplosionType explodeType;  //explosion type of the projectile. Located at PublicScripts.cs
+    private GameObject projectile;              //cloned projectile prefab
+    private ProjectileManager projectileScript; //projectile script
+    private bool isCreated;                     //only applies to detonation projectiles. otherwise, it will stay false
+    private ExplosionType explodeType;          //explosion type of the projectile. Located at PublicScripts.cs
 
-    //asynchronous work
+    //asynchronous work (used on detonation-type projectiles)
     private Coroutine coro;
 
     // Start is called before the first frame update
@@ -58,21 +58,36 @@ public class PlayerAttack : PublicScripts
         rateMultiplier = 1f;
     }
 
+    /// <summary>
+    /// Updates the Attack Rate Multiplier.
+    /// </summary>
+    /// <param name="newValue">New Multiplier Value</param>
     public void SetAttackRateMultiplier(float newValue){
         rateMultiplier = newValue;
     }
 
+    /// <summary>
+    /// Makes the player attack.
+    /// </summary>
+    /// <param name="isMoving">Player's movement state</param>
+    /// <param name="attack">Player's attacking state</param>
     public void Attack(bool isMoving, bool attack){
-        //creates a projectile clone
-		if (attack && (attackTime <= Time.time && !isCreated)){
 
+        //if the following conditions apply:
+            //didnt attack,
+            //currently on firerate cooldown,
+            //projectile has spawned already (detonation-type only)
+        //do nothing
+
+		if (attack && (attackTime <= Time.time && !isCreated)){
+            //load the projectile
             if (!isPrefabLoaded){
                 projectilePrefab = ProjectileProcessor.GetPrefab(chosenProjectile);
                 projectileName = ProjectileProcessor.GetProjectileName();
                 isPrefabLoaded = true;
             }
 
-            //set the shotgun location to attackhandsource
+            //set the shotgun location to attackhandsource and spawn one
                 if (projectileName == "Shotgun")
                     projectile = Instantiate(projectilePrefab, attackHandSource.position, 
                     attackHandSource.rotation);
@@ -83,7 +98,7 @@ public class PlayerAttack : PublicScripts
             //creates the projectile
             projectileScript = projectile.GetComponent<ProjectileManager>();
 
-            //updates and fetches projectile's data
+            //updates and fetches projectile data
             projectileScript.SetPlayerMoving(isMoving);
             fireRate = fireRates[projectileScript.GetName()]/rateMultiplier;
             explodeType = projectileScript.GetExplosionType();

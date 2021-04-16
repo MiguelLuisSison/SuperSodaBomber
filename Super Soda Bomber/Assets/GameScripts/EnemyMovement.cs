@@ -22,6 +22,8 @@ namespace SuperSodaBomber.Enemies{
         void Awake()
         {
             health = scriptObject.health;
+
+            //gets the script using the enemy processor
             chosenScript = gameObject.AddComponent(EnemyProcessor.Fetch(scriptObject)) as BaseEnemy;
             chosenScript.Init(scriptObject, attackSource, phase);
 
@@ -49,6 +51,7 @@ namespace SuperSodaBomber.Enemies{
 
         //when the enemy rans out of health
         void Die(){
+            //calls the event and then disappears it
             enemyDeathEvent?.Raise();
             Destroy(gameObject);
         }
