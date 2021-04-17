@@ -10,17 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a307dec8e37200348839f3035866f998, type: 3}
-  m_Name: Shooter_ScriptObject
+  m_Name: Roller_ScriptObject
   m_EditorClassIdentifier: 
-  health: 100
-  movementSpeed: 0
-  attackRate: 1.5
-  attackRadius: 5
-  spotRadius: 10
-  projectilePrefab: {fileID: 6374188849564462713, guid: 426fc3268d0f80947aa5e51ca187dde3,
-    type: 3}
-  enemyType: 0
+  health: 250
+  movementSpeed: 0.25
+  attackRate: 0.75
+  attackRadius: 1.5
+  spotRadius: 5
+  projectilePrefab: {fileID: 0}
+  enemyType: 1
   isMoving: 0
   facingRight: 0
-  healthMultiplier: 1
+  healthMultiplier: 1.5
   attackRateMultiplier: 1

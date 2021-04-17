@@ -29,6 +29,8 @@ namespace SuperSodaBomber.Enemies{
         public float healthMultiplier = 1f;
         public float attackRateMultiplier = 1f;
 
+        void OnEnable() => EditorUtility.SetDirty(this);
+
     }
     
     [CustomEditor(typeof(Enemy_ScriptObject))]

@@ -201,4 +201,90 @@ namespace SuperSodaBomber.Enemies{
             }
         }
     }
+
+    public class Roller: BaseEnemy{
+
+        public override void Init(Enemy_ScriptObject scriptObject, Transform attackSource, EnemyPhase phase)
+        {
+            base.Init(scriptObject, attackSource, phase);
+
+            //add the phase sub-classes at the dictionary
+            phaseDict.Add(EnemyPhase.Phase1, new Phase1(this));
+            phaseDict.Add(EnemyPhase.Phase2, new Phase2(this));
+
+            chosenPhase = phaseDict[phase];
+        }
+
+        protected void InvokeCoroutine(IEnumerator coro){
+            StartCoroutine(coro);
+        }
+
+        /// <summary>
+        /// Shooter fires slowly
+        /// </summary>
+        public class Phase1: BaseInnerEnemy{
+            //outer class to access the functions
+            private Roller outer;
+            private float shootTime;
+
+            public Phase1(Roller o){
+                outer = o;
+                shootTime = Time.time;
+            }
+
+            public override void CallState(){
+                switch (outer.currentState){
+                    case EnemyState.Wander:
+                        //find if the player is within the range
+                        if (outer.FindTarget(outer.spotRadius))
+                            outer.currentState = EnemyState.Attack;                
+                        break;
+                    case EnemyState.Attack:
+                        //if it's wihtin attacking range and it's within fire rate
+                        if (outer.FindTarget(outer.attackRadius) && Time.time > shootTime){
+                            //attack
+                            shootTime = Time.time + outer.attackRate;
+                        }
+                        //switch to wander if it's outside spot radius
+                        else if (!outer.FindTarget(outer.spotRadius))
+                            outer.currentState = EnemyState.Wander;
+
+                        outer.Flip();
+                        break;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Shooter fires on a burst
+        /// </summary>
+        public class Phase2: BaseInnerEnemy{
+            private Roller outer;
+            private float shootTime;
+
+            public Phase2(Roller o){
+                outer = o;
+            }
+
+            public override void CallState(){
+                switch (outer.currentState){
+                    case EnemyState.Wander:
+                        //find if the player is within the range
+                        if (outer.FindTarget(outer.spotRadius))
+                            outer.currentState = EnemyState.Attack;                
+                        break;
+                    case EnemyState.Attack:
+                        if (outer.FindTarget(outer.attackRadius) && Time.time > shootTime){
+                            //attack
+                            shootTime = Time.time + outer.attackRate;
+                        }
+                        else if (!outer.FindTarget(outer.spotRadius))
+                            outer.currentState = EnemyState.Wander;
+
+                        outer.Flip();
+                        break;
+                }
+            }
+        }
+    }
 }

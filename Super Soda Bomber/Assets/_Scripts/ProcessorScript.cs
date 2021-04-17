@@ -243,6 +243,7 @@ public static class EnemyProcessor{
     /// </summary>
     private static void Configure(){
         enemyDict.Add(EnemyType.Shooter, typeof(Shooter));
+        enemyDict.Add(EnemyType.Roller, typeof(Roller));
         isConfig = true;
     }
 
