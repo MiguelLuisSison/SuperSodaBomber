@@ -6,21 +6,6 @@ using UnityEngine;
 PlayerAttack
     Used to trigger the attacking of the player
     and how the weapon fires
-
-    Things are needed to improve:
-        The script is hard-coded. It only provides attack
-        to a fixed projectile with a fixed component/perk.
-
-        This script/other scripts are needed to be flexible
-        for projectiles/weapons with different perk and
-        property.
-
-        Components that are needed to be flexible with:
-            Chosen Bomb/Weapon
-            Perk
-            Explosion (OK)
-
-            Different behaviours caused by a perk (i.e. cluster bomb) (OK)
 */
 
 public class PlayerAttack : PublicScripts

@@ -167,7 +167,6 @@ public class GameplayScript : PublicScripts
         //save the current score at PlayerPrefs
         PlayerPrefs.SetInt("CurrentScore", score);
         _Move("GameOverScene");
-
     }
 
     //when stage has been completed

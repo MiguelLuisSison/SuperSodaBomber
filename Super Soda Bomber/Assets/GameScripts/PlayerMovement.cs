@@ -241,6 +241,7 @@ public class AbilityVerifier: PublicScripts{
 		GameplayScript.current.AddScore(scores["ability"]);
 
 		float cooldown = AbilityProcessor.GetCooldown(ability);
+		Debug.Log($"cooldown {cooldown}");
 		AbilityProcessor.CallEvent(ability, rigid);
 		coro = StartCoroutine(AbilityCooldown(cooldown));
 

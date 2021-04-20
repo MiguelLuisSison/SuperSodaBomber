@@ -98,11 +98,26 @@ public class Dash : ActiveAbility
     public Dash(){
         cooldown = 3f;
     }
+
+    public override void Init(UnityEvent<Rigidbody2D> e)
+    {
+        base.Init(e);
+        e.AddListener(CallCooldownUI);
+    }
+
     
     public override void CallAbility(Rigidbody2D rigid)
     {
         rigid.velocity += new Vector2(dashForce, 0);
     }
+
+    public void CallCooldownUI(Rigidbody2D rigid){
+        //calls the UI
+        UICooldownDebug.current.CallCooldownUI(
+            name: this.GetType().FullName,
+            location: "button", duration: cooldown);
+    }
+
     public override void OnFlip(){
         dashForce *= -1;
     }
