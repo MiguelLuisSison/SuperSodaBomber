@@ -33,6 +33,19 @@ public class ProjectileManager : PublicScripts
         //activates delayed detonation for some projectiles
         ExplosionType explodeType = GetExplosionType();
 
+        /*
+            CASE 1:
+                - if it's animated projectile
+                - AND the sprite list size isn't 0
+                - AND the script inherits IAnimatedProjectile interface
+
+            CASE 2:
+                - if projectile is either a delay or detonate-type
+
+            CASE 3:
+                - if projectile is an instant-type
+        */ 
+
         if (explodeType == ExplosionType.Delay ||
             explodeType == ExplosionType.Detonate)
                 coro = StartCoroutine(WaitUntilDetonate());
@@ -49,6 +62,19 @@ public class ProjectileManager : PublicScripts
         //central throwing attributes
         s_Projectile.Init(scriptObject, rigid, playerMoving);
         s_Projectile.GetDamageLayer(layersToCollide);
+
+        if (scriptObject.isAnimated && scriptObject.spriteList.Count != 0 &&
+            typeof(IAnimatedProjectile).IsAssignableFrom(s_Projectile.GetType())){
+
+                //convert script into animated projectile class
+                var s_animProj = (IAnimatedProjectile) s_Projectile;
+                
+                //call the custom detonation
+                if (coro != null)
+                    StopCoroutine(coro);
+
+                coro = StartCoroutine(s_animProj.WaitUntilDetonate());
+        }
     }
 
     void OnTriggerEnter2D(Collider2D col){
@@ -73,7 +99,7 @@ public class ProjectileManager : PublicScripts
     }
 
     /// <summary>
-    /// Sets the timer for depawning
+    /// Sets the timer for despawning
     /// </summary>
     private IEnumerator SetDespawnTime(){
         yield return new WaitForSeconds(spawnDuration);

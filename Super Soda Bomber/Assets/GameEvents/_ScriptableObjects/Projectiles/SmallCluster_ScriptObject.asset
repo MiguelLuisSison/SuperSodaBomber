@@ -13,6 +13,10 @@ MonoBehaviour:
   m_Name: SmallCluster_ScriptObject
   m_EditorClassIdentifier: 
   projectileType: 7
+  isAnimated: 1
+  spriteList:
+  - {fileID: 21300000, guid: 45613113c2972aa4c8aea8afa653dc14, type: 3}
+  - {fileID: 21300000, guid: 37b2dbfcb9ba8f94e8eb0c557141caf6, type: 3}
   throwX: 3
   throwY: 250
   spin: 200

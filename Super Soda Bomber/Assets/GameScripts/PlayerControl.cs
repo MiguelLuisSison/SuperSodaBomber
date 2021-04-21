@@ -128,12 +128,12 @@ public class PlayerControl : MonoBehaviour {
 
 		//keypress jump
 		if (Input.GetButtonDown("Jump")){
-			jump = true;
+			PressJump();
 		}
 
 		//keypress shoot
 		if (Input.GetButtonDown("Fire2")){
-			attack = true;
+			PressAttack();
 		}
 
 	}

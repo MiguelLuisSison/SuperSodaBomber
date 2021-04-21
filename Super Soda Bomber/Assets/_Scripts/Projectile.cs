@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using SuperSodaBomber.Enemies;
 
 /*
     Projectile
@@ -12,7 +11,7 @@ using SuperSodaBomber.Enemies;
             Soda Bomb
             Fizztol (Pistol)
             Cannade (Cluster Bomb)
-            Sfizz (Shotgun)
+            Spazz (Shotgun)
 
         Enemy
             Milk Shooter
@@ -21,19 +20,29 @@ using SuperSodaBomber.Enemies;
 */
 
 /// <summary>
+/// Inteface for Animated Projectiles
+/// </summary>
+public interface IAnimatedProjectile{
+    IEnumerator WaitUntilDetonate();
+}
+
+/// <summary>
 /// Base class for all projectiles. (required to inherit)
 /// </summary>
 public abstract class Projectile: PublicScripts{
     public string p_name = "SodaBomb";                          //tag name
+    public bool usesCustomDetonation = false;                   //projectile uses custom detonation
     protected Projectile_ScriptObject so;                       //scriptable object
     protected List<string> targetLayers = new List<string>();   //enlists the target layers
+    
+    protected List<Sprite> sprites;
 
     //data to save
     protected float throwX, throwY, spin;
     protected float detonateTime, blastRadius;
 
     /// <summary>
-    /// Initializes the class.
+    /// Initializes the projectile class.
     /// </summary>
     /// <param name="scriptObject">Projectile Scriptable Object</param>
     /// <param name="rigid">Projectile RigidBody 2D</param>
@@ -49,6 +58,7 @@ public abstract class Projectile: PublicScripts{
         throwY = so.throwY;
         detonateTime = so.detonateTime;
         blastRadius = so.blastRadius;
+        sprites = so.spriteList;
 
         //used on projectiles that uses random-generated numbers
         ConfigVariables();
@@ -305,18 +315,33 @@ public class Cannade: Projectile{
         It provides a small blast radius, damage and explodes in set time
 */
 
-public class SmallCluster: Projectile{
-    
+public class SmallCluster: Projectile, IAnimatedProjectile{
+    Animator animator;
+
     //adds a random number generator for throwing physics
     protected override void ConfigVariables(){
         throwX = 3f * UnityEngine.Random.Range(-.25f, 1.15f);
         throwY = UnityEngine.Random.Range(-100,100);
         detonateTime += UnityEngine.Random.Range(0f, .25f);
+        animator = gameObject.GetComponent<Animator>();
+    }
+
+    //custom detonation event
+    public IEnumerator WaitUntilDetonate(){
+
+        //uses the 1st sprite and then wait for 50% of detonate time
+        yield return new WaitForSeconds(detonateTime/2f);
+        //repeat
+        animator.SetTrigger("transition");
+        yield return new WaitForSeconds(detonateTime/2f);
+
+        Explode();
+        Destroy(gameObject);
     }
 }
 
 /* 
-    Shotgun (Sfizz)
+    Shotgun (Spazz)
         Fires short-ranged scattered pellets.
         Only used to spawn its pellets and then destroy itself
 */
@@ -324,7 +349,7 @@ public class SmallCluster: Projectile{
 public class Shotgun: Projectile{}
 
 /*
-    Shotgun Pellet (Sfizz internal)
+    Shotgun Pellet (Spazz internal)
         Small projectiles that inflict large damage the closer it hits the enemy
         It has a short reach.
 */

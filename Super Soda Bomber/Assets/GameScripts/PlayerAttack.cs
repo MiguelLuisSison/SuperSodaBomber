@@ -65,6 +65,9 @@ public class PlayerAttack : PublicScripts
         //do nothing
 
 		if (attack && (attackTime <= Time.time && !isCreated)){
+            //use the attack animation
+            PlayerAnimation.current.ChangeAnimState("THROW");
+
             //load the projectile
             if (!isPrefabLoaded){
                 projectilePrefab = ProjectileProcessor.GetPrefab(chosenProjectile);

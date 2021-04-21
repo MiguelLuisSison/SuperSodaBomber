@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: Pellet_ScriptObject
   m_EditorClassIdentifier: 
   projectileType: 8
+  isAnimated: 0
+  spriteList: []
   throwX: 4.5
   throwY: 1.5
   spin: 200

@@ -19,17 +19,20 @@ public class PlayerAnimation : MonoBehaviour
 		{"READY_JUMP", "fizzy_readyJump"},
 		{"JUMP", "fizzy_jump"},
 		{"FALL", "fizzy_fall"},
+		{"THROW", "fizzy_throw"},
 		/*
 		{"D_JUMP", "fizzy_double_jump"},
 		{"LAND", "fizzy_land"},
-		{"THROW", "fizzy_throw"},
 		{"FIRE", "fizzy_fire_gun"},
 		{"DASH", "fizzy_dash"}
 		*/
 	};
 
+	//this is used stop other animations from interrupting it
+	private bool isAnimInterruptable = true;
+
 	private Animator animator;
-    
+
     //set the static class
     public static PlayerAnimation current;
 
@@ -43,16 +46,24 @@ public class PlayerAnimation : MonoBehaviour
     }
 
 	/// <summary>
+	/// Sets current animation's interruptable status
+	/// </summary>
+	/// <param name="id">0 = no, 1 = yes</param>
+	public void SetAnimInterruptable(int id){
+		isAnimInterruptable = id == 1;
+	}
+
+	/// <summary>
 	/// Changes Player's animation
 	/// </summary>
 	/// <param name="name">animation name (uppercase)</param>
 	public void ChangeAnimState(string name){
         name = name.ToUpper();
 		AnimatorStateInfo currentAnim = animator.GetCurrentAnimatorStateInfo(0);
-
+ 
 		//prevents the animator to play same state all the time
-		if (currentAnim.IsName(ANIM[name])) return;
+		if (currentAnim.IsName(ANIM[name]) || !isAnimInterruptable) return;
 		animator.Play(ANIM[name]);
-
 	}
+
 }

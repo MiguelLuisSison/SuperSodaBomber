@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: ShooterProjectile_ScriptObject
   m_EditorClassIdentifier: 
   projectileType: 5
+  isAnimated: 0
+  spriteList: []
   throwX: 3
   throwY: 0
   spin: 0

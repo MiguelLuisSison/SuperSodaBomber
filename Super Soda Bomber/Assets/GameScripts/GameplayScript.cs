@@ -221,7 +221,7 @@ public class GameplayScript : PublicScripts
     void LateUpdate()
     {
         scoreTxt.text = $"{score}";
-        hpTxt.text = $"HP: {health}";
+        hpTxt.text = health.ToString();
     }
 }
 
