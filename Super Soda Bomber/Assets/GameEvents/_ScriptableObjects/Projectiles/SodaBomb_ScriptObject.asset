@@ -13,8 +13,6 @@ MonoBehaviour:
   m_Name: SodaBomb_ScriptObject
   m_EditorClassIdentifier: 
   projectileType: 1
-  isAnimated: 0
-  spriteList: []
   throwX: 3
   throwY: 250
   spin: 200

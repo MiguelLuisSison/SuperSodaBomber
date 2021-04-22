@@ -58,7 +58,6 @@ public abstract class Projectile: PublicScripts{
         throwY = so.throwY;
         detonateTime = so.detonateTime;
         blastRadius = so.blastRadius;
-        sprites = so.spriteList;
 
         //used on projectiles that uses random-generated numbers
         ConfigVariables();

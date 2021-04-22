@@ -63,8 +63,7 @@ public class ProjectileManager : PublicScripts
         s_Projectile.Init(scriptObject, rigid, playerMoving);
         s_Projectile.GetDamageLayer(layersToCollide);
 
-        if (scriptObject.isAnimated && scriptObject.spriteList.Count != 0 &&
-            typeof(IAnimatedProjectile).IsAssignableFrom(s_Projectile.GetType())){
+        if (typeof(IAnimatedProjectile).IsAssignableFrom(s_Projectile.GetType())){
 
                 //convert script into animated projectile class
                 var s_animProj = (IAnimatedProjectile) s_Projectile;

@@ -13,14 +13,13 @@ MonoBehaviour:
   m_Name: ShooterProjectile_ScriptObject
   m_EditorClassIdentifier: 
   projectileType: 5
-  isAnimated: 0
-  spriteList: []
   throwX: 3
   throwY: 0
   spin: 0
   gravity: 0
-  isExplosive: 0
-  explosionPrefab: {fileID: 0}
+  isExplosive: 1
+  explosionPrefab: {fileID: 6199953446600296795, guid: 4d45f1b07b6e93c43ae27d21a65212a5,
+    type: 3}
   explosionAmount: 1
   isSplashDamage: 0
   blastRadius: 0

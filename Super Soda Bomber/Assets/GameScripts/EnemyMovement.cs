@@ -49,6 +49,10 @@ namespace SuperSodaBomber.Enemies{
             }
         }
 
+        void CueAttack(){
+            chosenScript.CueAttack();
+        }
+
         //when the enemy rans out of health
         void Die(){
             //calls the event and then disappears it

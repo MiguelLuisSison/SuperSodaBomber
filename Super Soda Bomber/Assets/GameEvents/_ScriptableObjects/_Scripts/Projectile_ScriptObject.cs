@@ -7,8 +7,6 @@ public class Projectile_ScriptObject : ScriptableObject
 {
     //selected type
     public ProjectileTypes projectileType;
-    public bool isAnimated;
-    public List<Sprite> spriteList;
 
     //throwing physics
     public float throwX = 3f; 
@@ -59,8 +57,6 @@ public class Projectile_ScriptObject_Editor: Editor{
         EditorGUILayout.Space();
         EditorGUILayout.LabelField("Explosion Properties", EditorStyles.boldLabel);
 
-        s.isAnimated = EditorGUILayout.Toggle("Animated Projectile", s.isAnimated);
-
         //Enable Splash Damage
         s.isExplosive = EditorGUILayout.Toggle("Enable FX", s.isExplosive);
 
@@ -85,12 +81,6 @@ public class Projectile_ScriptObject_Editor: Editor{
         if (s.explosionType == ExplosionType.Detonate || s.explosionType == ExplosionType.Delay){
             AddIndent();
             s.detonateTime = EditorGUILayout.Slider("Detonation Time", s.detonateTime, 0.5f, 5f);
-            
-            //shows the sprite list
-            if (s.isAnimated){
-                EditorGUILayout.PropertyField(sprites, true);
-                serialObj.ApplyModifiedProperties();
-            }
             
             RemoveIndent();
         }

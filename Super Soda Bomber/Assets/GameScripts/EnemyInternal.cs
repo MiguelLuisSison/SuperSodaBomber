@@ -14,6 +14,10 @@ namespace SuperSodaBomber.Enemies{
         /// Flips the sprite
         /// </summary>
         void Flip();
+        /// <summary>
+        /// Activates the attack using an animation event
+        /// </summary>
+        void CueAttack();
     }
 
     /// <summary>

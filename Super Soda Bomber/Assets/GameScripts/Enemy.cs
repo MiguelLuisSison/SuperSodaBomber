@@ -34,8 +34,12 @@ namespace SuperSodaBomber.Enemies{
         protected float attackRateMultiplier, healthMultiplier;
         protected bool facingRight;
 
+        //animation
+        protected Animator animator;
+
         //configures data
         public virtual void Init(Enemy_ScriptObject scriptObject, Transform attackSource, EnemyPhase phase){
+            animator = gameObject.GetComponent<Animator>();
             spotRadius = scriptObject.spotRadius;
             attackRadius = scriptObject.attackRadius;
             facingRight = scriptObject.facingRight;
@@ -71,6 +75,9 @@ namespace SuperSodaBomber.Enemies{
         public void InvokeState(){
             chosenPhase.CallState();
         }
+
+        //insert the firing/charge script here.
+        public abstract void CueAttack();
 
         //nested class for phases, since it will have different behavior
         public abstract class BaseInnerEnemy: IEnemyInner{
@@ -117,8 +124,13 @@ namespace SuperSodaBomber.Enemies{
             Instantiate(projectilePrefab, attackSource.position, q);
         }
 
+        //used on burst
         protected void InvokeCoroutine(IEnumerator coro){
             StartCoroutine(coro);
+        }
+        
+        public override void CueAttack(){
+            FireProjectile();
         }
 
         /// <summary>
@@ -142,11 +154,12 @@ namespace SuperSodaBomber.Enemies{
                             outer.currentState = EnemyState.Attack;                
                         break;
                     case EnemyState.Attack:
-                        //if it's wihtin attacking range and it's within fire rate
+                        //if it's within attacking range and it's within fire rate
                         if (outer.FindTarget(outer.attackRadius) && Time.time > shootTime){
                             //attack
+                            outer.animator.SetTrigger("fire");
                             shootTime = Time.time + outer.attackRate;
-                            outer.FireProjectile();
+                            // outer.FireProjectile();
                         }
                         //switch to wander if it's outside spot radius
                         else if (!outer.FindTarget(outer.spotRadius))
@@ -181,6 +194,7 @@ namespace SuperSodaBomber.Enemies{
                     case EnemyState.Attack:
                         if (outer.FindTarget(outer.attackRadius) && Time.time > shootTime){
                             //attack
+                            outer.animator.SetTrigger("fire");
                             shootTime = Time.time + outer.attackRate;
                             outer.InvokeCoroutine(Burst());
                         }
@@ -218,6 +232,8 @@ namespace SuperSodaBomber.Enemies{
         protected void InvokeCoroutine(IEnumerator coro){
             StartCoroutine(coro);
         }
+
+        public override void CueAttack(){}
 
         /// <summary>
         /// Shooter fires slowly
