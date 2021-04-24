@@ -2,6 +2,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
+using System.Collections.Generic;
 
 /*
 PlayerControl
@@ -20,6 +21,7 @@ public class PlayerMovement : PublicScripts
 	[Range(0, .3f)] [SerializeField] private float m_MovementSmoothing = .75f;  // How much to smooth out the movement
 	[SerializeField] private LayerMask m_WhatIsGround;                          // A mask determining what is ground to the character
 	[SerializeField] private Transform m_GroundCheck;                           // A position marking where to check if the player is grounded.
+	[SerializeField] private Transform floor;									// A position where double jump particle spawns.
 
 	const float k_GroundedRadius = .15f; // Radius of the overlap circle to determine if grounded
 	const float gracePeriod = .5f; // Time when player can jump regardless of groundcheck
@@ -112,6 +114,8 @@ public class PlayerMovement : PublicScripts
                 hangTime = gracePeriod + Time.time;
 			}
 		}
+
+		a_Verifier.UpdateTransform(floor);
 	}
 
 	public void Move(float move, bool readyJump)
@@ -191,6 +195,7 @@ public class PlayerMovement : PublicScripts
 		// Switch the way the player is labelled as facing.
 		m_FacingRight = !m_FacingRight;
 		transform.Rotate(0f,180f,0);
+		a_Verifier.SetFlip(m_FacingRight);
 
 		//calls the flip event
 		flipEvent?.Invoke();
@@ -202,8 +207,11 @@ public class PlayerMovement : PublicScripts
 /// </summary>
 public class AbilityVerifier: PublicScripts{
 	private PlayerAbilities chosenAbility;
+	private Dictionary<PlayerAbilities, GameObject> fxDict = new Dictionary<PlayerAbilities, GameObject>();
 	private Rigidbody2D rigid;
 	private bool ready = true;
+	private Transform floorSource;
+	private bool isFacingRight = true;
 
 	//asynchronous work
 	private Coroutine coro;
@@ -211,6 +219,24 @@ public class AbilityVerifier: PublicScripts{
 	public void Init(Rigidbody2D r, PlayerAbilities a){
 		chosenAbility = a;
 		rigid = r;
+
+		//add the fx to dictionary if it has one
+		if (chosenAbility.HasFlag(PlayerAbilities.DoubleJump)){
+			var fx = Resources.Load("Prefabs/Particles/DoubleJumpParticle") as GameObject;
+			fxDict.Add(PlayerAbilities.DoubleJump, fx);
+		}
+		if (chosenAbility.HasFlag(PlayerAbilities.Dash)){
+			var fx = Resources.Load("Prefabs/Particles/DashParticle") as GameObject;
+			fxDict.Add(PlayerAbilities.Dash, fx);
+		}
+	}
+
+	public void UpdateTransform(Transform floor){
+		floorSource = floor;
+	}
+
+	public void SetFlip(bool right){
+		isFacingRight = right;
 	}
 	
 	//Only one of these Verify() works because of the chosen ability
@@ -222,6 +248,10 @@ public class AbilityVerifier: PublicScripts{
         if (chosenAbility.HasFlag(PlayerAbilities.Dash) && 
 			doubleTap && ready){
 				InvokeAbility(PlayerAbilities.Dash);
+				var particle = Instantiate(fxDict[PlayerAbilities.Dash], PlayerMovement.playerPos, Quaternion.identity, transform);
+				if(!isFacingRight){
+					particle.transform.localScale = new Vector3(-1f, 1f, 1f);
+				}
 		}
             
     }
@@ -233,6 +263,7 @@ public class AbilityVerifier: PublicScripts{
         if (chosenAbility.HasFlag(PlayerAbilities.DoubleJump) &&
 			!grounded && jumped){
 				InvokeAbility(PlayerAbilities.DoubleJump);
+				Instantiate(fxDict[PlayerAbilities.DoubleJump], floorSource.position, Quaternion.identity);
 		}
     }
 
@@ -241,7 +272,6 @@ public class AbilityVerifier: PublicScripts{
 		GameplayScript.current.AddScore(scores["ability"]);
 
 		float cooldown = AbilityProcessor.GetCooldown(ability);
-		Debug.Log($"cooldown {cooldown}");
 		AbilityProcessor.CallEvent(ability, rigid);
 		coro = StartCoroutine(AbilityCooldown(cooldown));
 
