@@ -53,8 +53,8 @@ public class Powerup: MonoBehaviour{
 
 public class SugarRush: IPowerup, IDurationPowerup
 {
-    public float abilityDuration { get; private set; } = 5; //how long the effect last
-    private float multiplier = 2;           //attack speed multiplier
+    public float abilityDuration { get; private set; } = 10; //how long the effect last
+    private float multiplier = 1.25f;           //attack speed multiplier
     private float oldMultiplier;            //old attack speed multiplier
     private PlayerAttack playerAtk;         //player attack script
     private PlayerControl playerControl;    //player control script
@@ -67,7 +67,7 @@ public class SugarRush: IPowerup, IDurationPowerup
         //stores the current value
         oldMultiplier = playerAtk.rateMultiplier;
 
-        //updates the speed multiploer
+        //updates the speed multiplier
         playerAtk.SetAttackRateMultiplier(multiplier);
         Debug.Log("sugar rush has started!");
     }

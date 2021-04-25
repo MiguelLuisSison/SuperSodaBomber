@@ -49,7 +49,6 @@ public class PlayerMovement : PublicScripts
 	public UnityEvent OnLandEvent;
 
 	//this will be used on abilities
-	[EnumFlags]
 	public PlayerAbilities chosenAbility;
 	private AbilityVerifier a_Verifier;
 

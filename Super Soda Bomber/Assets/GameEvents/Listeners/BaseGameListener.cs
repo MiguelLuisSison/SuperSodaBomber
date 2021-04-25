@@ -15,9 +15,9 @@ namespace SuperSodaBomber.Events{
         where E: BaseGameEvent<T>
         where UER: UnityEvent<T>
     {
-        [SerializeField] private E gameEvent;
+        public E gameEvent;
         public E GameEvent { get; set; }
-        [SerializeField] private UER unityEventResponse;
+        public UER unityEventResponse;
 
         //add to list if the attached scene is on use...
         void OnEnable(){

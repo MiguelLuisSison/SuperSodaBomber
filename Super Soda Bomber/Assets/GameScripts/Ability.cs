@@ -94,6 +94,7 @@ public class DoubleJump : ActiveAbility
 public class Dash : ActiveAbility
 {
     private float dashForce = 15f;
+    public GameObject fx = Resources.Load("Prefabs/Particles/DashParticle") as GameObject;
 
     public Dash(){
         cooldown = 3f;
@@ -102,16 +103,15 @@ public class Dash : ActiveAbility
     public override void Init(UnityEvent<Rigidbody2D> e)
     {
         base.Init(e);
-        e.AddListener(CallCooldownUI);
+        e.AddListener((rb2d) => CallCooldownUI());
     }
-
     
     public override void CallAbility(Rigidbody2D rigid)
     {
         rigid.velocity += new Vector2(dashForce, 0);
     }
 
-    public void CallCooldownUI(Rigidbody2D rigid){
+    private void CallCooldownUI(){
         //calls the UI
         UICooldownDebug.current.CallCooldownUI(
             name: this.GetType().FullName,

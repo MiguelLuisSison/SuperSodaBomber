@@ -191,6 +191,7 @@ public static class AbilityProcessor
             abilityCooldown.Add(tag, obj.cooldown);
             controller.flipEvent += obj.OnFlip;
         }
+
         if (key.HasFlag(PlayerAbilities.LongJump)){
             passiveAbility = new LongJump();
             controller.m_JumpForce = passiveAbility.ApplyPassiveAbility(
