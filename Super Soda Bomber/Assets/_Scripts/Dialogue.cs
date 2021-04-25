@@ -18,7 +18,7 @@ public class Dialogue : MonoBehaviour
     void Start()
     {
         //clears the placeholder info
-        message.text = string.Empty;
+        message.text = "";
         dialogueIndex = 0;
 
         StartDialogue();

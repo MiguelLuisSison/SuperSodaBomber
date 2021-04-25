@@ -21,7 +21,7 @@ public class Dialogue_ScriptObject : ScriptableObject
 [CustomEditor(typeof(Dialogue_ScriptObject))]
 public class Dialogue_ScriptObject_Editor: Editor{
 
-    private string lineWarning = "This dialogue might not fit at the dialogue box. Try splitting it by segments and create another Dialogue Data.";
+    private string lineWarning = "This might not fit at the dialogue box. Try splitting it by segments and create another Dialogue Data.";
 
     public override void OnInspectorGUI()
     {
@@ -33,9 +33,9 @@ public class Dialogue_ScriptObject_Editor: Editor{
         
         EditorGUILayout.Space();
         EditorGUILayout.LabelField("Dialogue", EditorStyles.label);
-        s.dialogue = EditorGUILayout.TextArea(s.dialogue);
+        s.dialogue = EditorGUILayout.TextArea(s.dialogue, GUILayout.MinHeight(80));
 
-        if (s.dialogue.Length >= 50){
+        if (s.dialogue.Length >= 75){
             EditorGUILayout.HelpBox(lineWarning, MessageType.Warning);
         }
     }

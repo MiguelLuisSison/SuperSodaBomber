@@ -21602,16 +21602,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 778976910}
     m_Modifications:
-    - target: {fileID: 794493597696176058, guid: 52bed3cb5f562d34391232318b9ea149,
-        type: 3}
-      propertyPath: m_FontData.m_MinSize
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 794493597696176058, guid: 52bed3cb5f562d34391232318b9ea149,
-        type: 3}
-      propertyPath: m_FontData.m_MaxSize
-      value: 40
-      objectReference: {fileID: 0}
     - target: {fileID: 1632888287874711566, guid: 52bed3cb5f562d34391232318b9ea149,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -21717,73 +21707,24 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
-    - target: {fileID: 3726357914377905141, guid: 52bed3cb5f562d34391232318b9ea149,
-        type: 3}
-      propertyPath: lines.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3726357914377905141, guid: 52bed3cb5f562d34391232318b9ea149,
+    - target: {fileID: 6160343444789144070, guid: 52bed3cb5f562d34391232318b9ea149,
         type: 3}
       propertyPath: dialogues.Array.size
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 3726357914377905141, guid: 52bed3cb5f562d34391232318b9ea149,
-        type: 3}
-      propertyPath: lines.Array.data[0]
-      value: OMAE WA MOU SHINDEIRU
-      objectReference: {fileID: 0}
-    - target: {fileID: 3726357914377905141, guid: 52bed3cb5f562d34391232318b9ea149,
+    - target: {fileID: 6160343444789144070, guid: 52bed3cb5f562d34391232318b9ea149,
         type: 3}
       propertyPath: dialogues.Array.data[0]
       value: 
       objectReference: {fileID: 11400000, guid: 9a68ff82f5cc4c94dbd2e31ea90c4313,
         type: 2}
-    - target: {fileID: 6943651620016747502, guid: 52bed3cb5f562d34391232318b9ea149,
-        type: 3}
-      propertyPath: m_AnchorMin.x
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 6943651620016747502, guid: 52bed3cb5f562d34391232318b9ea149,
-        type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 6943651620016747502, guid: 52bed3cb5f562d34391232318b9ea149,
-        type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 6943651620016747502, guid: 52bed3cb5f562d34391232318b9ea149,
-        type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 6943651620016747502, guid: 52bed3cb5f562d34391232318b9ea149,
-        type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 135.8
-      objectReference: {fileID: 0}
-    - target: {fileID: 6943651620016747502, guid: 52bed3cb5f562d34391232318b9ea149,
-        type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -99.55
-      objectReference: {fileID: 0}
-    - target: {fileID: 6943651620016747502, guid: 52bed3cb5f562d34391232318b9ea149,
-        type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 1243.9492
-      objectReference: {fileID: 0}
     - target: {fileID: 8155927914467094641, guid: 52bed3cb5f562d34391232318b9ea149,
         type: 3}
       propertyPath: m_Name
       value: Dialogue
       objectReference: {fileID: 0}
-    - target: {fileID: 8155927914467094641, guid: 52bed3cb5f562d34391232318b9ea149,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 3726357914377905141, guid: 52bed3cb5f562d34391232318b9ea149, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 52bed3cb5f562d34391232318b9ea149, type: 3}
 --- !u!224 &6337908989557899805 stripped
 RectTransform:
