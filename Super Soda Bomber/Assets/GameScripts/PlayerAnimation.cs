@@ -62,7 +62,7 @@ public class PlayerAnimation : MonoBehaviour
 		AnimatorStateInfo currentAnim = animator.GetCurrentAnimatorStateInfo(0);
  
 		//prevents the animator to play same state all the time
-		if (currentAnim.IsName(ANIM[name]) || !isAnimInterruptable) return;
+		if (currentAnim.IsName(ANIM[name]) || !isAnimInterruptable || animator.runtimeAnimatorController == null) return;
 		animator.Play(ANIM[name]);
 	}
 

@@ -15,7 +15,7 @@ public class Dialogue : MonoBehaviour
     private Dialogue_ScriptObject currentDialogue;
 
 
-    void Start()
+    void OnEnable()
     {
         //clears the placeholder info
         message.text = "";

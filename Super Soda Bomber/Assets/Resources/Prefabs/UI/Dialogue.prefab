@@ -550,7 +550,7 @@ MonoBehaviour:
   charImage: {fileID: 4640690448416550100}
   message: {fileID: 794493597696176058}
   dialogues: []
-  textSpeed: 15
+  textSpeed: 30
 --- !u!1 &8629329701389038150
 GameObject:
   m_ObjectHideFlags: 0
