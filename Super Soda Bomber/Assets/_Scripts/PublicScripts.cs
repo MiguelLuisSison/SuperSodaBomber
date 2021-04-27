@@ -102,7 +102,7 @@ public enum PlayerProjectiles{
 }
 
 public enum MapName{
-    None, Test, Level1, Level2
+    None, Test, Level1, Level2, Level3, Level4
 }
 
 //explosion types

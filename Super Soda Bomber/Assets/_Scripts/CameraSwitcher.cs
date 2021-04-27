@@ -12,7 +12,6 @@ public class CameraSwitcher : MonoBehaviour
     }
     
     public void SwitchCameraState(){
-        Debug.Log("camera switched");
         if (cameraAtMain)
             cameraAnimator.Play("cutscene_camera");
         else
