@@ -71,14 +71,22 @@ public class PublicScripts : MonoBehaviour
     /// <summary>
     /// Moves to selected scene
     /// </summary>
+    ///
+    public Animator transition;
+
+
+
     public void _Move(string scene){
+        
         SceneManager.LoadScene(sceneName: scene);
+        
     }
     
     /// <summary>
     /// Toggles on/off the selected prompt
     /// </summary>
     public void _TogglePrompt(GameObject prompt){
+        
         bool status = prompt.activeInHierarchy;
         prompt.SetActive(!status);
     }
