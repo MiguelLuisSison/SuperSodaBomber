@@ -72,9 +72,6 @@ public class PublicScripts : MonoBehaviour
     /// Moves to selected scene
     /// </summary>
     ///
-    public Animator transition;
-
-
 
     public void _Move(string scene){
         
