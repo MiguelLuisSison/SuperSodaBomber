@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
@@ -47,10 +46,10 @@ public class GameplayScript : PublicScripts
 
     //Removes the object dependency using a self-static variable.
     public static GameplayScript current;
-    private SaveLoadManager saveLoad;
+    private SaveLoadManager<PlayerData> saveLoad;
 
     void Awake(){
-        saveLoad = gameObject.AddComponent<SaveLoadManager>();
+        saveLoad = new SaveLoadManager<PlayerData>();
     }
 
     void Start(){
@@ -85,7 +84,6 @@ public class GameplayScript : PublicScripts
         coords += new Vector3(0, .5f, 0);
 
         //I/O
-        FileStream file = File.Create(saveLoad.savePath);
         PlayerData playerData = new PlayerData();
         playerData.score = score;
         playerData.coords = new float[] {coords[0], coords[1], coords[2]};
@@ -96,19 +94,13 @@ public class GameplayScript : PublicScripts
         Debug.Log($"saved projectile: {ProjectileProcessor.projectileType}");
 
         //save part
-        saveLoad.bf.Serialize(file, playerData);
-        file.Close();
+        saveLoad.SaveData(playerData);
     }
 
     //load game
     public void Load(){
-        if (File.Exists(saveLoad.savePath)){
-            //I/O
-            FileStream file = File.Open(saveLoad.savePath, FileMode.Open);
-
-            //load part
-            PlayerData playerData = (PlayerData)saveLoad.bf.Deserialize(file);
-            file.Close();
+        PlayerData playerData = saveLoad.LoadData();
+        if (playerData != null){
             MapName savedMap = (MapName) playerData.map;
 
             //don't load if the data is for a different map
@@ -223,16 +215,4 @@ public class GameplayScript : PublicScripts
         scoreTxt.text = $"{score}";
         hpTxt.text = health.ToString();
     }
-}
-
-[System.Serializable]
-class PlayerData{
-    public int score;
-    public float[] coords;
-    public int projectileType;
-    public int abilityType;
-    public int map;
-
-    //checkpoint data
-    public string checkpointTag;
 }

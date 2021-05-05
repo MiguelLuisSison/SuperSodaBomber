@@ -20,7 +20,7 @@ TagManager:
   - Checkpoint
   - Enemy
   - Projectile
-  - 
+  - Phantom
   - 
   - 
   - 
@@ -51,4 +51,7 @@ TagManager:
     locked: 0
   - name: Player
     uniqueID: 2400605805
+    locked: 0
+  - name: Phantom
+    uniqueID: 1038316459
     locked: 0

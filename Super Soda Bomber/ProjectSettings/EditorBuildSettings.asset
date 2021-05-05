@@ -12,7 +12,7 @@ EditorBuildSettings:
     path: Assets/_Scenes/MainMenuScene.unity
     guid: c860641cba0b7994ca8d367848ba35a4
   - enabled: 1
-    path: Assets/_Scenes/Level1_Beach.unity
+    path: Assets/_Scenes/TitleCards/Level1_TitleCard.unity
     guid: ec9c4089a1d6a6944a46f6faaf84b8ce
   - enabled: 1
     path: Assets/_Scenes/LevelScenes/Level1_Game_Level.unity

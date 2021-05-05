@@ -32,6 +32,7 @@ public class Projectile_ScriptObject : ScriptableObject
     void OnEnable() => EditorUtility.SetDirty(this);
 }
 
+#if UNITY_EDITOR
 [CustomEditor(typeof(Projectile_ScriptObject))]
 public class Projectile_ScriptObject_Editor: Editor{
     private void AddIndent(){
@@ -105,3 +106,4 @@ public class Projectile_ScriptObject_Editor: Editor{
         }
     }
 }
+#endif

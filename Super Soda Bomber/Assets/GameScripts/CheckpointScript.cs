@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
+﻿using UnityEngine;
 
 /*
 CheckpointScript
@@ -32,7 +29,7 @@ public class CheckpointScript : PublicScripts
     }
     
     void OnTriggerEnter2D(Collider2D col){
-        if (col.gameObject.layer == 8){
+        if (col.gameObject.layer == 8 || col.gameObject.layer == 13){
             if (!isTouched){
                 ChangeState();
                 GameplayScript.current.AddScore(scores["checkpoint"]);
@@ -43,7 +40,7 @@ public class CheckpointScript : PublicScripts
         }
     }
     void OnTriggerExit2D(Collider2D col){
-        if (col.gameObject.layer == 8)
+        if (col.gameObject.layer == 8 || col.gameObject.layer == 13)
             _TogglePrompt(notification.gameObject);
     }
 }

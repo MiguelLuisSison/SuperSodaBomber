@@ -33,6 +33,7 @@ namespace SuperSodaBomber.Enemies{
 
     }
     
+    #if UNITY_EDITOR
     [CustomEditor(typeof(Enemy_ScriptObject))]
     public class Enemy_ScriptObject_Editor: Editor{
         public override void OnInspectorGUI()
@@ -60,4 +61,5 @@ namespace SuperSodaBomber.Enemies{
             s.attackRateMultiplier = EditorGUILayout.Slider("Attack Rate Multiplier", s.attackRateMultiplier, 1f, 2f);
         }
     }
+    #endif
 }

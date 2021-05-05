@@ -19,10 +19,17 @@ public class PlayerHealth : MonoBehaviour, IDamageable
     private Coroutine coroutine;        //asynchronous work
     private bool isTempImmune;          //player status if it's temporarily immuned
     private SpriteRenderer p_Renderer;  //player sprite renderer
+    private Dictionary<string, int> colliderLayer;          //dictionary of prepared collider layers that the player uses
 
     void Awake(){
         player = gameObject;
         p_Renderer = player.GetComponent<SpriteRenderer>();
+
+        //prepare the layer masks
+        colliderLayer = new Dictionary<string, int>(){
+            {"phantom", LayerMask.NameToLayer("Phantom")},
+            {"player", LayerMask.NameToLayer("Player")}
+        };
     }
 
     /// <summary>
@@ -86,6 +93,7 @@ public class PlayerHealth : MonoBehaviour, IDamageable
         float[] durationsArr = {2f, 1f};   //in seconds
         float blinkCycle = 10f;
         isTempImmune = true;
+        gameObject.layer = colliderLayer["phantom"];
 
         Color oldColor = p_Renderer.color;  //opaque
         Color blinkColor = new Color(oldColor.r, oldColor.g, oldColor.b, .25f);  //semi-transparent
@@ -105,6 +113,7 @@ public class PlayerHealth : MonoBehaviour, IDamageable
             }
         }
 
+        gameObject.layer = colliderLayer["player"];
         isTempImmune = false;
     }
 }

@@ -3,7 +3,7 @@ using UnityEditor;
 using System;
 
 /*
-DialogueData_ScriptObject
+Dialogue_ScriptObject
     A scriptable object that holds the initial data for the dialogue:
         - Character Name
         - Character Image
@@ -19,6 +19,7 @@ public class Dialogue_ScriptObject : ScriptableObject
     void OnEnable() => EditorUtility.SetDirty(this);
 }
 
+#if UNITY_EDITOR
 //Custom Editor for the Dialogue
 [CustomEditor(typeof(Dialogue_ScriptObject))]
 public class Dialogue_ScriptObject_Editor: Editor{
@@ -51,3 +52,4 @@ public class Dialogue_ScriptObject_Editor: Editor{
         }
     }
 }
+#endif

@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,6 +13,7 @@ Dialogue
             - character
         - interruptable, can skip typing animation
 */
+
 public class Dialogue : MonoBehaviour
 {
     [SerializeField] private Text charName;     //character name display

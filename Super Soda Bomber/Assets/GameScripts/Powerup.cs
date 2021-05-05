@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 
@@ -21,7 +20,7 @@ public class Powerup: MonoBehaviour{
 
     void OnTriggerEnter2D(Collider2D col){
         //if it's not a player, do nothing
-        if(col.gameObject.layer != 8)
+        if(col.gameObject.layer != 8 && col.gameObject.layer != 13)
             return;
 
         //gets the PlayerControl script
