@@ -2,7 +2,7 @@
 
 /*
 Camera Switcher
-    Switches the camera. Manly used for cutscenes
+    Switches the camera. Manly used for cutscenes.
 */
 
 public class CameraSwitcher : MonoBehaviour
