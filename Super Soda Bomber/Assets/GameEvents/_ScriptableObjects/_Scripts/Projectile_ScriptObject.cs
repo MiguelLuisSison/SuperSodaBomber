@@ -29,7 +29,9 @@ public class Projectile_ScriptObject : ScriptableObject
     public bool applyMovingMechanic = true;
     public float throwingMultiplier = 2.5f;
 
+    #if UNITY_EDITOR
     void OnEnable() => EditorUtility.SetDirty(this);
+    #endif
 }
 
 #if UNITY_EDITOR

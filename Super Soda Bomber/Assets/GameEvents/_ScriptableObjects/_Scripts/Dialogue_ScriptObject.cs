@@ -16,7 +16,9 @@ public class Dialogue_ScriptObject : ScriptableObject
     public Sprite characterImage;
     public string dialogue;
 
+    #if UNITY_EDITOR
     void OnEnable() => EditorUtility.SetDirty(this);
+    #endif
 }
 
 #if UNITY_EDITOR

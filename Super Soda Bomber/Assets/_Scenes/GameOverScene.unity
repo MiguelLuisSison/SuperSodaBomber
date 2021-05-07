@@ -394,7 +394,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a520d94c8e1025f40b59e4d7ee26e8ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  savePath: 
+  onSceneMove: {fileID: 11400000, guid: 4ac4e97ed8a2be4428c49f099a07cd6c, type: 2}
 --- !u!114 &1009362287
 MonoBehaviour:
   m_ObjectHideFlags: 0

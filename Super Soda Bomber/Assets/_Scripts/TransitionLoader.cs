@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Collections;
-using UnityEngine.SceneManagement;
+using SuperSodaBomber.Events;
 using UnityEngine;
 
 /*
@@ -8,99 +7,67 @@ TransitionLoader
     Manages the triggering of the animation of the transition.
 */
 
-/*
-TODO:
-    When player pressed continue/new button:
-        - Transition plays (OK)
-        - Loads Title Card (OK)
-
-    At title card:
-        - Play a loading animation
-        - Async load the game scene (OK)
-        - Async load the game over scene
-        - Async load the stage complete scene
-        - Async load the saved data
-
-    Once all are loaded:
-        - Finish playing the loading animation
-        - Transition out plays (OK)
-        
-*/
-
-public class TransitionLoader : PublicScripts
+public class TransitionLoader : MonoBehaviour
 {
-    public Animator transition;     //transition animator
-    public bool fillEndAuto;        //activates the second-half of the transition
-    public bool isTitleCard;        //is the scene a title card?
-    public string newScene;        //new scene to load (at inspector)
+    //transition animator
+    [SerializeField] private Animator transition;   
+    public VoidEvent duringTransitionScene;
 
-    private AsyncOperation sceneToLoad;     //tracks the scene loading
-    private int oldSceneIndex;      //build index of the old scene
+    [Header("Main Menu to Game Level")]
+    [SerializeField] private List<VoidEvent> duringTransitionEvents;
+    [SerializeField] private List<VoidEvent> afterTransitionEvents;
 
-    private void Awake()
+    private string status;
+    private int index = 0;
+
+    private static bool useMainMenuEvent;
+    public static bool UseMainMenuEvents
     {
-        if (fillEndAuto)
-            transition.SetTrigger("end");
+        get { return useMainMenuEvent; }
+        set { useMainMenuEvent = value; }
+    }
+    
+    public void ToggleMainMenuEvents(bool active){
+        useMainMenuEvent = active;
+    }
 
-        //automatically call the load level if it's a title card
-        if (isTitleCard && newScene != null){
-            StartCoroutine(InvokeLoadLevel());
+    public void FillStart(){
+        status = "fill_start";
+        transition.Play("fill_start");
+        Debug.Log("start called");
+    }
+
+    public void FillEnd(){
+        status = "fill_end";
+        transition.Play("fill_end");
+    }
+
+    public void CueTransition(){
+        if(status == "fill_start"){
+            FillEnd();
+        }
+        else{
+            FillStart();
         }
     }
 
-    public void LoadLevel(string scene)
-    {
-        newScene = scene;
-
-        //loads the scene asyncronously (without having a lag spike)
-        sceneToLoad = SceneManager.LoadSceneAsync(scene, LoadSceneMode.Additive);
-
-        //forces the scene to wait for the transition
-        sceneToLoad.allowSceneActivation = false;
-
-        if (!isTitleCard)    
-            transition.SetTrigger("start");
-    }
-
-    private IEnumerator InvokeLoadLevel(){
-        yield return new WaitForSeconds(2f);
-        LoadLevel(newScene);
-        while (sceneToLoad.progress != .9f){
-            yield return null;
+    public void CueStartDone(){
+        Debug.Log("MainMenuUse: " + useMainMenuEvent);
+        if (index < duringTransitionEvents.Count && useMainMenuEvent){
+            duringTransitionEvents[index]?.Raise();
+            FillEnd();
         }
-        transition.SetTrigger("start");
-
+        else if(!useMainMenuEvent){
+            duringTransitionScene?.Raise();
+        }
     }
 
-    private IEnumerator WaitForLoadScene(){
-        //waits until the scene is loaded in memory
-        while (!sceneToLoad.isDone){
-            //if it reaches 90%, allow activate the scene
-            if (sceneToLoad.progress == .9f && !sceneToLoad.allowSceneActivation){
-                //loading animation stop goes here
-                sceneToLoad.allowSceneActivation = true;
-                yield return new WaitForEndOfFrame();
+    public void CueEndDone(){
+        if (useMainMenuEvent){
+            if (index < afterTransitionEvents.Count){
+                afterTransitionEvents[index]?.Raise();
             }
-            else
-                yield return null;
+            index++;
         }
-
-        //sets the loaded scene as the main scene
-        oldSceneIndex = SceneManager.GetActiveScene().buildIndex;
-        SceneManager.SetActiveScene(SceneManager.GetSceneByName(newScene));
-
-        //unload the old scene
-        AsyncOperation unloadScene = SceneManager.UnloadSceneAsync(oldSceneIndex);
-
-        //waits until the scene is unloaded.
-        while (!unloadScene.isDone){
-            yield return null;
-        }
-    }
-
-    //calls the coroutine (at the animation event)
-    public void CueLoadLevel(){
-        if (newScene != null)
-            StartCoroutine(WaitForLoadScene());
     }
 }

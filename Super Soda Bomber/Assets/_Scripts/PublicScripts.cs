@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using SuperSodaBomber.Events;
 using UnityEngine.SceneManagement;
 
 /*
@@ -13,6 +14,8 @@ PublicScripts
 
 public class PublicScripts : MonoBehaviour
 {
+    [SerializeField] private VoidEvent onSceneMove;
+
     //list of non-projectile scores
     protected readonly Dictionary<string, int> scores = new Dictionary<string, int>(){
         {"checkpoint", 125},
@@ -68,15 +71,29 @@ public class PublicScripts : MonoBehaviour
         {"Pellet", 15f}
     };
 
+    private readonly Dictionary <string, SceneIndex> sceneNames = new Dictionary<string, SceneIndex>(){
+        {"PersistentScene", SceneIndex.Persistence},
+        {"MainMenuScene", SceneIndex.MainMenu},
+        {"Options", SceneIndex.Options},
+        {"Level1_Game_Level", SceneIndex.Level1_Game},
+        {"Level2_Game_Level", SceneIndex.Level2_Game},
+        {"Level3_Game_Level", SceneIndex.Level3_Game},
+        {"Level4_Game_Level", SceneIndex.Level4_Game},
+        {"StageCompleteScene", SceneIndex.StageComplete},
+        {"PerkChoosingScene", SceneIndex.PerkChoose},
+        {"GameOverScene", SceneIndex.GameOver}
+    };
+
     /// <summary>
     /// Moves to selected scene
     /// </summary>
     ///
 
     public void _Move(string scene){
-        
-        SceneManager.LoadScene(sceneName: scene);
-        
+        if (sceneNames.ContainsKey(scene)){
+            GameManager.current.MoveScene(sceneNames[scene], false);
+            onSceneMove?.Raise();
+        }
     }
     
     /// <summary>
@@ -113,6 +130,20 @@ public enum MapName{
     Level2 = 2, 
     Level3 = 3, 
     Level4 = 4
+}
+
+public enum SceneIndex{
+    None = -1,
+    Persistence,
+    MainMenu,
+    Options,
+    Level1_Game,
+    Level2_Game,
+    Level3_Game,
+    Level4_Game,
+    StageComplete,
+    PerkChoose,
+    GameOver,
 }
 
 //explosion types

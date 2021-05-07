@@ -62,7 +62,6 @@ public class SaveLoadManager<T>
     public SaveLoadManager(string path = "saved_data"){
         savePath = Application.persistentDataPath + path+ ".soda";
     }
-
     
     /// <summary>
     /// Deletes saved data

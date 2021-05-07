@@ -46,10 +46,12 @@ public class GameplayScript : PublicScripts
 
     //Removes the object dependency using a self-static variable.
     public static GameplayScript current;
-    private SaveLoadManager<PlayerData> saveLoad;
+    private SaveLoadManager<PlayerData> saveLoadPlayer;
+    private SaveLoadManager<MapData> saveLoadMap;
 
     void Awake(){
-        saveLoad = new SaveLoadManager<PlayerData>();
+        saveLoadPlayer = new SaveLoadManager<PlayerData>();
+        saveLoadMap = new SaveLoadManager<MapData>("map_data");
     }
 
     void Start(){
@@ -93,13 +95,17 @@ public class GameplayScript : PublicScripts
         playerData.abilityType = (int) AbilityProcessor.abilities;
         Debug.Log($"saved projectile: {ProjectileProcessor.projectileType}");
 
+        MapData mapData = new MapData();
+        mapData.mapLevel = (int) mapName;
+
         //save part
-        saveLoad.SaveData(playerData);
+        saveLoadPlayer.SaveData(playerData);
+        saveLoadMap.SaveData(mapData);
     }
 
     //load game
     public void Load(){
-        PlayerData playerData = saveLoad.LoadData();
+        PlayerData playerData = saveLoadPlayer.LoadData();
         if (playerData != null){
             MapName savedMap = (MapName) playerData.map;
 
@@ -176,7 +182,7 @@ public class GameplayScript : PublicScripts
 
     //DevTools
     public void Restart(){
-        if (File.Exists(saveLoad.savePath)){
+        if (File.Exists(saveLoadPlayer.savePath)){
             Load();
         }
         else{
@@ -195,7 +201,7 @@ public class GameplayScript : PublicScripts
             Restart();
         }
         else if(Input.GetKey("c")){
-            saveLoad.ClearData();
+            saveLoadPlayer.ClearData();
         }
         else if(Input.GetKeyDown(KeyCode.Escape)){
             _TogglePause();
