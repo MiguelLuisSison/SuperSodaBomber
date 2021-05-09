@@ -47,8 +47,8 @@ namespace SuperSodaBomber.Enemies{
             s.movementSpeed = EditorGUILayout.Slider("Movement Speed", s.movementSpeed, 0, 3f);
             s.attackRate = EditorGUILayout.Slider(new GUIContent("Attack Rate", "Lower = faster"), s.attackRate, .01f, 5f);
 
-            s.attackRadius = EditorGUILayout.Slider("Attack Radius", s.attackRadius, .5f, 5f);
-            s.spotRadius = EditorGUILayout.Slider("Spot Radius", s.spotRadius, 1f, 10f);
+            s.attackRadius = EditorGUILayout.Slider("Attack Radius", s.attackRadius, .5f, 10f);
+            s.spotRadius = EditorGUILayout.Slider("Spot Radius", s.spotRadius, 1f, 15f);
 
 
             s.projectilePrefab = (GameObject)EditorGUILayout.ObjectField("Projectile Prefab", s.projectilePrefab, typeof(GameObject), false);

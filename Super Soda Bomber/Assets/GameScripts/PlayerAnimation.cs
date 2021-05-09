@@ -19,10 +19,11 @@ public class PlayerAnimation : MonoBehaviour
 		{"JUMP", "fizzy_jump"},
 		{"FALL", "fizzy_fall"},
 		{"THROW", "fizzy_throw"},
+		{"FIRE_FIZZTOL", "fizzy_fireFizztol"},
+		{"FIRE_SHOTGUN", "fizzy_fireShotgun"},
 		/*
 		{"D_JUMP", "fizzy_double_jump"},
 		{"LAND", "fizzy_land"},
-		{"FIRE", "fizzy_fire_gun"},
 		{"DASH", "fizzy_dash"}
 		*/
 	};

@@ -91,8 +91,15 @@ public class PublicScripts : MonoBehaviour
 
     public void _Move(string scene){
         if (sceneNames.ContainsKey(scene)){
-            GameManager.current.MoveScene(sceneNames[scene], false);
-            onSceneMove?.Raise();
+            try{
+                GameManager.current.MoveScene(sceneNames[scene], false);
+                onSceneMove?.Raise();
+            }
+            catch{
+                //prevents error in case the developer plays directly at the scene
+                //instead of playing it at the persistent scene
+                SceneManager.LoadScene(scene);
+            }
         }
     }
     

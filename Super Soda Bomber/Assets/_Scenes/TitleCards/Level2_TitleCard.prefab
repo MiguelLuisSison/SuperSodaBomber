@@ -66,7 +66,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 11e68251378f43e4a9a05f265ae3dd6e, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 7883953e94e3d6e4c924a31b3087a7a9, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -102,7 +102,7 @@ GameObject:
   - component: {fileID: 3524944274911355364}
   - component: {fileID: 8679832723094966611}
   m_Layer: 5
-  m_Name: LevelName (1)
+  m_Name: LevelName
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -124,7 +124,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -61, y: -261}
+  m_AnchoredPosition: {x: -1123, y: -236}
   m_SizeDelta: {x: 481.57227, y: 93.28128}
   m_Pivot: {x: 1, y: 1}
 --- !u!222 &7784875683833922879
@@ -160,15 +160,13 @@ MonoBehaviour:
     m_BestFit: 0
     m_MinSize: 4
     m_MaxSize: 50
-    m_Alignment: 4
+    m_Alignment: 3
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Beach Side Bay
-
-'
+  m_Text: Milkian HQ
 --- !u!114 &8679832723094966611
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -197,7 +195,7 @@ GameObject:
   - component: {fileID: 6665312384337123704}
   - component: {fileID: 6580700433752019614}
   m_Layer: 5
-  m_Name: Level (1)
+  m_Name: Level
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -219,7 +217,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -30.39087, y: -50}
+  m_AnchoredPosition: {x: -1094.3909, y: -25}
   m_SizeDelta: {x: 500.0003, y: 226.35526}
   m_Pivot: {x: 1, y: 1}
 --- !u!222 &3931253619449144035
@@ -255,13 +253,13 @@ MonoBehaviour:
     m_BestFit: 0
     m_MinSize: 0
     m_MaxSize: 90
-    m_Alignment: 4
+    m_Alignment: 3
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Level 1
+  m_Text: Level 2
 --- !u!114 &6580700433752019614
 MonoBehaviour:
   m_ObjectHideFlags: 0

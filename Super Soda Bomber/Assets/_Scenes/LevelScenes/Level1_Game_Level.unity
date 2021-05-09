@@ -447,7 +447,7 @@ MonoBehaviour:
   OnLandEvent:
     m_PersistentCalls:
       m_Calls: []
-  chosenAbility: 0
+  chosenAbility: 4
 --- !u!114 &89766935
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -480,7 +480,7 @@ MonoBehaviour:
   onSceneMove: {fileID: 0}
   attackSource: {fileID: 266886288}
   attackHandSource: {fileID: 1926458545}
-  chosenProjectile: 2
+  chosenProjectile: 4
 --- !u!114 &89766937
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18208,7 +18208,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1158265898
 Transform:
   m_ObjectHideFlags: 0
@@ -20967,7 +20967,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1926458544}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.43, y: 0, z: 0}
+  m_LocalPosition: {x: 0.25, y: -0.061, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 89766930}

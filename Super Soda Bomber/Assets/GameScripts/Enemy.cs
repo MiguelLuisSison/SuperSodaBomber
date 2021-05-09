@@ -59,7 +59,7 @@ namespace SuperSodaBomber.Enemies{
 
                 //flip it
                 facingRight = !facingRight;
-
+                CueFlipEvent();
                 //Unlike the player, the enemy has a different shape of collider.
                 transform.localScale = new Vector3(transform.localScale.x*-1, 1f, 1f);
             }
@@ -75,6 +75,9 @@ namespace SuperSodaBomber.Enemies{
         public void InvokeState(){
             chosenPhase.CallState();
         }
+
+        //must insert what happens when the enemy flips.
+        protected virtual void CueFlipEvent(){}
 
         //must insert the firing/charge script at the enemy class.
         public abstract void CueAttack();
@@ -221,34 +224,82 @@ namespace SuperSodaBomber.Enemies{
 
     public class Roller: BaseEnemy{
 
+        protected float rollSpeed;              //presetted rolling speed of the roller
+        protected float speed = 0;              //current rolling speed of the roller
+        protected Rigidbody2D rollRigid;        //rigidbody of the roller
+        protected Vector3 rollVelocity = Vector3.zero; //used for referencing on movement
+        private float rollSmoothing = .35f;     //"slippery" smotthing when rolling
+        private float recoverSmoothing = .15f;  //less smoothing on idle
+        protected bool attacking;               //roller is currently attacking
+        protected bool allowSetCooldown;        //bool switch for cooldown
+
+        private float rollTime = 3f;            //amount of time to roll
+        private Coroutine rollCoroutine;        //asynchronous work
+
         public override void Init(Enemy_ScriptObject scriptObject, Transform attackSource, EnemyPhase phase)
         {
             base.Init(scriptObject, attackSource, phase);
 
             //add the phase sub-classes at the dictionary
             phaseDict.Add(EnemyPhase.Phase1, new Phase1(this));
-            phaseDict.Add(EnemyPhase.Phase2, new Phase2(this));
+            phaseDict.Add(EnemyPhase.Phase2, new Phase1(this));
 
             chosenPhase = phaseDict[phase];
+
+            rollRigid = GetComponent<Rigidbody2D>();
+            rollSpeed = scriptObject.movementSpeed * 25f;
         }
 
-        protected void InvokeCoroutine(IEnumerator coro){
-            StartCoroutine(coro);
+        private void Roll(float smoothing){
+            //move the character by finding the target velocity
+            Vector3 targetVelocity = new Vector2(speed * Time.fixedDeltaTime * 10f, rollRigid.velocity.y);
+
+            //smoothen the velocity of the roller
+            rollRigid.velocity = Vector3.SmoothDamp(rollRigid.velocity, targetVelocity, ref rollVelocity, smoothing);
         }
 
-        public override void CueAttack(){}
+        protected override void CueFlipEvent(){
+            //move to the opposite side when flipping
+            speed *= -1;
+        }
+
+        private void StopRolling(){
+            //set the animation to idle and reset the values
+            animator.SetTrigger("idle");
+            speed = 0;
+            attacking = false;
+            allowSetCooldown = true;
+        }
+
+        void FixedUpdate(){
+            //use roll smoothing when attacking
+            if (attacking)
+                Roll(rollSmoothing);
+            else if (speed == 0)
+                Roll(recoverSmoothing);
+        }
+
+        public override void CueAttack(){
+            attacking = true;
+            rollCoroutine = StartCoroutine(SetRollingTime());
+        }
+        
+        IEnumerator SetRollingTime(){
+            yield return new WaitForSeconds(rollTime);
+            StopRolling();
+        }
 
         /// <summary>
-        /// Shooter fires slowly
+        /// Roller Rolls
         /// </summary>
         public class Phase1: BaseInnerEnemy{
             //outer class to access the functions
             private Roller outer;
-            private float shootTime;
+            private float attackTime;
 
             public Phase1(Roller o){
                 outer = o;
-                shootTime = Time.time;
+                attackTime = Time.time;
             }
 
             public override void CallState(){
@@ -258,11 +309,20 @@ namespace SuperSodaBomber.Enemies{
                         if (outer.FindTarget(outer.spotRadius))
                             outer.currentState = EnemyState.Attack;                
                         break;
+
                     case EnemyState.Attack:
+                        //set the cooldown of the roller
+                        if (outer.allowSetCooldown){
+                            attackTime = Time.time + outer.attackRate;
+                            outer.allowSetCooldown = false;
+                        }
                         //if it's wihtin attacking range and it's within fire rate
-                        if (outer.FindTarget(outer.attackRadius) && Time.time > shootTime){
+                        else if (outer.FindTarget(outer.attackRadius) && Time.time > attackTime && !outer.attacking){
                             //attack
-                            shootTime = Time.time + outer.attackRate;
+                            //sets speed (-speed if facing left)
+                            outer.animator.SetTrigger("attack");
+                            outer.speed = outer.rollSpeed * (outer.facingRight ? 1 : -1);
+                            outer.allowSetCooldown = true;
                         }
                         //switch to wander if it's outside spot radius
                         else if (!outer.FindTarget(outer.spotRadius))
@@ -274,36 +334,5 @@ namespace SuperSodaBomber.Enemies{
             }
         }
 
-        /// <summary>
-        /// Shooter fires on a burst
-        /// </summary>
-        public class Phase2: BaseInnerEnemy{
-            private Roller outer;
-            private float shootTime;
-
-            public Phase2(Roller o){
-                outer = o;
-            }
-
-            public override void CallState(){
-                switch (outer.currentState){
-                    case EnemyState.Wander:
-                        //find if the player is within the range
-                        if (outer.FindTarget(outer.spotRadius))
-                            outer.currentState = EnemyState.Attack;                
-                        break;
-                    case EnemyState.Attack:
-                        if (outer.FindTarget(outer.attackRadius) && Time.time > shootTime){
-                            //attack
-                            shootTime = Time.time + outer.attackRate;
-                        }
-                        else if (!outer.FindTarget(outer.spotRadius))
-                            outer.currentState = EnemyState.Wander;
-
-                        outer.Flip();
-                        break;
-                }
-            }
-        }
     }
 }

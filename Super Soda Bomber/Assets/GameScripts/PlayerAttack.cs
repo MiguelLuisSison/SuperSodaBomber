@@ -64,7 +64,17 @@ public class PlayerAttack : PublicScripts
 
 		if (attack && (attackTime <= Time.time && !isCreated)){
             //use the attack animation
-            PlayerAnimation.current.ChangeAnimState("THROW");
+            switch(chosenProjectile){
+                case PlayerProjectiles.Fizztol:
+                    PlayerAnimation.current.ChangeAnimState("FIRE_FIZZTOL");
+                    break;
+                case PlayerProjectiles.Shotgun:
+                    PlayerAnimation.current.ChangeAnimState("FIRE_SHOTGUN");
+                    break;
+                default:
+                    PlayerAnimation.current.ChangeAnimState("THROW");
+                    break;
+            }
 
             //load the projectile
             if (!isPrefabLoaded){
@@ -74,7 +84,7 @@ public class PlayerAttack : PublicScripts
             }
 
             //set the shotgun location to attackhandsource and spawn one
-                if (projectileName == "Shotgun")
+                if (projectileName == "Shotgun" || projectileName == "Fizztol")
                     projectile = Instantiate(projectilePrefab, attackHandSource.position, 
                     attackHandSource.rotation);
                 else
